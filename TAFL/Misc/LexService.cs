@@ -7,22 +7,29 @@ using System.Threading.Tasks;
 namespace TAFL.Misc;
 public class LexService
 {
-    public static uint Encode(string alphabet, string word, out uint N)
+    public static uint Encode(string alphabet, string word, out string process)
     {
-        // TODO: Encoding algorithm
-        N = 0;
+        IDictionary<char, uint> pairs = new Dictionary<char, uint>();
+
+        for (var i = 1; i <= alphabet.Length; i++)
+        {
+            pairs.Add(new KeyValuePair<char, uint>(alphabet[i - 1], (uint)i));
+        }
+
+        process = "";
+
         return 0;
     }
-    public static string Decode(string alphabet, uint N, out string word)
+    public static string Decode(string alphabet, uint N, out string process)
     {
         List<uint> rems = new List<uint>();
         var n = (uint)alphabet.Length;
 
-        var process =  __CalculateProcessString__(n, N, rems, out var _, out var _);
+        process =  __CalculateProcessString__(n, N, rems, out var _, out var _);
         process = process[1..(process.Length - 1)];
         rems.Reverse();
 
-        word = "";
+        var word = "";
         foreach (var rem in rems)
         {
             word += alphabet[(int)rem - 1];
@@ -33,8 +40,10 @@ public class LexService
         {
             sumLine += rems.Count - i - 1 > 0 ? $"+{rems[i]}*{n}{(rems.Count - i - 1 == 1? "" : $"^{rems.Count - i - 1}")}" : $"+{rems[i]}";
         }
-        
-        return process + " = " + sumLine[1..] + " = " + word;
+
+        process += sumLine[1..] + " = " + word;
+
+        return word;
     }
 
     private static string __CalculateProcessString__(uint n, uint N, List<uint> rems, out uint div, out uint rem)

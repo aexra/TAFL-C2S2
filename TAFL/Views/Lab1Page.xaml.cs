@@ -38,8 +38,8 @@ public sealed partial class Lab1Page : Page
             return;
         }
 
-        DecodeProcessBlock.Text = LexService.Decode(DecodeAlphabetBox.Text, uint.Parse(DecodeNumberBox.Text), out var word);
-        DecodeResultBlock.Text = word;
+        DecodeResultBlock.Text = LexService.Decode(DecodeAlphabetBox.Text, uint.Parse(DecodeNumberBox.Text), out var process);
+        DecodeProcessBlock.Text = process;
     }
 
     private void AlphabetBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
