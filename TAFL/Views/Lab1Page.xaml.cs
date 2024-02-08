@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Microsoft.UI.Xaml.Controls;
-
+using TAFL.Misc;
 using TAFL.ViewModels;
 
 namespace TAFL.Views;
@@ -32,14 +32,14 @@ public sealed partial class Lab1Page : Page
 
     private void DecodeButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        if (!CheckErrors(DecodeAlphabetBox.Text, DecodeNumberBox.Text))
+        if (!CheckEmptyFields(DecodeAlphabetBox.Text, DecodeNumberBox.Text) && uint.TryParse(DecodeNumberBox.Text, out var _))
         {
             // TODO: Show Error Box
             return;
         }
-        // TODO: Initiate decoding sequence
-        DecodeProcessBlock.Text = "Решено декодирование!";
-        DecodeResultBlock.Text = "Слово";
+
+        DecodeProcessBlock.Text = LexService.Decode(DecodeAlphabetBox.Text, uint.Parse(DecodeNumberBox.Text), out var word);
+        DecodeResultBlock.Text = word;
     }
 
     private void AlphabetBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
