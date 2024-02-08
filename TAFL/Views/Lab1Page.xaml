@@ -76,13 +76,13 @@
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Text="Закодировать" Style="{StaticResource TaskTitle}"/>
-            <TextBox Grid.Row="1" Style="{StaticResource AlphabetInput}"/>
-            <TextBox Grid.Row="2" PlaceholderText="Введите слово" Style="{StaticResource TaskInput}"/>
-            <Button Grid.Row="3" Content="Решить" Style="{StaticResource SolveButton}"/>
+            <TextBox x:Name="EncodeAlphabetBox" Grid.Row="1" Style="{StaticResource AlphabetInput}"/>
+            <TextBox x:Name="EncodeWordBox" Grid.Row="2" PlaceholderText="Введите слово" Style="{StaticResource TaskInput}"/>
+            <Button x:Name="EncodeButton" Grid.Row="3" Content="Решить" Style="{StaticResource SolveButton}"/>
             <Border Grid.Row="4" Style="{ThemeResource ProcessBorder}">
-                <TextBlock Text="Здесь будет решение" Style="{StaticResource ProcessBlock}"/>
+                <TextBlock x:Name="EncodeProcessBlock" Text="Здесь будет решение" Style="{StaticResource ProcessBlock}"/>
             </Border>
-            <TextBlock Grid.Row="5" Text="Ответ" Style="{StaticResource ResultBlock}"/>
+            <TextBlock x:Name="EncodeResultBlock" Grid.Row="5" Text="Ответ" Style="{StaticResource ResultBlock}"/>
         </Grid>
         <Grid Grid.Column="1" RowSpacing="20">
             <Grid.RowDefinitions>
@@ -94,13 +94,13 @@
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Text="Декодировать" Style="{StaticResource TaskTitle}"/>
-            <TextBox Grid.Row="1" Style="{StaticResource AlphabetInput}"/>
-            <TextBox Grid.Row="2" PlaceholderText="Введите номер слова" Style="{StaticResource TaskInput}"/>
-            <Button Grid.Row="3" Content="Решить" Style="{StaticResource SolveButton}"/>
+            <TextBox x:Name="DecodeAlphabetBox" Grid.Row="1" Style="{StaticResource AlphabetInput}"/>
+            <TextBox x:Name="DecodeNumberBox" Grid.Row="2" PlaceholderText="Введите номер слова" Style="{StaticResource TaskInput}"/>
+            <Button x:Name="DecodeButton" Grid.Row="3" Content="Решить" Style="{StaticResource SolveButton}"/>
             <Border Grid.Row="4" Style="{ThemeResource ProcessBorder}">
-                <TextBlock Text="Здесь будет решение" Style="{StaticResource ProcessBlock}"/>
+                <TextBlock x:Name="DecodeProcessBlock" Text="Здесь будет решение" Style="{StaticResource ProcessBlock}"/>
             </Border>
-            <TextBlock Grid.Row="5" Text="Ответ" Style="{StaticResource ResultBlock}"/>
+            <TextBlock x:Name="DecodeResultBlock" Grid.Row="5" Text="Ответ" Style="{StaticResource ResultBlock}"/>
         </Grid>
     </Grid>
 </Page>
