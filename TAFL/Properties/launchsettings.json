@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "TAFL (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "TAFL (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}
