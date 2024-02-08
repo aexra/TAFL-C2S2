@@ -19,6 +19,7 @@
                 <Setter Property="CornerRadius" Value="5"/>
                 <Setter Property="PlaceholderText" Value="Введите алфавит"/>
                 <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="CharacterSpacing"  Value="1000"/>
             </Style>
             <Style x:Key="TaskInput" TargetType="TextBox">
                 <Setter Property="FontFamily" Value="Comic Sans MS"/>
