@@ -25,9 +25,9 @@ public sealed partial class Lab1Page : Page
             // TODO: Show Error Box
             return;
         }
-        // TODO: Initiate encoding sequence
-        EncodeProcessBlock.Text = "Решено кодирование!";
-        EncodeResultBlock.Text = "Код";
+        
+        EncodeResultBlock.Text = LexService.Encode(EncodeAlphabetBox.Text, EncodeWordBox.Text, out var process).ToString();
+        EncodeProcessBlock.Text = process;
     }
 
     private void DecodeButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
