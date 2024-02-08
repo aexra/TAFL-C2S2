@@ -16,4 +16,14 @@ public sealed partial class Lab1Page : Page
         ViewModel = App.GetService<Lab1ViewModel>();
         InitializeComponent();
     }
+
+    private void EncodeButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        EncodeProcessBlock.Text = "Решено кодирование!";
+    }
+
+    private void DecodeButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        DecodeProcessBlock.Text = "Решено декодирование!";
+    }
 }
