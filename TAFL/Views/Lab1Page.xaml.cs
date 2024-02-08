@@ -19,11 +19,15 @@ public sealed partial class Lab1Page : Page
 
     private void EncodeButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
+        // TODO: Initiate encoding sequence
         EncodeProcessBlock.Text = "Решено кодирование!";
+        EncodeResultBlock.Text = "Код";
     }
 
     private void DecodeButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
+        // TODO: Initiate decoding sequence
         DecodeProcessBlock.Text = "Решено декодирование!";
+        DecodeResultBlock.Text = "Слово";
     }
 }
