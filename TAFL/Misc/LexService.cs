@@ -17,19 +17,23 @@ public class LexService
     {
         List<uint> rems = new List<uint>();
         var n = (uint)alphabet.Length;
+
         var process =  __CalculateProcessString__(n, N, rems, out var _, out var _);
-        rems.Reverse();
         process = process[1..(process.Length - 1)];
-        var sumLine = "";
+        rems.Reverse();
+
         word = "";
         foreach (var rem in rems)
         {
             word += alphabet[(int)rem - 1];
         }
+        
+        var sumLine = "";
         for (var i = 0; i < rems.Count; i++) 
         {
             sumLine += rems.Count - i - 1 > 0 ? $"+{rems[i]}*{n}{(rems.Count - i - 1 == 1? "" : $"^{rems.Count - i - 1}")}" : $"+{rems[i]}";
         }
+        
         return process + " = " + sumLine[1..] + " = " + word;
     }
 
