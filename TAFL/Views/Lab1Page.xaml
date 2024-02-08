@@ -77,7 +77,7 @@
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Text="Закодировать" Style="{StaticResource TaskTitle}"/>
-            <TextBox x:Name="EncodeAlphabetBox" Grid.Row="1" Style="{StaticResource AlphabetInput}"/>
+            <TextBox x:Name="EncodeAlphabetBox" Grid.Row="1" TextChanging="AlphabetBox_TextChanging" Style="{StaticResource AlphabetInput}"/>
             <TextBox x:Name="EncodeWordBox" Grid.Row="2" PlaceholderText="Введите слово" Style="{StaticResource TaskInput}"/>
             <Button x:Name="EncodeButton" Grid.Row="3" Content="Решить" Click="EncodeButton_Click" Style="{StaticResource SolveButton}"/>
             <Border Grid.Row="4" Style="{ThemeResource ProcessBorder}">
@@ -95,7 +95,7 @@
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Text="Декодировать" Style="{StaticResource TaskTitle}"/>
-            <TextBox x:Name="DecodeAlphabetBox" Grid.Row="1" Style="{StaticResource AlphabetInput}"/>
+            <TextBox x:Name="DecodeAlphabetBox" Grid.Row="1" TextChanging="AlphabetBox_TextChanging" Style="{StaticResource AlphabetInput}"/>
             <TextBox x:Name="DecodeNumberBox" Grid.Row="2" PlaceholderText="Введите номер слова" Style="{StaticResource TaskInput}"/>
             <Button x:Name="DecodeButton" Grid.Row="3" Content="Решить" Click="DecodeButton_Click" Style="{StaticResource SolveButton}"/>
             <Border Grid.Row="4" Style="{ThemeResource ProcessBorder}">

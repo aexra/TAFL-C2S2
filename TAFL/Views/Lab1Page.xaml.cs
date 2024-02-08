@@ -30,4 +30,20 @@ public sealed partial class Lab1Page : Page
         DecodeProcessBlock.Text = "Решено декодирование!";
         DecodeResultBlock.Text = "Слово";
     }
+
+    private void AlphabetBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+    {
+        var distinct = StringToDistinctString(sender.Text);
+        if (distinct != sender.Text) 
+        {
+            var pointer = sender.SelectionStart - 1;
+            sender.Text = distinct;
+            sender.SelectionStart = pointer;
+        }
+    }
+
+    private string StringToDistinctString(string text)
+    {
+        return String.Join("", text.Distinct());
+    }
 }
