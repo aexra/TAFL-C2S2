@@ -35,7 +35,7 @@ public class LexService
         List<uint> rems = new List<uint>();
         var n = (uint)alphabet.Length;
 
-        process =  __CalculateProcessString__(n, N, rems, out var _, out var _);
+        process =  __CalculateDecodeProcessString__(n, N, rems, out var _, out var _);
         process = process[1..(process.Length - 1)];
         rems.Reverse();
 
@@ -56,7 +56,7 @@ public class LexService
         return word;
     }
 
-    private static string __CalculateProcessString__(uint n, uint N, List<uint> rems, out uint div, out uint rem)
+    private static string __CalculateDecodeProcessString__(uint n, uint N, List<uint> rems, out uint div, out uint rem)
     {
         if (N % n == 0)
         {
@@ -73,7 +73,7 @@ public class LexService
 
         if (div > n)
         {
-            var res = __CalculateProcessString__(n, div, rems, out var _, out var _);
+            var res = __CalculateDecodeProcessString__(n, div, rems, out var _, out var _);
             return $"({res}*{n}+{rem})";
         }
         else
