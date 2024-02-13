@@ -37,13 +37,13 @@ public sealed partial class Lab1Page : Page
     }
     private async void DecodeButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        if (!CheckEmptyFields(DecodeAlphabetBox.Text, DecodeNumberBox.Text) || !uint.TryParse(DecodeNumberBox.Text, out var _))
+        if (!CheckEmptyFields(DecodeAlphabetBox.Text, DecodeNumberBox.Text) || !uint.TryParse(DecodeNumberBox.Text, out var _) || uint.Parse(DecodeNumberBox.Text) < 1)
         {
             await new ContentDialog
             {
                 XamlRoot = this.XamlRoot,
                 Title = "Неверные исходные данные",
-                Content = "Поля пустые или невозможно распознать число",
+                Content = "Поле кода должно содержать натуральное число",
                 CloseButtonText = "Ок"
             }.ShowAsync();
             return;

@@ -78,8 +78,15 @@ public class LexService
         }
         else
         {
-            rems.Add(div);
-            return $"({div}*{n}+{rem})";
+            if (div != 0)
+            {
+                rems.Add(div);
+                return $"({div}*{n}+{rem})";
+            }
+            else
+            {
+                return $"({rem})";
+            }
         }
     }
 }
