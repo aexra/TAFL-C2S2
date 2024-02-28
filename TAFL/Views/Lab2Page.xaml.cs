@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using System.Text;
+using Microsoft.UI.Xaml.Controls;
 using TAFL.Misc;
 using TAFL.ViewModels;
 
@@ -39,6 +40,17 @@ public sealed partial class Lab2Page : Page
         }
 
         var outputString = string.Empty;
+
+        var limit = int.Parse(AmountBox.Text);
+        var counter = 0;
+
+        while (++counter <= limit) 
+        {
+            var s = LexService.Decode(AlphabetBox.Text, (uint)counter, out _);
+            outputString += $"{counter}. {s}!\n";
+        }
+
+        ResultBlock.Text = outputString;
     }
 
     private async Task<bool> CheckErrorsAsync()
