@@ -54,7 +54,7 @@ public sealed partial class Lab1Page : Page
     }
     private void AlphabetBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
     {
-        var distinct = StringToDistinctString(sender.Text);
+        var distinct = StringUtils.StringToDistinctString(sender.Text);
         if (distinct != sender.Text) 
         {
             var pointer = sender.SelectionStart - 1;
@@ -63,10 +63,6 @@ public sealed partial class Lab1Page : Page
         }
     }
 
-    private string StringToDistinctString(string text)
-    {
-        return String.Join("", text.Distinct());
-    }
     private bool CheckErrors(string alphabet, string task)
     {
         return CheckEmptyFields(alphabet, task) && CompareAlphabets(alphabet, task);

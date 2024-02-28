@@ -59,19 +59,19 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Row="0" PlaceholderText="Алфавит" Style="{StaticResource AlphabetInput}"/>
+        <TextBox x:Name="AlphabetBox" Grid.Row="0" PlaceholderText="Алфавит" TextChanging="AlphabetBox_TextChanging" Style="{StaticResource AlphabetInput}"/>
         <Grid Grid.Row="1" ColumnSpacing="20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="120"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" PlaceholderText="RegEx" Style="{StaticResource TaskInput}"/>
-            <TextBox Grid.Column="1" PlaceholderText="Кол-во" Style="{StaticResource TaskInput}"/>
+            <TextBox x:Name="RegExBox" Grid.Column="0" PlaceholderText="RegEx" Style="{StaticResource TaskInput}"/>
+            <TextBox x:Name="AmountBox" Grid.Column="1" PlaceholderText="Кол-во" Style="{StaticResource TaskInput}"/>
         </Grid>
-        <Button Grid.Row="2" Style="{StaticResource SolveButton}" Content="Показать все подходящие строки"/>
+        <Button x:Name="SolveButton" Grid.Row="2" Style="{StaticResource SolveButton}" Content="Показать все подходящие строки"/>
         <Border Grid.Row="3" Style="{ThemeResource ProcessBorder}">
-            <TextBlock x:Name="DecodeProcessBlock" Text="Здесь будет решение" Style="{StaticResource ProcessBlock}"/>
+            <TextBlock x:Name="ResultBlock" Text="Здесь будет решение" Style="{StaticResource ProcessBlock}"/>
         </Border>
     </Grid>
 </Page>
