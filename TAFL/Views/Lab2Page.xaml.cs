@@ -17,6 +17,8 @@ public sealed partial class Lab2Page : Page
         InitializeComponent();
     }
 
+
+
     private void AlphabetBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
     {
         var distinct = StringUtils.StringToDistinctString(sender.Text);
@@ -26,5 +28,10 @@ public sealed partial class Lab2Page : Page
             sender.Text = distinct;
             sender.SelectionStart = pointer;
         }
+    }
+
+    private void SolveButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+
     }
 }

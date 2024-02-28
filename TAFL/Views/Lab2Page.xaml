@@ -69,7 +69,7 @@
             <TextBox x:Name="RegExBox" Grid.Column="0" PlaceholderText="RegEx" Style="{StaticResource TaskInput}"/>
             <TextBox x:Name="AmountBox" Grid.Column="1" PlaceholderText="Кол-во" Style="{StaticResource TaskInput}"/>
         </Grid>
-        <Button x:Name="SolveButton" Grid.Row="2" Style="{StaticResource SolveButton}" Content="Показать все подходящие строки"/>
+        <Button x:Name="SolveButton" Grid.Row="2" Style="{StaticResource SolveButton}" Click="SolveButton_Click" Content="Показать все подходящие строки"/>
         <Border Grid.Row="3" Style="{ThemeResource ProcessBorder}">
             <TextBlock x:Name="ResultBlock" Text="Здесь будет решение" Style="{StaticResource ProcessBlock}"/>
         </Border>
