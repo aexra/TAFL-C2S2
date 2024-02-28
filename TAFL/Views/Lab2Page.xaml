@@ -6,7 +6,72 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
-        
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style x:Key="AlphabetInput" TargetType="TextBox">
+                <Setter Property="FontFamily" Value="Comic Sans MS"/>
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="PlaceholderText" Value="Введите алфавит"/>
+                <Setter Property="CharacterSpacing"  Value="1000"/>
+            </Style>
+            <Style x:Key="TaskInput" TargetType="TextBox">
+                <Setter Property="FontFamily" Value="Comic Sans MS"/>
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="CornerRadius" Value="5"/>
+            </Style>
+            <Style x:Key="SolveButton" TargetType="Button">
+                <Setter Property="FontFamily" Value="Comic Sans MS"/>
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+            <Style x:Key="ProcessBlock" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Comic Sans MS"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+            </Style>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <Style x:Key="ProcessBorder" TargetType="Border">
+                        <Setter Property="Background" Value="#cacaca"/>
+                        <Setter Property="CornerRadius" Value="5"/>
+                        <Setter Property="Padding" Value="10 5 10 5"/>
+                    </Style>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <Style x:Key="ProcessBorder" TargetType="Border">
+                        <Setter Property="Background" Value="#202020"/>
+                        <Setter Property="CornerRadius" Value="5"/>
+                        <Setter Property="Padding" Value="10 5 10 5"/>
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid x:Name="ContentArea" RowSpacing="20" Margin="0 0 0 20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Row="0" PlaceholderText="Алфавит" Style="{StaticResource AlphabetInput}"/>
+        <Grid Grid.Row="1" ColumnSpacing="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" PlaceholderText="RegEx" Style="{StaticResource TaskInput}"/>
+            <TextBox Grid.Column="1" PlaceholderText="Кол-во" Style="{StaticResource TaskInput}"/>
+        </Grid>
+        <Button Grid.Row="2" Style="{StaticResource SolveButton}" Content="Показать все подходящие строки"/>
+        <Border Grid.Row="3" Style="{ThemeResource ProcessBorder}">
+            <TextBlock x:Name="DecodeProcessBlock" Text="Здесь будет решение" Style="{StaticResource ProcessBlock}"/>
+        </Border>
     </Grid>
 </Page>
