@@ -30,8 +30,58 @@ public sealed partial class Lab2Page : Page
         }
     }
 
-    private void SolveButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private async void SolveButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
+        var result = await CheckErrorsAsync();
+        if (result) 
+        {
+            return;    
+        }
 
+        var outputString = string.Empty;
+    }
+
+    private async Task<bool> CheckErrorsAsync()
+    {
+        if (AlphabetBox.Text == string.Empty)
+        {
+            await WarningAsync("Введите алфавит");
+            return true;
+        }
+
+        if (AmountBox.Text == string.Empty)
+        {
+            await WarningAsync("Введите количество");
+            return true;
+        }
+        if (!int.TryParse(AmountBox.Text, out _))
+        {
+            await WarningAsync("Количество должно быть натуральным числом");
+            return true;
+        }
+        if (int.Parse(AmountBox.Text) < 1)
+        {
+            await WarningAsync("Количество должно быть натуральным числом");
+            return true;
+        }
+
+        if (RegExBox.Text == string.Empty)
+        {
+            await WarningAsync("Введите регулярное выражение");
+            return true;
+        }
+
+        return false;
+    }
+
+    private async Task WarningAsync(string content = "", string title = "Неверные исходные данные", string okbtn = "Ок")
+    {
+        await new ContentDialog
+        {
+            XamlRoot = this.XamlRoot,
+            Title = title,
+            Content = content,
+            CloseButtonText = okbtn
+        }.ShowAsync();
     }
 }
