@@ -49,6 +49,11 @@ public sealed partial class Lab2Page : Page
             if (Regex.IsMatch(s, RegExBox.Text)) outputString += $"{++counter}. {s}\n";
         }
 
+        if (counter < limit)
+        {
+            await WarningAsync("Недостаточная глубина поиска для отображения заданного количества строк", "Ошибка поиска");
+        }
+
         ResultBlock.Text = outputString;
     }
 
