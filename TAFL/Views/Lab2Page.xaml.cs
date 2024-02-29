@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.UI.Xaml.Controls;
 using TAFL.Misc;
 using TAFL.ViewModels;
@@ -34,20 +35,24 @@ public sealed partial class Lab2Page : Page
     private async void SolveButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         var result = await CheckErrorsAsync();
-        if (result) 
+        if (result)
         {
-            return;    
+            return;
         }
 
         var outputString = string.Empty;
 
         var limit = int.Parse(AmountBox.Text);
+        var tryDepth = 0;
+        var tryMaxDepth = 10000;
         var counter = 0;
+        var code = 0;
 
-        while (++counter <= limit) 
+        while (counter < limit && tryDepth < tryMaxDepth)
         {
-            var s = LexService.Decode(AlphabetBox.Text, (uint)counter, out _);
-            outputString += $"{counter}. {s}!\n";
+            var s = LexService.Decode(AlphabetBox.Text, (uint)++code, out _);
+            if (Regex.IsMatch(s, RegExBox.Text)) outputString += $"{++counter}. {s}!\n";
+            tryDepth++;
         }
 
         ResultBlock.Text = outputString;

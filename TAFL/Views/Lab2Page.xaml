@@ -66,7 +66,7 @@
                 <ColumnDefinition Width="120"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="RegExBox" Text="[a|b|c]+!" Grid.Column="0" PlaceholderText="RegEx" Style="{StaticResource TaskInput}"/>
+            <TextBox x:Name="RegExBox" Text="^[a|b|c]+!{0}$" Grid.Column="0" PlaceholderText="RegEx" Style="{StaticResource TaskInput}"/>
             <TextBox x:Name="AmountBox" Grid.Column="1" PlaceholderText="Кол-во" Style="{StaticResource TaskInput}"/>
         </Grid>
         <Button x:Name="SolveButton" Grid.Row="2" Style="{StaticResource SolveButton}" Click="SolveButton_Click" Content="Показать все подходящие строки"/>
