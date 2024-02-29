@@ -43,16 +43,16 @@ public sealed partial class Lab2Page : Page
         var outputString = string.Empty;
 
         var limit = int.Parse(AmountBox.Text);
-        var tryDepth = 0;
-        var tryMaxDepth = 10000;
+        var attemptDepth = 0;
+        var attemptMaxDepth = 10000;
         var counter = 0;
         var code = 0;
 
-        while (counter < limit && tryDepth < tryMaxDepth)
+        while (counter < limit && attemptDepth < attemptMaxDepth)
         {
             var s = LexService.Decode(AlphabetBox.Text, (uint)++code, out _);
             if (Regex.IsMatch(s, RegExBox.Text)) outputString += $"{++counter}. {s}\n";
-            tryDepth++;
+            attemptDepth++;
         }
 
         ResultBlock.Text = outputString;
