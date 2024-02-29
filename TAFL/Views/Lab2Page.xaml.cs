@@ -44,7 +44,7 @@ public sealed partial class Lab2Page : Page
 
         var limit = int.Parse(AmountBox.Text);
         var attemptDepth = 0;
-        var attemptMaxDepth = 10000;
+        var attemptMaxDepth = int.Parse(DepthBox.Text);
         var counter = 0;
         var code = 0;
 
@@ -79,6 +79,22 @@ public sealed partial class Lab2Page : Page
         if (int.Parse(AmountBox.Text) < 1)
         {
             await WarningAsync("Количество должно быть натуральным числом");
+            return true;
+        }
+
+        if (DepthBox.Text == string.Empty)
+        {
+            await WarningAsync("Введите глубину поиска");
+            return true;
+        }
+        if (!int.TryParse(DepthBox.Text, out _))
+        {
+            await WarningAsync("Глубина должна быть натуральным числом");
+            return true;
+        }
+        if (int.Parse(DepthBox.Text) < 1)
+        {
+            await WarningAsync("Глубина должна быть натуральным числом");
             return true;
         }
 
