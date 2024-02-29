@@ -34,25 +34,19 @@ public sealed partial class Lab2Page : Page
 
     private async void SolveButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var result = await CheckErrorsAsync();
-        if (result)
-        {
-            return;
-        }
+        if (await CheckErrorsAsync()) return;
 
         var outputString = string.Empty;
 
         var limit = int.Parse(AmountBox.Text);
-        var attemptDepth = 0;
-        var attemptMaxDepth = int.Parse(DepthBox.Text);
+        var maxDepth = int.Parse(DepthBox.Text);
         var counter = 0;
         var code = 0;
 
-        while (counter < limit && attemptDepth < attemptMaxDepth)
+        while (counter < limit && code < maxDepth)
         {
             var s = LexService.Decode(AlphabetBox.Text, (uint)++code, out _);
             if (Regex.IsMatch(s, RegExBox.Text)) outputString += $"{++counter}. {s}\n";
-            attemptDepth++;
         }
 
         ResultBlock.Text = outputString;
