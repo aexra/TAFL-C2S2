@@ -16,6 +16,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using TAFL.Classes.Graph;
+using TAFL.Helpers;
 using TAFL.Services;
 using TAFL.Views;
 using Windows.Foundation;
@@ -232,20 +233,22 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             if (node != null)
             {
                 var edge = new CanvasedEdge(this, node, flag, weight);
+                if (edge.Left == edge.Right)
+                {
+                    await DialogHelper.ErrorDialog("Надо сделать фичу с ребрами в ту же вершину", XamlRoot);
+                    return;
+                }
+                if (((Lab5Page)Page).IsEdgeExists(edge))
+                {
+                    await DialogHelper.ErrorDialog("Ребро уже существует", XamlRoot);
+                    return;
+                }
                 ((Lab5Page)Page).AddEdge(edge, Canva);
                 Edges.Add(edge);
             }
             else
             {
-                ContentDialog errorDialog = new ContentDialog();
-
-                errorDialog.XamlRoot = this.XamlRoot;
-                errorDialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-                errorDialog.Title = "Не найдена вершина с именем " + toConnectName;
-                errorDialog.CloseButtonText = "Ок";
-                errorDialog.DefaultButton = ContentDialogButton.Close;
-
-                await errorDialog.ShowAsync();
+                await DialogHelper.ErrorDialog("Не найдена вершина с именем " + toConnectName, XamlRoot);
             }
         }
     }

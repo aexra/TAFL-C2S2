@@ -187,6 +187,14 @@ public sealed partial class Lab5Page : Page
             }
         }
     }
+    public bool IsEdgeExists(CanvasedEdge edge)
+    {
+        foreach (var edgee in Edges1)
+        {
+            if (edgee.Left == edge.Left && edgee.Right == edge.Right) return true;
+        }
+        return false;
+    }
 
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
