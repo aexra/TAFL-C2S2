@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using TAFL.Controls;
 using TAFL.Services;
 using TAFL.ViewModels;
+using Windows.AI.MachineLearning.Preview;
 
 namespace TAFL.Views;
 
@@ -59,6 +60,8 @@ public sealed partial class Lab5Page : Page
             node.Position = new Vector2(node.Position.X, (float)Canva.ActualHeight - 40);
         }
 
+        node.Title = GetUniqueName(Canva);
+
         Canva.Children.Add(node);
 
         Canvas.SetLeft(node, node.Position.X);
@@ -82,6 +85,12 @@ public sealed partial class Lab5Page : Page
     }
     public string GetUniqueName(Canvas canv)
     {
-        return "x";
+        var counter = 0;
+        foreach (var node in canv.Children)
+        {
+            if (((GraphNodeControl)node).Title.StartsWith("p")) counter++;
+            else break;
+        }
+        return "p" + counter.ToString();
     }
 }
