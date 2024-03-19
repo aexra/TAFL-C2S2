@@ -9,8 +9,10 @@
     mc:Ignorable="d">
 
     <Border Background="#ccc" Height="{x:Bind Diameter}" Width="{x:Bind Diameter}" CornerRadius="90">
-        <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="{x:Bind InnerDiameter}" Width="{x:Bind InnerDiameter}" CornerRadius="90">
-            
+        <Border Background="{x:Bind SelectedBrush}" Height="{x:Bind SelectionDiameter}" Width="{x:Bind SelectionDiameter}" CornerRadius="90">
+            <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="{x:Bind InnerDiameter}" Width="{x:Bind InnerDiameter}" CornerRadius="90">
+
+            </Border>
         </Border>
     </Border>
 </UserControl>

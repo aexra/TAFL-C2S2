@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -20,11 +22,31 @@ using Windows.Foundation.Collections;
 namespace TAFL.Controls;
 public sealed partial class GraphNodeControl : UserControl
 {
-    public Vector2 Position { get; set; }
-    public float Radius { get; set; } = 40;
+    public Vector2 Position;
+    public float Radius = 40;
     public float Diameter => Radius * 2;
-    public float InnerRadius { get; set; } = 36;
+    public float SelectionRadius = 37;
+    public float SelectionDiameter => SelectionRadius * 2;
+    public float InnerRadius = 34;
     public float InnerDiameter => InnerRadius * 2;
+
+    private bool isSelected = true;
+    private readonly Color SelectionColor = Color.DarkOrange;
+    public Brush SelectedBrush
+    {
+        get
+        {
+            if (isSelected)
+            {
+                return new SolidColorBrush(Windows.UI.Color.FromArgb(SelectionColor.A, SelectionColor.R, SelectionColor.G, SelectionColor.B));
+            }
+            else
+            {
+                Resources.ThemeDictionaries.TryGetValue("ApplicationPageBackgroundThemeBrush", out var brush);
+                return brush != null? brush is Brush? (Brush)brush : null : null;
+            }
+        }
+    }
 
     public GraphNodeControl(Vector2 position)
     {
