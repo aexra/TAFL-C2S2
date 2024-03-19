@@ -129,12 +129,6 @@
   <data name="Shell_Lab2.Content" xml:space="preserve">
     <value>Регулярные выражения</value>
   </data>
-  <data name="Shell_Lab3.Content" xml:space="preserve">
-    <value>Lab3</value>
-  </data>
-  <data name="Shell_Lab4.Content" xml:space="preserve">
-    <value>Lab4</value>
-  </data>
   <data name="Shell_Lab5.Content" xml:space="preserve">
     <value>Lab5</value>
   </data>

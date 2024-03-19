@@ -84,10 +84,6 @@ public partial class App : Application
             services.AddTransient<Lab6Page>();
             services.AddTransient<Lab5ViewModel>();
             services.AddTransient<Lab5Page>();
-            services.AddTransient<Lab4ViewModel>();
-            services.AddTransient<Lab4Page>();
-            services.AddTransient<Lab3ViewModel>();
-            services.AddTransient<Lab3Page>();
             services.AddTransient<Lab2ViewModel>();
             services.AddTransient<Lab2Page>();
             services.AddTransient<Lab1ViewModel>();
