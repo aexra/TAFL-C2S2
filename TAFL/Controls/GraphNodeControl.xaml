@@ -25,7 +25,20 @@
     </Border>
     <FlyoutBase.AttachedFlyout>
         <Flyout>
-            <TextBlock Text="This is some text in a flyout."  />
+            <StackPanel Spacing="10">
+                <Button>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <SymbolIcon Symbol="Edit"/>
+                        <TextBlock Text="Переименовать"/>
+                    </StackPanel>
+                </Button>
+                <Button>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <SymbolIcon Symbol="Delete"/>
+                        <TextBlock Text="Удалить"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
         </Flyout>
     </FlyoutBase.AttachedFlyout>
 </UserControl>
