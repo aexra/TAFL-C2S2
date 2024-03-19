@@ -194,9 +194,44 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     {
         Canva.Children.Remove(this);
     }
-
-    private void FlyoutConnectButton_Click(object sender, RoutedEventArgs e)
+    private async void FlyoutConnectButton_Click(object sender, RoutedEventArgs e)
     {
+        var content = new StringInputDialog();
+        var dialog = new ContentDialog();
 
+        dialog.XamlRoot = this.XamlRoot;
+        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+        dialog.Title = $"Соединить вершину {Title} с...";
+        dialog.PrimaryButtonText = "Соединить";
+        dialog.CloseButtonText = "Отмена";
+        dialog.DefaultButton = ContentDialogButton.Primary;
+        content.Placeholder = "Введите имя вершины";
+        dialog.Content = content;
+
+        var result = await dialog.ShowAsync();
+
+        if (result == ContentDialogResult.Primary)
+        {
+            var toConnectName = content.Input;
+
+            var node = ((Lab5Page)Page).GetNode(toConnectName, Canva);
+
+            if (node != null)
+            {
+                ((Lab5Page)Page).AddEdge(new Classes.Graph.CanvasedEdge(this, node, true, "A"));
+            }
+            else
+            {
+                ContentDialog errorDialog = new ContentDialog();
+
+                errorDialog.XamlRoot = this.XamlRoot;
+                errorDialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+                errorDialog.Title = "Не найдена вершина с именем " + toConnectName;
+                errorDialog.CloseButtonText = "Ок";
+                errorDialog.DefaultButton = ContentDialogButton.Close;
+
+                await errorDialog.ShowAsync();
+            }
+        }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics.Metrics;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Shapes;
+using TAFL.Classes.Graph;
 using TAFL.Controls;
 using TAFL.Services;
 using TAFL.ViewModels;
@@ -117,6 +120,22 @@ public sealed partial class Lab5Page : Page
             if (((GraphNodeControl)node).Title == name) return false;
         }
         return true;
+    }
+
+    public GraphNodeControl? GetNode(string name, Canvas canv)
+    {
+        foreach (var element in canv.Children)
+        {
+            if (element is GraphNodeControl node)
+            {
+                if (node.Title == name) return node;
+            }
+        }
+        return null;
+    }
+    public void AddEdge(CanvasedEdge edge)
+    {
+        
     }
 
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
