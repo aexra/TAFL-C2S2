@@ -23,4 +23,9 @@
             </Border>
         </Border>
     </Border>
+    <FlyoutBase.AttachedFlyout>
+        <Flyout>
+            <TextBlock Text="This is some text in a flyout."  />
+        </Flyout>
+    </FlyoutBase.AttachedFlyout>
 </UserControl>

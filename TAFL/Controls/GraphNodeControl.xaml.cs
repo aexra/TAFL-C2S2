@@ -114,7 +114,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         if (props.IsLeftButtonPressed) Select();
         if (props.IsRightButtonPressed)
         {
-            
+            FlyoutBase.ShowAttachedFlyout(this);
         }
     }
     private void Border_PointerReleased(object sender, PointerRoutedEventArgs e)
