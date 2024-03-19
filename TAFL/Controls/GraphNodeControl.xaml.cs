@@ -222,7 +222,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
             if (node != null)
             {
-                ((Lab5Page)Page).AddEdge(new Classes.Graph.CanvasedEdge(this, node, flag, weight));
+                ((Lab5Page)Page).AddEdge(new Classes.Graph.CanvasedEdge(this, node, flag, weight), Canva);
             }
             else
             {

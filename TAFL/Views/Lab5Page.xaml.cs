@@ -74,6 +74,7 @@ public sealed partial class Lab5Page : Page
 
         Canvas.SetLeft(node, node.Position.X);
         Canvas.SetTop(node, node.Position.Y);
+        Canvas.SetZIndex(node, 10);
 
         LogService.Log($"Новая вершина в [{node.Position.X}, {node.Position.Y}]");
     }
@@ -135,10 +136,12 @@ public sealed partial class Lab5Page : Page
         }
         return null;
     }
-    public void AddEdge(CanvasedEdge edge)
+    public void AddEdge(CanvasedEdge edge, Canvas canv)
     {
         Edges1.Add(edge);
-
+        edge.UpdatePath();
+        canv.Children.Add(edge.PathObject);
+        Canvas.SetZIndex(edge.PathObject, 0);
     }
 
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

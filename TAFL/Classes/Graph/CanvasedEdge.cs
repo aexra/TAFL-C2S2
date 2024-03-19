@@ -24,7 +24,7 @@ public class CanvasedEdge
         Weight = weight;
     }
 
-    public Microsoft.UI.Xaml.Shapes.Path GetPath()
+    public Microsoft.UI.Xaml.Shapes.Path UpdatePath()
     {
         var path = new Microsoft.UI.Xaml.Shapes.Path();
         var pd = new PathGeometry();
