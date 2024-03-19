@@ -19,7 +19,14 @@ public sealed partial class Lab5Page : Page
 
     private void Canva_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
+        var pos = e.GetCurrentPoint(Canva).Position;
+
         
+
+        //Canva.Children.Add();
+
+        //Canvas.SetLeft(tb, pos.X);
+        //Canvas.SetTop(tb, pos.Y);
     }
 
     private void Canva_PointerMoved(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
