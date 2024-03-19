@@ -196,7 +196,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     private async void FlyoutConnectButton_Click(object sender, RoutedEventArgs e)
     {
-        var content = new StringInputDialog();
+        var content = new StringInputDialog2();
         var dialog = new ContentDialog();
 
         dialog.XamlRoot = this.XamlRoot;
@@ -205,20 +205,24 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         dialog.PrimaryButtonText = "—оединить";
         dialog.CloseButtonText = "ќтмена";
         dialog.DefaultButton = ContentDialogButton.Primary;
-        content.Placeholder = "¬ведите им€ вершины";
+        content.Placeholder1 = "¬ведите им€ вершины";
+        content.Placeholder2 = "¬ведите вес ребра";
+        content.CheckBoxContent = "ќт указанной к этой?";
         dialog.Content = content;
 
         var result = await dialog.ShowAsync();
 
         if (result == ContentDialogResult.Primary)
         {
-            var toConnectName = content.Input;
+            var toConnectName = content.First;
+            var weight = content.Second;
+            var flag = content.Flag;
 
             var node = ((Lab5Page)Page).GetNode(toConnectName, Canva);
 
             if (node != null)
             {
-                ((Lab5Page)Page).AddEdge(new Classes.Graph.CanvasedEdge(this, node, true, "A"));
+                ((Lab5Page)Page).AddEdge(new Classes.Graph.CanvasedEdge(this, node, flag, weight));
             }
             else
             {
