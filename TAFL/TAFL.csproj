@@ -17,6 +17,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Controls\LogMessageControl.xaml" />
+    <None Remove="Views\DebugPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +39,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\DebugPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Controls\LogMessageControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

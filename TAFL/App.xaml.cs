@@ -74,6 +74,8 @@ public partial class App : Application
             // Views and ViewModels
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
+            services.AddTransient<DebugViewModel>();
+            services.AddTransient<DebugPage>();
             services.AddTransient<Lab9ViewModel>();
             services.AddTransient<Lab9Page>();
             services.AddTransient<Lab8ViewModel>();
