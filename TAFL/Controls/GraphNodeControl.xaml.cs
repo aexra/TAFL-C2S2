@@ -194,4 +194,9 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     {
         Canva.Children.Remove(this);
     }
+
+    private void FlyoutConnectButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }

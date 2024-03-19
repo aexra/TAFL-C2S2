@@ -26,6 +26,12 @@
     <FlyoutBase.AttachedFlyout>
         <Flyout>
             <StackPanel Spacing="10">
+                <Button x:Name="FlyoutConnectButton" Click="FlyoutConnectButton_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <SymbolIcon Symbol="Link"/>
+                        <TextBlock Text="Соединить"/>
+                    </StackPanel>
+                </Button>
                 <Button x:Name="FlyoutRenameButton" Click="FlyoutRenameButton_Click">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <SymbolIcon Symbol="Edit"/>

@@ -89,12 +89,26 @@ public sealed partial class Lab5Page : Page
     public string GetUniqueName(Canvas canv)
     {
         var counter = 0;
-        foreach (var node in canv.Children)
+        while (true)
         {
-            if (((GraphNodeControl)node).Title.StartsWith("p")) counter++;
-            else break;
-        }
-        return "p" + counter.ToString();
+            var found = false;
+            foreach (var node in canv.Children)
+            {
+                if (((GraphNodeControl)node).Title == $"p{counter}")
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (found)
+            {
+                counter++;
+            }
+            else
+            {
+                return "p" + counter.ToString();
+            }
+        } 
     }
     public bool IsNameUnique(string name, Canvas canv)
     {
