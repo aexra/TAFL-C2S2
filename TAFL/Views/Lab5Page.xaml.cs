@@ -13,6 +13,8 @@ namespace TAFL.Views;
 
 public sealed partial class Lab5Page : Page
 {
+    List<CanvasedEdge> Edges1 = new();
+
     public Lab5ViewModel ViewModel
     {
         get;
@@ -135,7 +137,8 @@ public sealed partial class Lab5Page : Page
     }
     public void AddEdge(CanvasedEdge edge)
     {
-        
+        Edges1.Add(edge);
+
     }
 
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
