@@ -120,7 +120,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
             if (Page != null && Page is Lab5Page l5)
             {
-                if (l5.CheckNodeCollisions(this))
+                if (!l5.CheckNodeCollisions(this))
                 {
                     Canvas.SetLeft(this, Position.X);
                     Canvas.SetTop(this, Position.Y);

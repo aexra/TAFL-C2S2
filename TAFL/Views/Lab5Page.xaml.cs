@@ -70,6 +70,7 @@ public sealed partial class Lab5Page : Page
     {
         foreach (GraphNodeControl node in Canva.Children)
         {
+            if (node == c) continue;
             var d = Math.Sqrt(Math.Pow(c.Position.X - node.Position.X, 2) + Math.Pow(c.Position.Y - node.Position.Y, 2));
             var mind = c.Radius + node.Radius;
             if (d < mind)
