@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Media;
 using TAFL.Controls;
+using TAFL.Services;
 using Windows.UI;
 
 namespace TAFL.Classes.Graph;
@@ -29,6 +30,8 @@ public class CanvasedEdge
 
     public Microsoft.UI.Xaml.Shapes.Path UpdatePath()
     {
+        var angle = Math.Atan2(Left.Position.Y - Right.Position.Y, Left.Position.X - Right.Position.X);
+        LogService.Warning(angle);
         var path = new Microsoft.UI.Xaml.Shapes.Path() { Stroke = new SolidColorBrush(Color.FromArgb(
             DefaultPathStroke.A,
             DefaultPathStroke.R,
@@ -46,7 +49,9 @@ public class CanvasedEdge
             Point = ToRight ?
                 new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius) :
                 new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius),
-            SweepDirection = ToRight ? SweepDirection.Clockwise : SweepDirection.Counterclockwise 
+            SweepDirection = ToRight ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
+            //Size = new Windows.Foundation.Size(1, 0.3) horizontal
+            Size = new Windows.Foundation.Size(0, 0)
         });
         pd.Figures.Add(pf);
         path.Data = pd;

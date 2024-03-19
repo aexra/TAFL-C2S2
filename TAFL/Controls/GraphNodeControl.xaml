@@ -26,19 +26,19 @@
     <FlyoutBase.AttachedFlyout>
         <Flyout>
             <StackPanel Spacing="10">
-                <Button x:Name="FlyoutConnectButton" Click="FlyoutConnectButton_Click">
+                <Button x:Name="FlyoutConnectButton" Click="FlyoutConnectButton_Click" HorizontalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <SymbolIcon Symbol="Link"/>
                         <TextBlock Text="Соединить"/>
                     </StackPanel>
                 </Button>
-                <Button x:Name="FlyoutRenameButton" Click="FlyoutRenameButton_Click">
+                <Button x:Name="FlyoutRenameButton" Click="FlyoutRenameButton_Click" HorizontalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <SymbolIcon Symbol="Edit"/>
                         <TextBlock Text="Переименовать"/>
                     </StackPanel>
                 </Button>
-                <Button x:Name="FlyoutDeleteButton" Click="FlyoutDeleteButton_Click">
+                <Button x:Name="FlyoutDeleteButton" Click="FlyoutDeleteButton_Click" HorizontalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <SymbolIcon Symbol="Delete"/>
                         <TextBlock Text="Удалить"/>
