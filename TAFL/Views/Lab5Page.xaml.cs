@@ -16,4 +16,9 @@ public sealed partial class Lab5Page : Page
         ViewModel = App.GetService<Lab5ViewModel>();
         InitializeComponent();
     }
+
+    private void Canva_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+
+    }
 }

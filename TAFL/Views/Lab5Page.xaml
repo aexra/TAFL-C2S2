@@ -20,7 +20,7 @@
                 <ColumnDefinition Width="400"/>
             </Grid.ColumnDefinitions>
 
-            <Canvas Grid.Column="0">
+            <Canvas x:Name="Canva" Grid.Column="0" KeyDown="Canva_KeyDown">
                 
             </Canvas>
             
