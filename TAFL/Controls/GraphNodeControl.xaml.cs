@@ -45,19 +45,11 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             }
         }
     }
-
     public Page Page;
 
     private Canvas Canva;
     private bool isSelected;
     private readonly Color SelectionColor = Color.DarkOrange;
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-    private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
     public Brush SelectedBrush
     {
         get
@@ -69,9 +61,15 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             else
             {
                 Resources.ThemeDictionaries.TryGetValue("ApplicationPageBackgroundThemeBrush", out var brush);
-                return brush != null? brush is Brush? (Brush)brush : null : null;
+                return brush != null ? brush is Brush ? (Brush)brush : null : null;
             }
         }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     public GraphNodeControl(Vector2 position, Canvas canva)
@@ -86,12 +84,10 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     {
         IsSelected = true;
     }
-
     public void Deselect()
     {
         IsSelected = false;
     }
-
     public bool ToggleSelection()
     {
         IsSelected = !IsSelected;
@@ -102,12 +98,10 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     {
         Select();
     }
-
     private void Border_PointerReleased(object sender, PointerRoutedEventArgs e)
     {
         Deselect();
     }
-
     private void Border_PointerMoved(object sender, PointerRoutedEventArgs e)
     { 
         if (IsSelected)
@@ -136,7 +130,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             }
         }
     }
-
     private void Border_PointerExited(object sender, PointerRoutedEventArgs e)
     {
         Deselect();
