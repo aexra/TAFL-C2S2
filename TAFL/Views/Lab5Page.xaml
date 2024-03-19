@@ -27,9 +27,7 @@
                     Background="Transparent"
                     PointerPressed="Canva_PointerPressed"
                     PointerMoved="Canva_PointerMoved"
-                    KeyDown="Canva_KeyDown"
-                    >
-
+                    KeyDown="Canva_KeyDown">
                 </Canvas>
             </Border>
             
