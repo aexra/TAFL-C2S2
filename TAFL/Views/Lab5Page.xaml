@@ -138,7 +138,7 @@
         </Grid>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
-            <Button Content="Button1"/>
+            <Button x:Name="ClearCanvasButton" Content="Очистить канвас" Click="ClearCanvasButton_Click"/>
             <Button Content="Button2"/>
             <Button Content="Button3"/>
         </StackPanel>

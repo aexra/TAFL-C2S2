@@ -93,4 +93,9 @@ public sealed partial class Lab5Page : Page
         }
         return "p" + counter.ToString();
     }
+
+    private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        Canva.Children.Clear();
+    }
 }
