@@ -30,8 +30,18 @@ public class CanvasedEdge
 
     public Microsoft.UI.Xaml.Shapes.Path UpdatePath()
     {
+        var halfPi = Math.PI / 2;
         var angle = Math.Atan2(Left.Position.Y - Right.Position.Y, Left.Position.X - Right.Position.X);
-        LogService.Warning(angle);
+        var absAngle = Math.Abs(angle);
+
+        absAngle = NormalizeAngle(absAngle);
+        var b = absAngle / halfPi;
+        absAngle = NormalizeAngle(absAngle + halfPi);
+        var a = absAngle / halfPi;
+        if (a < 0.1) a = 0.1;
+        if (b < 0.1) b = 0.1;
+        LogService.Error($"{a}, {b}");
+
         var path = new Microsoft.UI.Xaml.Shapes.Path() { Stroke = new SolidColorBrush(Color.FromArgb(
             DefaultPathStroke.A,
             DefaultPathStroke.R,
@@ -50,12 +60,16 @@ public class CanvasedEdge
                 new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius) :
                 new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius),
             SweepDirection = ToRight ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
-            //Size = new Windows.Foundation.Size(1, 0.3) horizontal
-            Size = new Windows.Foundation.Size(0, 0)
+            Size = new Windows.Foundation.Size(a, b)
         });
         pd.Figures.Add(pf);
         path.Data = pd;
         PathObject = path;
         return path;
+    }
+    private double NormalizeAngle(double angle)
+    {
+        if (angle > Math.PI / 2) angle = Math.PI - angle;
+        return angle;
     }
 }
