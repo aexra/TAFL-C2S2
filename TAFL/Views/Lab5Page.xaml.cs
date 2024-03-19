@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Controls;
-
+using TAFL.Services;
 using TAFL.ViewModels;
 
 namespace TAFL.Views;
@@ -19,6 +19,6 @@ public sealed partial class Lab5Page : Page
 
     private void Canva_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
     {
-
+        
     }
 }
