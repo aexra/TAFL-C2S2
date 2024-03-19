@@ -49,14 +49,14 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
     private Canvas Canva;
     private bool isSelected;
-    private readonly Color SelectionColor = Color.DarkOrange;
+    private readonly Color DefaultSelectionColor = Color.DarkOrange;
     public Brush SelectedBrush
     {
         get
         {
             if (isSelected)
             {
-                return new SolidColorBrush(Windows.UI.Color.FromArgb(SelectionColor.A, SelectionColor.R, SelectionColor.G, SelectionColor.B));
+                return new SolidColorBrush(Windows.UI.Color.FromArgb(DefaultSelectionColor.A, DefaultSelectionColor.R, DefaultSelectionColor.G, DefaultSelectionColor.B));
             }
             else
             {
