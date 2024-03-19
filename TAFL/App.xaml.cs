@@ -115,6 +115,8 @@ public partial class App : Application
 
         //App.GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
 
+        LogService.Log("Application launched");
+
         await App.GetService<IActivationService>().ActivateAsync(args);
     }
 }
