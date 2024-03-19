@@ -18,6 +18,7 @@
   <ItemGroup>
     <None Remove="Controls\GraphNodeControl.xaml" />
     <None Remove="Controls\LogMessageControl.xaml" />
+    <None Remove="Controls\StringInputDialog.xaml" />
     <None Remove="Views\DebugPage.xaml" />
   </ItemGroup>
 
@@ -40,6 +41,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Controls\StringInputDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Controls\GraphNodeControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

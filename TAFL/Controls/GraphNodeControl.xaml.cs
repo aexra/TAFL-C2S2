@@ -153,4 +153,46 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     {
         Deselect();
     }
+
+    private async void FlyoutRenameButton_Click(object sender, RoutedEventArgs e)
+    {
+        var content = new StringInputDialog();
+        var dialog = new ContentDialog();
+
+        dialog.XamlRoot = this.XamlRoot;
+        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+        dialog.Title = "Переименовать вершину";
+        dialog.PrimaryButtonText = "Готово";
+        dialog.CloseButtonText = "Отмена";
+        dialog.DefaultButton = ContentDialogButton.Primary;
+        content.Placeholder = "Введите новое имя";
+        dialog.Content = content;
+
+        var result = await dialog.ShowAsync();
+
+        if (result == ContentDialogResult.Primary)
+        {
+            if (((Lab5Page)Page).IsNameUnique(content.Input, Canva))
+            {
+                Title = content.Input;
+            }
+            else
+            {
+                ContentDialog errorDialog = new ContentDialog();
+
+                errorDialog.XamlRoot = this.XamlRoot;
+                errorDialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+                errorDialog.Title = "Вершина с таким именем уже существует";
+                errorDialog.CloseButtonText = "Ок";
+                errorDialog.DefaultButton = ContentDialogButton.Close;
+
+                await errorDialog.ShowAsync();
+            }
+        }
+    }
+
+    private void FlyoutDeleteButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }

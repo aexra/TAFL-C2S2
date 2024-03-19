@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics.Metrics;
+using System.Numerics;
 using Microsoft.UI.Xaml.Controls;
 using TAFL.Controls;
 using TAFL.Services;
@@ -94,6 +95,14 @@ public sealed partial class Lab5Page : Page
             else break;
         }
         return "p" + counter.ToString();
+    }
+    public bool IsNameUnique(string name, Canvas canv)
+    {
+        foreach (var node in canv.Children)
+        {
+            if (((GraphNodeControl)node).Title == name) return false;
+        }
+        return true;
     }
 
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

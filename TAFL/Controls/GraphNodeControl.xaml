@@ -26,13 +26,13 @@
     <FlyoutBase.AttachedFlyout>
         <Flyout>
             <StackPanel Spacing="10">
-                <Button>
+                <Button x:Name="FlyoutRenameButton" Click="FlyoutRenameButton_Click">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <SymbolIcon Symbol="Edit"/>
                         <TextBlock Text="Переименовать"/>
                     </StackPanel>
                 </Button>
-                <Button>
+                <Button x:Name="FlyoutDeleteButton" Click="FlyoutDeleteButton_Click">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <SymbolIcon Symbol="Delete"/>
                         <TextBlock Text="Удалить"/>
