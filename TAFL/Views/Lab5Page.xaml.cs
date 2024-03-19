@@ -39,6 +39,8 @@ public sealed partial class Lab5Page : Page
     {
         var node = new GraphNodeControl(new Vector2((float)x, (float)y));
 
+        if (CheckNodeCollisions(node)) return;
+
         if (node.Position.X < 0)
         {
             node.Position = new Vector2(0, node.Position.Y);
@@ -56,12 +58,24 @@ public sealed partial class Lab5Page : Page
             node.Position = new Vector2(node.Position.X, (float)Canva.ActualHeight - 40);
         }
 
-        LogService.Warning(Canva.ActualWidth);
         Canva.Children.Add(node);
 
         Canvas.SetLeft(node, node.Position.X);
         Canvas.SetTop(node, node.Position.Y);
 
         LogService.Log($"Новая вершина в [{node.Position.X}, {node.Position.Y}]");
+    }
+    private bool CheckNodeCollisions(GraphNodeControl c)
+    {
+        foreach (GraphNodeControl node in Canva.Children)
+        {
+            var d = Math.Sqrt(Math.Pow(c.Position.X - node.Position.X, 2) + Math.Pow(c.Position.Y - node.Position.Y, 2));
+            var mind = c.Size.X / 2 + node.Size.X / 2;
+            if (d < mind)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
