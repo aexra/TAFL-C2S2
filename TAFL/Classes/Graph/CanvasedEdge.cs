@@ -34,18 +34,18 @@ public class CanvasedEdge
             DefaultPathStroke.R,
             DefaultPathStroke.G,
             DefaultPathStroke.B
-        )) };
+        )), StrokeThickness = 4 };
         var pd = new PathGeometry();
         var pf = new PathFigure() {
             StartPoint = ToRight ?
-                new Windows.Foundation.Point(Left.Position.X, Left.Position.Y) :
-                new Windows.Foundation.Point(Right.Position.X, Right.Position.Y),
+                new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius) :
+                new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius),
             IsClosed = false
         };
         pf.Segments.Add(new ArcSegment() { 
             Point = ToRight ?
-                new Windows.Foundation.Point(Right.Position.X, Right.Position.Y) :
-                new Windows.Foundation.Point(Left.Position.X, Left.Position.Y),
+                new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius) :
+                new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius),
             SweepDirection = ToRight ? SweepDirection.Clockwise : SweepDirection.Counterclockwise 
         });
         pd.Figures.Add(pf);
