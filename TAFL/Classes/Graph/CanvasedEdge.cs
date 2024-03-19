@@ -15,6 +15,7 @@ public class CanvasedEdge
     public GraphNodeControl Right;
     public bool ToRight;
     public string Weight; // a,b,c,...,e
+    public bool IsArc = false;
 
     public Microsoft.UI.Xaml.Shapes.Path PathObject;
 
@@ -51,7 +52,7 @@ public class CanvasedEdge
                 new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius) :
                 new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius),
             SweepDirection = ToRight ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
-            Size = new Windows.Foundation.Size(0.3, 0.1),
+            Size = new Windows.Foundation.Size(0.3, IsArc ? 0.1 : 0),
             RotationAngle = _a
         });
         pd.Figures.Add(pf);
