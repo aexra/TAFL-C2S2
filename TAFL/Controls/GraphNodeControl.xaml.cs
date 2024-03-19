@@ -201,7 +201,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
         dialog.XamlRoot = this.XamlRoot;
         dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-        dialog.Title = $"Соединить вершину {Title} с...";
+        dialog.Title = $"Присоединить вершину";
         dialog.PrimaryButtonText = "Соединить";
         dialog.CloseButtonText = "Отмена";
         dialog.DefaultButton = ContentDialogButton.Primary;

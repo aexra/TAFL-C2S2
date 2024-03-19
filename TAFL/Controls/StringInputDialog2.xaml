@@ -8,9 +8,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
+    <StackPanel Spacing="5">
         <TextBox x:Name="InputBox1" PlaceholderText="{x:Bind Placeholder1}"/>
         <TextBox x:Name="InputBox2" PlaceholderText="{x:Bind Placeholder2}"/>
         <CheckBox x:Name="Check" Content="{x:Bind CheckBoxContent}"/>
-    </Grid>
+    </StackPanel>
 </UserControl>
