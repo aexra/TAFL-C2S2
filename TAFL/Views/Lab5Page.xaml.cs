@@ -8,6 +8,7 @@ using TAFL.Controls;
 using TAFL.Services;
 using TAFL.ViewModels;
 using Windows.AI.MachineLearning.Preview;
+using Windows.Devices.Bluetooth;
 
 namespace TAFL.Views;
 
@@ -80,14 +81,17 @@ public sealed partial class Lab5Page : Page
     }
     public bool CheckNodeCollisions(GraphNodeControl c, Canvas canv)
     {
-        foreach (GraphNodeControl node in canv.Children)
+        foreach (var element in canv.Children)
         {
-            if (node == c) continue;
-            var d = Math.Sqrt(Math.Pow(c.Position.X - node.Position.X, 2) + Math.Pow(c.Position.Y - node.Position.Y, 2));
-            var mind = c.Radius + node.Radius;
-            if (d < mind)
+            if (element is GraphNodeControl node)
             {
-                return true;
+                if (node == c) continue;
+                var d = Math.Sqrt(Math.Pow(c.Position.X - node.Position.X, 2) + Math.Pow(c.Position.Y - node.Position.Y, 2));
+                var mind = c.Radius + node.Radius;
+                if (d < mind)
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -98,9 +102,9 @@ public sealed partial class Lab5Page : Page
         while (true)
         {
             var found = false;
-            foreach (var node in canv.Children)
+            foreach (var element in canv.Children)
             {
-                if (((GraphNodeControl)node).Title == $"p{counter}")
+                if (element is GraphNodeControl node && node.Title == $"p{counter}")
                 {
                     found = true;
                     break;
@@ -118,9 +122,9 @@ public sealed partial class Lab5Page : Page
     }
     public bool IsNameUnique(string name, Canvas canv)
     {
-        foreach (var node in canv.Children)
+        foreach (var element in canv.Children)
         {
-            if (((GraphNodeControl)node).Title == name) return false;
+            if (element is GraphNodeControl node && node.Title == name) return false;
         }
         return true;
     }

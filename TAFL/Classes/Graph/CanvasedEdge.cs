@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Media;
 using TAFL.Controls;
+using Windows.UI;
 
 namespace TAFL.Classes.Graph;
 public class CanvasedEdge
@@ -16,6 +17,8 @@ public class CanvasedEdge
 
     public Microsoft.UI.Xaml.Shapes.Path PathObject;
 
+    private readonly System.Drawing.Color DefaultPathStroke = System.Drawing.Color.Gray;
+
     public CanvasedEdge(GraphNodeControl left, GraphNodeControl right, bool toRight, string weight)
     {
         Left = left;
@@ -26,7 +29,12 @@ public class CanvasedEdge
 
     public Microsoft.UI.Xaml.Shapes.Path UpdatePath()
     {
-        var path = new Microsoft.UI.Xaml.Shapes.Path();
+        var path = new Microsoft.UI.Xaml.Shapes.Path() { Stroke = new SolidColorBrush(Color.FromArgb(
+            DefaultPathStroke.A,
+            DefaultPathStroke.R,
+            DefaultPathStroke.G,
+            DefaultPathStroke.B
+        )) };
         var pd = new PathGeometry();
         var pf = new PathFigure() {
             StartPoint = ToRight ?
