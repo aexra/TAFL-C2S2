@@ -19,7 +19,7 @@
         PointerExited="Border_PointerExited">
         <Border Background="{x:Bind SelectedBrush, Mode=OneWay}" Height="{x:Bind SelectionDiameter}" Width="{x:Bind SelectionDiameter}" CornerRadius="90">
             <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="{x:Bind InnerDiameter}" Width="{x:Bind InnerDiameter}" CornerRadius="90">
-
+                <TextBlock Text="A" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
         </Border>
     </Border>
