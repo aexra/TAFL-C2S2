@@ -15,6 +15,24 @@
 
         <Grid Grid.Row="0">
             
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="400"/>
+            </Grid.ColumnDefinitions>
+
+            <Canvas Grid.Column="0">
+                
+            </Canvas>
+            
+            <Grid Grid.Column="1">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="300"/>
+                </Grid.RowDefinitions>
+
+            </Grid>
+            
         </Grid>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
