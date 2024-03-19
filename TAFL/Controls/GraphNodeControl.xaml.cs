@@ -190,9 +190,8 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             }
         }
     }
-
     private void FlyoutDeleteButton_Click(object sender, RoutedEventArgs e)
     {
-
+        Canva.Children.Remove(this);
     }
 }
