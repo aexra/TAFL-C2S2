@@ -157,6 +157,18 @@ public sealed partial class Lab5Page : Page
         canv.Children.Add(edge.PathObject);
         Canvas.SetZIndex(edge.PathObject, 0);
     }
+    public void RemoveEdge(CanvasedEdge edge)
+    {
+        Edges1.Remove(edge);
+        foreach (var child in Canva.Children)
+        {
+            if (child is Microsoft.UI.Xaml.Shapes.Path path && edge.PathObject == path)
+            {
+                Canva.Children.Remove(child);
+                break;
+            }
+        }
+    }
     public void UpdateEdges1(GraphNodeControl node)
     {
         foreach (var edge in Edges1)

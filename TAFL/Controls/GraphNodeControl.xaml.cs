@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using TAFL.Classes.Graph;
 using TAFL.Services;
 using TAFL.Views;
 using Windows.Foundation;
@@ -46,6 +47,8 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         }
     }
     public Page Page;
+
+    public List<CanvasedEdge> Edges = new();
 
     private string title = "A";
     public string Title
@@ -195,6 +198,10 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     private void FlyoutDeleteButton_Click(object sender, RoutedEventArgs e)
     {
         Canva.Children.Remove(this);
+        foreach (var edge in Edges)
+        {
+            ((Lab5Page)Page).RemoveEdge(edge);
+        }
     }
     private async void FlyoutConnectButton_Click(object sender, RoutedEventArgs e)
     {
@@ -224,7 +231,9 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
             if (node != null)
             {
-                ((Lab5Page)Page).AddEdge(new Classes.Graph.CanvasedEdge(this, node, flag, weight), Canva);
+                var edge = new CanvasedEdge(this, node, flag, weight);
+                ((Lab5Page)Page).AddEdge(edge, Canva);
+                Edges.Add(edge);
             }
             else
             {
