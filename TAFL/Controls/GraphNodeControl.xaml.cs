@@ -20,16 +20,12 @@ using Windows.Foundation.Collections;
 namespace TAFL.Controls;
 public sealed partial class GraphNodeControl : UserControl
 {
-    private readonly float DEFAULT_SIZE_X = 40;
-    private readonly float DEFAULT_SIZE_Y = 40;
-
     public Vector2 Position { get; set; }
-    public Vector2 Size { get; set; }
+    public float Radius { get; set; } = 20;
 
     public GraphNodeControl(Vector2 position)
     {
-        Position = new Vector2(position.X - DEFAULT_SIZE_X / 2, position.Y - DEFAULT_SIZE_Y / 2);
-        Size = new Vector2(DEFAULT_SIZE_X, DEFAULT_SIZE_Y);
+        Position = new Vector2(position.X - Radius, position.Y - Radius);
 
         this.InitializeComponent();
     }

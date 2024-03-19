@@ -8,7 +8,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Border Background="red" Height="{x:Bind Size.X}" Width="{x:Bind Size.Y}">
-        
+    <Border Background="red" Height="{x:Bind Radius}" Width="{x:Bind Radius}" CornerRadius="25">
+        <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"  CornerRadius="25">
+            
+        </Border>
     </Border>
 </UserControl>
