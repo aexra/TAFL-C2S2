@@ -61,7 +61,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         }
     }
 
-    private Canvas Canva;
+    private readonly Canvas Canva;
     private bool isSelected;
     private readonly Color DefaultSelectionColor = Color.DarkOrange;
     public Brush SelectedBrush
