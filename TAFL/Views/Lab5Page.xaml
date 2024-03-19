@@ -22,7 +22,12 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <Canvas x:Name="Canva" KeyDown="Canva_KeyDown">
+                <Canvas 
+                    x:Name="Canva" 
+                    PointerPressed="Canva_PointerPressed" 
+                    PointerMoved="Canva_PointerMoved"
+                    KeyDown="Canva_KeyDown"
+                    >
 
                 </Canvas>
             </Border>
