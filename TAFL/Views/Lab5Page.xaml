@@ -14,18 +14,20 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" RowSpacing="10" ColumnSpacing="10">
             
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="400"/>
             </Grid.ColumnDefinitions>
 
-            <Canvas x:Name="Canva" Grid.Column="0" KeyDown="Canva_KeyDown">
-                
-            </Canvas>
+            <Border Grid.Column="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <Canvas x:Name="Canva" KeyDown="Canva_KeyDown">
+
+                </Canvas>
+            </Border>
             
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1" RowSpacing="10" ColumnSpacing="10">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -121,12 +123,18 @@
                     </Pivot>
                 </Border>
 
+                <Border Grid.Row="1" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    
+                </Border>
+
             </Grid>
             
         </Grid>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
-            
+            <Button Content="Button1"/>
+            <Button Content="Button2"/>
+            <Button Content="Button3"/>
         </StackPanel>
         
     </Grid>
