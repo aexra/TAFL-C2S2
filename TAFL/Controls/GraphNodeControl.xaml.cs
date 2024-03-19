@@ -47,6 +47,20 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     public Page Page;
 
+    private string title = "A";
+    public string Title
+    {
+        get => title;
+        set
+        {
+            if (value != title)
+            {
+                title = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
     private Canvas Canva;
     private bool isSelected;
     private readonly Color DefaultSelectionColor = Color.DarkOrange;
