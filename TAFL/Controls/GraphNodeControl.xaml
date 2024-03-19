@@ -8,8 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Border Background="red" Height="{x:Bind Radius}" Width="{x:Bind Radius}" CornerRadius="25">
-        <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"  CornerRadius="25">
+    <Border Background="#ccc" Height="{x:Bind Diameter}" Width="{x:Bind Diameter}" CornerRadius="90">
+        <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="{x:Bind InnerDiameter}" Width="{x:Bind InnerDiameter}" CornerRadius="90">
             
         </Border>
     </Border>

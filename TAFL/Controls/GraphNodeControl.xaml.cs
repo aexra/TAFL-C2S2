@@ -21,7 +21,10 @@ namespace TAFL.Controls;
 public sealed partial class GraphNodeControl : UserControl
 {
     public Vector2 Position { get; set; }
-    public float Radius { get; set; } = 20;
+    public float Radius { get; set; } = 40;
+    public float Diameter => Radius * 2;
+    public float InnerRadius { get; set; } = 36;
+    public float InnerDiameter => InnerRadius * 2;
 
     public GraphNodeControl(Vector2 position)
     {
