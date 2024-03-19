@@ -96,7 +96,12 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
     private void Border_PointerPressed(object sender, PointerRoutedEventArgs e)
     {
-        Select();
+        var props = e.GetCurrentPoint(Canva).Properties;
+        if (props.IsLeftButtonPressed) Select();
+        if (props.IsRightButtonPressed)
+        {
+            
+        }
     }
     private void Border_PointerReleased(object sender, PointerRoutedEventArgs e)
     {
