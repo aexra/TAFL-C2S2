@@ -142,8 +142,18 @@ public sealed partial class Lab5Page : Page
     }
     public void AddEdge(CanvasedEdge edge, Canvas canv)
     {
+        foreach (var edgee in Edges1)
+        {
+            if (edgee.Left == edge.Right && edgee.Right == edge.Left)
+            {
+                edgee.IsArc = true;
+                edge.IsArc = true;
+                break;
+            }
+        }
         Edges1.Add(edge);
         edge.UpdatePath();
+        UpdateEdges1(edge.Left);
         canv.Children.Add(edge.PathObject);
         Canvas.SetZIndex(edge.PathObject, 0);
     }
