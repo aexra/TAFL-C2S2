@@ -16,6 +16,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using TAFL.Services;
+using TAFL.Views;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -32,7 +33,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     public float SelectionDiameter => SelectionRadius * 2;
     public float InnerRadius = 34;
     public float InnerDiameter => InnerRadius * 2;
-
     public bool IsSelected
     {
         get => isSelected;
@@ -45,6 +45,10 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             }
         }
     }
+
+    public Page Page;
+
+    private Canvas Canva;
     private bool isSelected;
     private readonly Color SelectionColor = Color.DarkOrange;
 
@@ -70,11 +74,22 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         }
     }
 
-    public GraphNodeControl(Vector2 position)
+    public GraphNodeControl(Vector2 position, Canvas canva)
     {
         Position = new Vector2(position.X - Radius, position.Y - Radius);
         isSelected = false;
+        Canva = canva;
         this.InitializeComponent();
+    }
+
+    public void Select()
+    {
+        IsSelected = true;
+    }
+
+    public void Deselect()
+    {
+        IsSelected = false;
     }
 
     public bool ToggleSelection()
@@ -85,6 +100,45 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
     private void Border_PointerPressed(object sender, PointerRoutedEventArgs e)
     {
-        ToggleSelection();
+        Select();
+    }
+
+    private void Border_PointerReleased(object sender, PointerRoutedEventArgs e)
+    {
+        Deselect();
+    }
+
+    private void Border_PointerMoved(object sender, PointerRoutedEventArgs e)
+    { 
+        if (IsSelected)
+        {
+            var pos = e.GetCurrentPoint(Canva).Position;
+            var tr_pos = new Vector2((float)pos.X - Radius, (float)pos.Y - Radius);
+
+            var last_pos = Position;
+            Position = tr_pos;
+
+            if (Page != null && Page is Lab5Page l5)
+            {
+                if (l5.CheckNodeCollisions(this))
+                {
+                    Canvas.SetLeft(this, Position.X);
+                    Canvas.SetTop(this, Position.Y);
+                }
+                else
+                {
+                    Position = last_pos;
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
+
+    private void Border_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        Deselect();
     }
 }

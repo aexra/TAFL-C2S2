@@ -37,7 +37,8 @@ public sealed partial class Lab5Page : Page
 
     private void NewNode(double x, double y)
     {
-        var node = new GraphNodeControl(new Vector2((float)x, (float)y));
+        var node = new GraphNodeControl(new Vector2((float)x, (float)y), Canva);
+        node.Page = this;
 
         if (CheckNodeCollisions(node)) return;
 
@@ -65,7 +66,7 @@ public sealed partial class Lab5Page : Page
 
         LogService.Log($"Новая вершина в [{node.Position.X}, {node.Position.Y}]");
     }
-    private bool CheckNodeCollisions(GraphNodeControl c)
+    public bool CheckNodeCollisions(GraphNodeControl c)
     {
         foreach (GraphNodeControl node in Canva.Children)
         {
