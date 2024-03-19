@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using TAFL.Controls;
 using TAFL.Services;
@@ -14,8 +15,11 @@ public class CanvasedEdge
     public GraphNodeControl Left;
     public GraphNodeControl Right;
     public bool ToRight;
-    public string Weight; // a,b,c,...,e
+    public string Weight => wb.Text; // a,b,c,...,e
     public bool IsArc = false;
+    public bool IsSelf = false;
+
+    private TextBox wb;
 
     public Microsoft.UI.Xaml.Shapes.Path PathObject;
 
@@ -26,7 +30,7 @@ public class CanvasedEdge
         Left = left;
         Right = right;
         ToRight = toRight;
-        Weight = weight;
+        wb = new() { Text=Weight };
     }
 
     public Microsoft.UI.Xaml.Shapes.Path UpdatePath()
