@@ -23,7 +23,9 @@ public sealed partial class Lab5Page : Page
     private void Canva_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
         var pos = e.GetCurrentPoint(Canva).Position;
-        NewNode(pos.X, pos.Y);
+        var props = e.GetCurrentPoint(Canva).Properties;
+
+        if (props.IsLeftButtonPressed) NewNode(pos.X, pos.Y);
     }
 
     private void Canva_PointerMoved(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
