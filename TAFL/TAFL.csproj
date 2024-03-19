@@ -16,6 +16,7 @@
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Controls\GraphNodeControl.xaml" />
     <None Remove="Controls\LogMessageControl.xaml" />
     <None Remove="Views\DebugPage.xaml" />
   </ItemGroup>
@@ -39,6 +40,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Controls\GraphNodeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\DebugPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
