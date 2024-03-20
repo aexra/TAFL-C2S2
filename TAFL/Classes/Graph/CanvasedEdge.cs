@@ -20,7 +20,7 @@ public class CanvasedEdge
     public bool ToRight;
     public string Weight => wb.Text; // a,b,c,...,e
     public bool IsArc = false;
-    public bool IsSelf = false;
+    public bool IsLoop => Left == Right;
     public int Angle = 0;
 
     private Vector2 Size;
@@ -28,7 +28,7 @@ public class CanvasedEdge
 
     public Microsoft.UI.Xaml.Shapes.Path PathObject;
 
-    private readonly System.Drawing.Color DefaultPathStroke = System.Drawing.Color.Gray;
+    private readonly System.Drawing.Color DefaultPathStrokeColor = System.Drawing.Color.Gray;
 
     public CanvasedEdge(GraphNodeControl left, GraphNodeControl right, bool toRight, string weight)
     {
@@ -37,55 +37,80 @@ public class CanvasedEdge
         ToRight = toRight;
         wb = new() { Text=weight };
 
-        if (left == right)
-        {
-            Size = new Vector2(30, 20);
-            left.Loops++;
-            Angle = LoopAngleModifier * (left.Loops - 1);
-        }
-        else
-        {
-            Size = new Vector2(0.3f, 0.1f);
-        }
-        LogService.Log($"loops: {left.Loops}, angle: {Angle}");
+        //if (left == right)
+        //{
+        //    Size = new Vector2(30, 20);
+        //    left.Loops++;
+        //    Angle = LoopAngleModifier * (left.Loops - 1);
+        //}
+        //else
+        //{
+        //    Size = new Vector2(0.3f, 0.1f);
+        //}
     }
 
     public Microsoft.UI.Xaml.Shapes.Path UpdatePath()
     {
+        // Angle between two vertices
         var angle = Math.Atan2(Left.Position.Y - Right.Position.Y, Left.Position.X - Right.Position.X);
+
+        // That angle in degrees
         var _a = angle / Math.PI * 180;
 
+        // Create path constructor
         var path = new Microsoft.UI.Xaml.Shapes.Path() { Stroke = new SolidColorBrush(Color.FromArgb(
-            DefaultPathStroke.A,
-            DefaultPathStroke.R,
-            DefaultPathStroke.G,
-            DefaultPathStroke.B
+            DefaultPathStrokeColor.A,
+            DefaultPathStrokeColor.R,
+            DefaultPathStrokeColor.G,
+            DefaultPathStrokeColor.B
         )), StrokeThickness = 4 };
-        var pd = new PathGeometry();
+
+        // Create geometry that will contain ArcSegment
+        var pg = new PathGeometry();
+
+        // Create figure with start point
         var pf = new PathFigure() {
             StartPoint = ToRight ?
                 new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius) :
                 new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius),
             IsClosed = false
         };
-        var endPoint = ToRight ?
+
+        // Calculate end point
+        Windows.Foundation.Point endPoint;
+        if (IsLoop)
+        {
+            endPoint = ToRight ?
                 new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius) :
                 new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius);
-        if (Left == Right)
-        {
-            //endPoint.X += 1;
-            endPoint.Y += 1;
         }
-        pf.Segments.Add(new ArcSegment() { 
+        else
+        {
+            endPoint = new();
+        }
+
+        // Create new ArcSegment
+        var segment = new ArcSegment() {
             Point = endPoint,
             SweepDirection = ToRight ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
             Size = new Windows.Foundation.Size(Size.X, IsArc ? Size.Y : 0),
-            RotationAngle = Left == Right? Angle : _a,
+            RotationAngle = Left == Right ? Angle : _a,
             IsLargeArc = Left == Right
-        });
-        pd.Figures.Add(pf);
-        path.Data = pd;
+        };
+
+        // Add segment to figure
+        pf.Segments.Add(segment);
+
+        // Add figure to geometry
+        pg.Figures.Add(pf);
+
+        // Set geometry as Data of Path object
+        path.Data = pg;
+
+        // Save path object in edge
         PathObject = path;
+
+        // Return path object
         return path;
     }
 }
