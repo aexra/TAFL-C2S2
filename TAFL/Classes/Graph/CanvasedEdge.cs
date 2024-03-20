@@ -19,7 +19,6 @@ public class CanvasedEdge
     public GraphNodeControl Right;
     public bool ToRight;
     public string Weight => wb.Text; // a,b,c,...,e
-    public bool IsArc = false;
     public bool IsLoop => Left == Right;
     public int LoopIndex = 0;
 
@@ -78,6 +77,14 @@ public class CanvasedEdge
         // Return path object
         return path;
     }
+    public void ToArc()
+    {
+        Size.Y = 0.1f;
+    }
+    public void ToLine()
+    {
+        Size.Y = 0;
+    }
     private void CalculateArcSize()
     {
         if (IsLoop)
@@ -88,7 +95,7 @@ public class CanvasedEdge
         }
         else
         {
-            Size = new Vector2(0.3f, 0.1f);
+            Size = new Vector2(0.3f, 0);
         }
     }
     private Microsoft.UI.Xaml.Shapes.Path GetPath()
