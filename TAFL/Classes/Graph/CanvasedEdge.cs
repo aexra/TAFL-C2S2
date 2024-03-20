@@ -42,7 +42,7 @@ public class CanvasedEdge
     {
         // Angle between two vertices
         var angle = Math.Atan2(Left.Position.Y - Right.Position.Y, Left.Position.X - Right.Position.X);
-        var _a = angle / Math.PI * 180; // That angle in degrees
+        var AngleD = angle / Math.PI * 180; // That angle in degrees
 
         // Create empty path
         var path = GetPath();
@@ -51,11 +51,12 @@ public class CanvasedEdge
         var arcGeometry = new PathGeometry(); // Create geometry that will contain arc figure
         var arcFigure = GetPathFigure(); // Create figure with start point
         var endPoint = GetEndPoint(); // Calculate end point
-        var segment = GetArcSegment(endPoint, _a); // Create new ArcSegment
+        var segment = GetArcSegment(endPoint, AngleD); // Create new ArcSegment
         arcFigure.Segments.Add(segment); // Add segment to figure
         arcGeometry.Figures.Add(arcFigure); // Add figure to geometry
 
         // Create arrow at center of arc
+        var asp = GetArrowStartPoint();
         var arrowGeometry = new PathGeometry();
         var arrowFigureL = GetArrowFigure(out var spl);
         var arrowFigureR = GetArrowFigure(out var spr);
@@ -65,6 +66,9 @@ public class CanvasedEdge
         arrowFigureR.Segments.Add(arrowSegmentR);
         arrowGeometry.Figures.Add(arrowFigureL);
         arrowGeometry.Figures.Add(arrowFigureR);
+        var arrowTransformGroup = new TransformGroup();
+        arrowTransformGroup.Children.Add(new RotateTransform() { Angle=AngleD + 90, CenterX=asp.X, CenterY=asp.Y - 5 });
+        arrowGeometry.Transform = arrowTransformGroup;
 
         // All figures ready to be set
         var geometryGroup = new GeometryGroup(); // Create geomtry group to contain all geometry objects
@@ -157,11 +161,11 @@ public class CanvasedEdge
     {
         if (leftSide)
         {
-            return new() { Point=new(sp.X - 4, sp.Y - 4) };
+            return new() { Point=new(sp.X - 10, sp.Y - 10) };
         }
         else
         {
-            return new() { Point=new(sp.X + 4, sp.Y - 4) };
+            return new() { Point=new(sp.X + 10, sp.Y - 10) };
         }
     }
 }
