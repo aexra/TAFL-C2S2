@@ -51,20 +51,12 @@ public class CanvasedEdge
         // Create geometry that will contain ArcSegment
         var pg = new PathGeometry();
 
-        // Create figure with start point
-        var pf = GetPathFigure();
-
-        // Calculate end point
-        var endPoint = GetEndPoint();
-
-        // Create new ArcSegment
-        var segment = GetArcSegment(endPoint, _a);
-
-        // Add segment to figure
-        pf.Segments.Add(segment);
-
-        // Add figure to geometry
-        pg.Figures.Add(pf);
+        // Create Arc from left vertex to right vertex
+        var arcFigure = GetPathFigure(); // Create figure with start point
+        var endPoint = GetEndPoint(); // Calculate end point
+        var segment = GetArcSegment(endPoint, _a); // Create new ArcSegment
+        arcFigure.Segments.Add(segment); // Add segment to figure
+        pg.Figures.Add(arcFigure); // Add figure to geometry
 
         // Set geometry as Data of Path object
         path.Data = pg;
