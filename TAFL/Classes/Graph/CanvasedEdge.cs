@@ -66,9 +66,9 @@ public class CanvasedEdge
         arrowFigureR.Segments.Add(arrowSegmentR);
         arrowGeometry.Figures.Add(arrowFigureL);
         arrowGeometry.Figures.Add(arrowFigureR);
-        //var arrowTransformGroup = new TransformGroup();
-        //arrowTransformGroup.Children.Add(new RotateTransform() { Angle = AngleD + 90, CenterX = asp.X, CenterY = asp.Y - 5 });
-        //arrowGeometry.Transform = arrowTransformGroup;
+        var arrowTransformGroup = new TransformGroup();
+        arrowTransformGroup.Children.Add(new RotateTransform() { Angle = AngleD + 90, CenterX = asp.X, CenterY = asp.Y - 5 });
+        arrowGeometry.Transform = arrowTransformGroup;
 
         // All figures ready to be set
         var geometryGroup = new GeometryGroup(); // Create geomtry group to contain all geometry objects

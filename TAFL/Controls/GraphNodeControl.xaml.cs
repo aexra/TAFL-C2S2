@@ -144,7 +144,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
                     Canvas.SetLeft(this, Position.X);
                     Canvas.SetTop(this, Position.Y);
 
-                    ((Lab5Page)Page).UpdateEdges1(this);
+                    ((Lab5Page)Page).UpdateConnectedEdges(this);
                 }
                 else
                 {

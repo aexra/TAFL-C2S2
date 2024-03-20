@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using TAFL.Classes.Graph;
 using TAFL.Controls;
@@ -150,7 +151,7 @@ public sealed partial class Lab5Page : Page
         }
         Edges1.Add(edge);
         edge.UpdatePath();
-        UpdateEdges1(edge.Left);
+        UpdateConnectedEdges(edge.Left);
         canv.Children.Add(edge.PathObject);
         Canvas.SetZIndex(edge.PathObject, EdgeZ);
     }
@@ -166,22 +167,33 @@ public sealed partial class Lab5Page : Page
             }
         }
     }
-    public void UpdateEdges1(GraphNodeControl node)
+    public void UpdateAllEdges()
+    {
+        foreach (var edge in Edges1)
+        {
+            UpdateEdge(edge);
+        }
+    }
+    public void UpdateConnectedEdges(GraphNodeControl node)
     {
         foreach (var edge in Edges1)
         {
             if (edge.Left == node || edge.Right == node)
             {
-                foreach (var child in Canva.Children)
-                {
-                    if (child is Microsoft.UI.Xaml.Shapes.Path path && edge.PathObject == path)
-                    {
-                        Canva.Children.Remove(child);
-                        Canva.Children.Add(edge.UpdatePath());
-                        Canvas.SetZIndex(edge.PathObject, EdgeZ);
-                        break;
-                    }
-                }
+                UpdateEdge(edge);
+            }
+        }
+    }
+    private void UpdateEdge(CanvasedEdge edge)
+    {
+        foreach (var child in Canva.Children)
+        {
+            if (child is Microsoft.UI.Xaml.Shapes.Path path && edge.PathObject == path)
+            {
+                Canva.Children.Remove(child);
+                Canva.Children.Add(edge.UpdatePath());
+                Canvas.SetZIndex(edge.PathObject, EdgeZ);
+                break;
             }
         }
     }
