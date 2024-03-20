@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using TAFL.Controls;
 using TAFL.Services;
+using Windows.Foundation;
 using Windows.UI;
 
 namespace TAFL.Classes.Graph;
@@ -56,6 +57,21 @@ public class CanvasedEdge
         arcFigure.Segments.Add(segment); // Add segment to figure
         pg.Figures.Add(arcFigure); // Add figure to geometry
 
+        // ARROW BEGIN
+
+        var arrowFigureL = GetArrowFigure(out var spl);
+        var arrowFigureR = GetArrowFigure(out var spr);
+        var arrowSegmentL = GetArrowLineSegment(true, spl) ;
+        var arrowSegmentR = GetArrowLineSegment(false, spr);
+
+        arrowFigureL.Segments.Add(arrowSegmentL);
+        arrowFigureR.Segments.Add(arrowSegmentR);
+
+        pg.Figures.Add(arrowFigureL);
+        pg.Figures.Add(arrowFigureR);
+
+        // ARROW END
+
         // All figures ready to be set
         path.Data = pg; // Set geometry as Data of Path object
         PathObject = path; // Save path object in edge
@@ -92,7 +108,7 @@ public class CanvasedEdge
             DefaultPathStrokeColor.B )), StrokeThickness = 4 
         };
     }
-    private Windows.Foundation.Point GetEndPoint()
+    private Point GetEndPoint()
     {
         if (IsLoop)
         {
@@ -103,7 +119,7 @@ public class CanvasedEdge
             return new(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius);
         }
     }
-    private Windows.Foundation.Point CalculateLoopedEndPoint()
+    private Point CalculateLoopedEndPoint()
     {
         var EndPoint = new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius);
         var AngleD = LoopAngleModifier * LoopIndex;
@@ -112,7 +128,7 @@ public class CanvasedEdge
         EndPoint.Y += Math.Sin(AnglePI);
         return EndPoint;
     }
-    private ArcSegment GetArcSegment(Windows.Foundation.Point endPoint, double angle)
+    private ArcSegment GetArcSegment(Point endPoint, double angle)
     {
         return new ArcSegment() {
             Point = endPoint,
@@ -129,5 +145,26 @@ public class CanvasedEdge
             StartPoint = new(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius),
             IsClosed = false
         };
+    }
+
+    // ARROW METHODS
+    private PathFigure GetArrowFigure(out Point sp)
+    {
+        return new(){ IsClosed = false, StartPoint = sp = GetArrowStartPoint() };
+    }
+    private Point GetArrowStartPoint()
+    {
+        return new();
+    }
+    private LineSegment GetArrowLineSegment(bool leftSide, Point sp)
+    {
+        if (leftSide)
+        {
+            return new();
+        }
+        else
+        {
+            return new();
+        }
     }
 }
