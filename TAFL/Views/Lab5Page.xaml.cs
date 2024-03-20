@@ -183,6 +183,7 @@ public sealed partial class Lab5Page : Page
                     {
                         Canva.Children.Remove(child);
                         Canva.Children.Add(edge.UpdatePath());
+                        Canvas.SetZIndex(edge.PathObject, EdgeZ);
                         break;
                     }
                 }
