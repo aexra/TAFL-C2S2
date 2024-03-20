@@ -1,15 +1,9 @@
-﻿using System.Diagnostics.Metrics;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
+﻿using System.Numerics;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Shapes;
 using TAFL.Classes.Graph;
 using TAFL.Controls;
 using TAFL.Services;
 using TAFL.ViewModels;
-using Windows.AI.MachineLearning.Preview;
-using Windows.Devices.Bluetooth;
 
 namespace TAFL.Views;
 
@@ -215,7 +209,17 @@ public sealed partial class Lab5Page : Page
     }
     public void RemoveVertex(GraphNodeControl node)
     {
-        
+        List<CanvasedEdge> toDelete = new();
+        foreach (var edge in Edges1)
+        {
+            if (edge.Left == node || edge.Right == node)
+            {
+                Canva.Children.Remove(edge.PathObject);
+                toDelete.Add(edge);
+            }
+        }
+        toDelete.ForEach(x => Edges1.Remove(x));
+        Canva.Children.Remove(node);
     }
 
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

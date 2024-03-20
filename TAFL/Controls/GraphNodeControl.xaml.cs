@@ -51,8 +51,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     public Page Page;
     public int Loops = 0;
 
-    public List<CanvasedEdge> Edges = new();
-
     private string title = "A";
     public string Title
     {
@@ -85,6 +83,8 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             }
         }
     }
+
+    private Lab5Page Page5 => (Lab5Page)Page;
 
     public event PropertyChangedEventHandler? PropertyChanged;
     private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
@@ -200,11 +200,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     private void FlyoutDeleteButton_Click(object sender, RoutedEventArgs e)
     {
-        Canva.Children.Remove(this);
-        foreach (var edge in Edges)
-        {
-            ((Lab5Page)Page).RemoveEdge(edge);
-        }
+        Page5.RemoveVertex(this);
     }
     private async void FlyoutConnectButton_Click(object sender, RoutedEventArgs e)
     {
@@ -255,8 +251,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     public void AddLoop(string weight)
     {
-        var edge = new CanvasedEdge(this, this, weight);
-        ((Lab5Page)Page).AddEdge(edge, Canva);
-        Edges.Add(edge);
+        Page5.ConnectVertrices(this, this, weight);
     }
 }
