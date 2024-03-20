@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.Metrics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Shapes;
 using TAFL.Classes.Graph;
@@ -197,6 +198,20 @@ public sealed partial class Lab5Page : Page
             if (edgee.Left == edge.Left && edgee.Right == edge.Right) return true;
         }
         return false;
+    }
+    public bool IsConnectionExists(GraphNodeControl node1, GraphNodeControl node2)
+    {
+        foreach (var edgee in Edges1)
+        {
+            if (edgee.Left == node1 && edgee.Right == node2) return true;
+        }
+        return false;
+    }
+    public void ConnectVertrices(GraphNodeControl node1, GraphNodeControl node2, string weight)
+    {
+        var edge = new CanvasedEdge(node1, node2, weight);
+        AddEdge(edge, Canva);
+        Edges1.Add(edge);
     }
 
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
