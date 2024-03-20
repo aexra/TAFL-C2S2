@@ -41,14 +41,12 @@ public class CanvasedEdge
     {
         // Angle between two vertices
         var angle = Math.Atan2(Left.Position.Y - Right.Position.Y, Left.Position.X - Right.Position.X);
+        var _a = angle / Math.PI * 180; // That angle in degrees
 
-        // That angle in degrees
-        var _a = angle / Math.PI * 180;
-
-        // Create path constructor
+        // Create empty path
         var path = GetPath();
 
-        // Create geometry that will contain ArcSegment
+        // Create geometry that will contain line figures
         var pg = new PathGeometry();
 
         // Create Arc from left vertex to right vertex
