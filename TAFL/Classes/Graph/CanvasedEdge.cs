@@ -151,17 +151,17 @@ public class CanvasedEdge
     }
     private Point GetArrowStartPoint()
     {
-        return new();
+        return new(100, 100);
     }
     private LineSegment GetArrowLineSegment(bool leftSide, Point sp)
     {
         if (leftSide)
         {
-            return new() { Point=new(sp.X, sp.Y) };
+            return new() { Point=new(sp.X - 4, sp.Y - 4) };
         }
         else
         {
-            return new() { Point=new(sp.X, sp.Y) };
+            return new() { Point=new(sp.X + 4, sp.Y - 4) };
         }
     }
 }
