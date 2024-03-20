@@ -66,9 +66,13 @@ public class CanvasedEdge
         arrowFigureR.Segments.Add(arrowSegmentR);
         arrowGeometry.Figures.Add(arrowFigureL);
         arrowGeometry.Figures.Add(arrowFigureR);
-        var arrowTransformGroup = new TransformGroup();
-        arrowTransformGroup.Children.Add(new RotateTransform() { Angle = AngleD + 90, CenterX = asp.X, CenterY = asp.Y - 5 });
-        arrowGeometry.Transform = arrowTransformGroup;
+        var tmpa = AngleD + 90;
+        if (tmpa > 1 || tmpa < -1)
+        {
+            var arrowTransformGroup = new TransformGroup();
+            arrowTransformGroup.Children.Add(new RotateTransform() { Angle = tmpa, CenterX = asp.X, CenterY = asp.Y - 5 });
+            arrowGeometry.Transform = arrowTransformGroup;
+        }
 
         // All figures ready to be set
         var geometryGroup = new GeometryGroup(); // Create geomtry group to contain all geometry objects
@@ -155,7 +159,14 @@ public class CanvasedEdge
     }
     private Point GetArrowStartPoint()
     {
-        return new(100, 100);
+        if (IsLoop)
+        {
+            return new(100, 100);
+        }
+        else
+        {
+            return new(Math.Abs(Left.Position.X - Right.Position.X), Math.Abs(Left.Position.Y - Right.Position.Y));
+        }
     }
     private LineSegment GetArrowLineSegment(bool leftSide, Point sp)
     {
