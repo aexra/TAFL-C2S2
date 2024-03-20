@@ -146,12 +146,12 @@ public sealed partial class Lab5Page : Page
         {
             if (edgee.Left == edge.Right && edgee.Right == edge.Left)
             {
-                edgee.IsArc = true;
-                edge.IsArc = true;
+                edgee.ToArc();
+                edge.ToArc();
                 break;
             }
         }
-        if (edge.Left == edge.Right) edge.IsArc = true;
+        if (edge.IsLoop) edge.ToArc();
         Edges1.Add(edge);
         edge.UpdatePath();
         UpdateEdges1(edge.Left);
