@@ -47,33 +47,30 @@ public class CanvasedEdge
         // Create empty path
         var path = GetPath();
 
-        // Create geometry that will contain line figures
-        var pg = new PathGeometry();
-
         // Create Arc from left vertex to right vertex
+        var arcGeometry = new PathGeometry(); // Create geometry that will contain arc figure
         var arcFigure = GetPathFigure(); // Create figure with start point
         var endPoint = GetEndPoint(); // Calculate end point
         var segment = GetArcSegment(endPoint, _a); // Create new ArcSegment
         arcFigure.Segments.Add(segment); // Add segment to figure
-        pg.Figures.Add(arcFigure); // Add figure to geometry
+        arcGeometry.Figures.Add(arcFigure); // Add figure to geometry
 
-        // ARROW BEGIN
-
+        // Create arrow at center of arc
+        var arrowGeometry = new PathGeometry();
         var arrowFigureL = GetArrowFigure(out var spl);
         var arrowFigureR = GetArrowFigure(out var spr);
         var arrowSegmentL = GetArrowLineSegment(true, spl) ;
         var arrowSegmentR = GetArrowLineSegment(false, spr);
-
         arrowFigureL.Segments.Add(arrowSegmentL);
         arrowFigureR.Segments.Add(arrowSegmentR);
-
-        pg.Figures.Add(arrowFigureL);
-        pg.Figures.Add(arrowFigureR);
-
-        // ARROW END
+        arrowGeometry.Figures.Add(arrowFigureL);
+        arrowGeometry.Figures.Add(arrowFigureR);
 
         // All figures ready to be set
-        path.Data = pg; // Set geometry as Data of Path object
+        var geometryGroup = new GeometryGroup(); // Create geomtry group to contain all geometry objects
+        geometryGroup.Children.Add(arcGeometry); // Add arc geomtry group
+        geometryGroup.Children.Add(arrowGeometry); // Add arrow geomtry group
+        path.Data = geometryGroup; // Set geometryGroup as Data of Path object
         PathObject = path; // Save path object in edge
         return path; // Return path object
     }
@@ -160,11 +157,11 @@ public class CanvasedEdge
     {
         if (leftSide)
         {
-            return new();
+            return new() { Point=new(sp.X, sp.Y) };
         }
         else
         {
-            return new();
+            return new() { Point=new(sp.X, sp.Y) };
         }
     }
 }
