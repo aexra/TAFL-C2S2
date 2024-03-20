@@ -21,7 +21,7 @@ public class CanvasedEdge
     public string Weight => wb.Text; // a,b,c,...,e
     public bool IsArc = false;
     public bool IsLoop => Left == Right;
-    public int Angle = 0;
+    public int LoopIndex = 0;
 
     private Vector2 Size;
     private TextBox wb;
@@ -37,19 +37,7 @@ public class CanvasedEdge
         ToRight = toRight;
         wb = new() { Text=weight };
 
-        // Here I need to calculate size
-
-
-        //if (left == right)
-        //{
-        //    Size = new Vector2(30, 20);
-        //    left.Loops++;
-        //    Angle = LoopAngleModifier * (left.Loops - 1);
-        //}
-        //else
-        //{
-        //    Size = new Vector2(0.3f, 0.1f);
-        //}
+        CalculateArcSize();
     }
 
     public Microsoft.UI.Xaml.Shapes.Path UpdatePath()
@@ -61,45 +49,19 @@ public class CanvasedEdge
         var _a = angle / Math.PI * 180;
 
         // Create path constructor
-        var path = new Microsoft.UI.Xaml.Shapes.Path() { Stroke = new SolidColorBrush(Color.FromArgb(
-            DefaultPathStrokeColor.A,
-            DefaultPathStrokeColor.R,
-            DefaultPathStrokeColor.G,
-            DefaultPathStrokeColor.B
-        )), StrokeThickness = 4 };
+        var path = GetPath();
 
         // Create geometry that will contain ArcSegment
         var pg = new PathGeometry();
 
         // Create figure with start point
-        var pf = new PathFigure() {
-            StartPoint = ToRight ?
-                new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius) :
-                new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius),
-            IsClosed = false
-        };
+        var pf = GetPathFigure();
 
         // Calculate end point
-        Windows.Foundation.Point endPoint;
-        if (IsLoop)
-        {
-            endPoint = ToRight ?
-                new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius) :
-                new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius);
-        }
-        else
-        {
-            endPoint = new();
-        }
+        var endPoint = GetEndPoint();
 
         // Create new ArcSegment
-        var segment = new ArcSegment() {
-            Point = endPoint,
-            SweepDirection = ToRight ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
-            Size = new Windows.Foundation.Size(Size.X, Size.Y),
-            RotationAngle = IsLoop ? Angle : _a,
-            IsLargeArc = IsLoop
-        };
+        var segment = GetArcSegment(endPoint, _a);
 
         // Add segment to figure
         pf.Segments.Add(segment);
@@ -115,5 +77,61 @@ public class CanvasedEdge
 
         // Return path object
         return path;
+    }
+    private void CalculateArcSize()
+    {
+        if (IsLoop)
+        {
+            Size = new Vector2(30, 20);
+            LoopIndex = Left.Loops;
+            Left.Loops++;
+        }
+        else
+        {
+            Size = new Vector2(0.3f, 0.1f);
+        }
+    }
+    private Microsoft.UI.Xaml.Shapes.Path GetPath()
+    {
+        return new Microsoft.UI.Xaml.Shapes.Path() {
+            Stroke = new SolidColorBrush(Color.FromArgb(
+            DefaultPathStrokeColor.A,
+            DefaultPathStrokeColor.R,
+            DefaultPathStrokeColor.G,
+            DefaultPathStrokeColor.B )), StrokeThickness = 4 
+        };
+    }
+    private Windows.Foundation.Point GetEndPoint()
+    {
+        if (IsLoop)
+        {
+            return ToRight ?
+                new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius) :
+                new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius);
+        }
+        else
+        {
+            return new();
+        }
+    }
+    private ArcSegment GetArcSegment(Windows.Foundation.Point endPoint, double angle)
+    {
+        return new ArcSegment() {
+            Point = endPoint,
+            SweepDirection = ToRight ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
+            Size = new Windows.Foundation.Size(Size.X, Size.Y),
+            RotationAngle = IsLoop ? 0 : angle,
+            IsLargeArc = IsLoop
+        };
+    }
+    private PathFigure GetPathFigure()
+    {
+        return new PathFigure()
+        {
+            StartPoint = ToRight ?
+                new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius) :
+                new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius),
+            IsClosed = false
+        };
     }
 }
