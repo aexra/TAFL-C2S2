@@ -14,7 +14,7 @@ using Windows.UI;
 namespace TAFL.Classes.Graph;
 public class CanvasedEdge
 {
-    public static readonly int LoopAngleModifier = 10;
+    public static readonly int LoopAngleModifier = 60;
     public GraphNodeControl Left;
     public GraphNodeControl Right;
     public string Weight => wb.Text; // a,b,c,...,e

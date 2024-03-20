@@ -16,7 +16,7 @@ public sealed partial class Lab5Page : Page
 {
     private readonly List<CanvasedEdge> Edges1 = new();
     private static readonly int VertexZ = 10;
-    private static readonly int EdgeZ = 20;
+    private static readonly int EdgeZ = 0;
 
     public Lab5ViewModel ViewModel
     {
