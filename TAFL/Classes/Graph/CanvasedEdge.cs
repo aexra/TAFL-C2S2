@@ -112,13 +112,13 @@ public class CanvasedEdge
     {
         if (IsLoop)
         {
-            return ToRight ?
-                new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius) :
-                new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius);
+            return new();
         }
         else
         {
-            return new();
+            return ToRight ?
+                new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius) :
+                new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius);
         }
     }
     private ArcSegment GetArcSegment(Windows.Foundation.Point endPoint, double angle)
