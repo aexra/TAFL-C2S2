@@ -17,7 +17,6 @@ public class CanvasedEdge
     public static readonly int LoopAngleModifier = 40;
     public GraphNodeControl Left;
     public GraphNodeControl Right;
-    public bool ToLeft;
     public string Weight => wb.Text; // a,b,c,...,e
     public bool IsLoop => Left == Right;
     public int LoopIndex = 0;
@@ -29,11 +28,10 @@ public class CanvasedEdge
 
     private readonly System.Drawing.Color DefaultPathStrokeColor = System.Drawing.Color.Gray;
 
-    public CanvasedEdge(GraphNodeControl left, GraphNodeControl right, bool toRight, string weight)
+    public CanvasedEdge(GraphNodeControl left, GraphNodeControl right, string weight)
     {
         Left = left;
         Right = right;
-        ToLeft = toRight;
         wb = new() { Text=weight };
 
         CalculateArcSize();
@@ -116,16 +114,14 @@ public class CanvasedEdge
         }
         else
         {
-            return !ToLeft ?
-                new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius) :
-                new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius);
+            return new(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius);
         }
     }
     private ArcSegment GetArcSegment(Windows.Foundation.Point endPoint, double angle)
     {
         return new ArcSegment() {
             Point = endPoint,
-            SweepDirection = ToLeft ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
+            SweepDirection = SweepDirection.Clockwise,
             Size = new Windows.Foundation.Size(Size.X, Size.Y),
             RotationAngle = IsLoop ? 0 : angle,
             IsLargeArc = IsLoop
@@ -135,9 +131,7 @@ public class CanvasedEdge
     {
         return new PathFigure()
         {
-            StartPoint = ToLeft ?
-                new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius) :
-                new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius),
+            StartPoint = new(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius),
             IsClosed = false
         };
     }

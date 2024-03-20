@@ -228,13 +228,13 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         {
             var toConnectName = content.First;
             var weight = content.Second;
-            var flag = content.Flag;
+            var isBackwards = content.Flag;
 
             var node = ((Lab5Page)Page).GetNode(toConnectName, Canva);
 
             if (node != null)
             {
-                var edge = new CanvasedEdge(this, node, flag, weight);
+                var edge = isBackwards? new CanvasedEdge(node, this, weight) : new CanvasedEdge(this, node, weight);
                 if (((Lab5Page)Page).IsEdgeExists(edge) && !edge.IsLoop)
                 {
                     await DialogHelper.ShowErrorDialogAsync("Ребро уже существует", XamlRoot);
@@ -257,7 +257,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     public void AddLoop(string weight)
     {
-        var edge = new CanvasedEdge(this, this, false, weight);
+        var edge = new CanvasedEdge(this, this, weight);
         ((Lab5Page)Page).AddEdge(edge, Canva);
         Edges.Add(edge);
     }
