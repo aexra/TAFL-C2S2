@@ -253,7 +253,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             }
         }
     }
-
     private void FlyoutLoopButton_Click(object sender, RoutedEventArgs e)
     {
 
