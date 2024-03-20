@@ -37,6 +37,9 @@ public class CanvasedEdge
         ToRight = toRight;
         wb = new() { Text=weight };
 
+        // Here I need to calculate size
+
+
         //if (left == right)
         //{
         //    Size = new Vector2(30, 20);
@@ -93,9 +96,9 @@ public class CanvasedEdge
         var segment = new ArcSegment() {
             Point = endPoint,
             SweepDirection = ToRight ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
-            Size = new Windows.Foundation.Size(Size.X, IsArc ? Size.Y : 0),
-            RotationAngle = Left == Right ? Angle : _a,
-            IsLargeArc = Left == Right
+            Size = new Windows.Foundation.Size(Size.X, Size.Y),
+            RotationAngle = IsLoop ? Angle : _a,
+            IsLargeArc = IsLoop
         };
 
         // Add segment to figure
