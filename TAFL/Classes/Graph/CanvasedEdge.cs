@@ -87,7 +87,7 @@ public class CanvasedEdge
     {
         if (IsLoop)
         {
-            Size = new Vector2(30, 20);
+            Size = new Vector2(20, 30);
             LoopIndex = Left.Loops;
             Left.Loops++;
         }
@@ -132,7 +132,7 @@ public class CanvasedEdge
             Point = endPoint,
             SweepDirection = SweepDirection.Clockwise,
             Size = new Windows.Foundation.Size(Size.X, Size.Y),
-            RotationAngle = IsLoop ? 0 : angle,
+            RotationAngle = IsLoop ? LoopAngleModifier * LoopIndex : angle,
             IsLargeArc = IsLoop
         };
     }
