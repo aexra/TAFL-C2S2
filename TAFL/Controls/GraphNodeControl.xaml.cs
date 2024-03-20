@@ -255,7 +255,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         weight ??= string.Empty;
         AddLoop(weight);
     }
-
     public void AddLoop(string weight)
     {
         var edge = new CanvasedEdge(this, this, false, weight);
