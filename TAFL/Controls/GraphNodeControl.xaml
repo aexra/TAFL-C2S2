@@ -32,6 +32,12 @@
                         <TextBlock Text="Соединить"/>
                     </StackPanel>
                 </Button>
+                <Button x:Name="FlyoutLoopButton" Click="FlyoutLoopButton_Click"  HorizontalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <SymbolIcon Symbol="RepeatOne"/>
+                        <TextBlock Text="Добавить петлю"/>
+                    </StackPanel>
+                </Button>
                 <Button x:Name="FlyoutRenameButton" Click="FlyoutRenameButton_Click" HorizontalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <SymbolIcon Symbol="Edit"/>
