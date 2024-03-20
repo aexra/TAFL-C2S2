@@ -30,7 +30,7 @@ public class CanvasedEdge
         Left = left;
         Right = right;
         ToRight = toRight;
-        wb = new() { Text=Weight };
+        wb = new() { Text=weight };
     }
 
     public Microsoft.UI.Xaml.Shapes.Path UpdatePath()
