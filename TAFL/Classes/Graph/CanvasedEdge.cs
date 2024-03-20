@@ -165,7 +165,7 @@ public class CanvasedEdge
         }
         else
         {
-            return new(Math.Abs(Left.Position.X - Right.Position.X), Math.Abs(Left.Position.Y - Right.Position.Y));
+            return new((Left.Center.X + Right.Center.X) / 2, (Left.Center.Y + Right.Center.Y) / 2 + 4);
         }
     }
     private LineSegment GetArrowLineSegment(bool leftSide, Point sp)

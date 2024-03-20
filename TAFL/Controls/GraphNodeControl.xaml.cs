@@ -50,6 +50,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     public Page Page;
     public int Loops = 0;
+    public Vector2 Center => new(Position.X + Radius, Position.Y + Radius);
 
     private string title = "A";
     public string Title
