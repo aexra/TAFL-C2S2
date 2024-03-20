@@ -213,6 +213,10 @@ public sealed partial class Lab5Page : Page
         AddEdge(edge, Canva);
         Edges1.Add(edge);
     }
+    public void RemoveVertex(GraphNodeControl node)
+    {
+        
+    }
 
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {

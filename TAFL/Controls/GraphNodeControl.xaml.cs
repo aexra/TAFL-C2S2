@@ -234,14 +234,11 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
             if (node != null)
             {
-                //var edge = isBackwards? new CanvasedEdge(node, this, weight) : new CanvasedEdge(this, node, weight);
                 if (((Lab5Page)Page).IsConnectionExists(this, node) && this != node)
                 {
                     await DialogHelper.ShowErrorDialogAsync("Ребро уже существует", XamlRoot);
                     return;
                 }
-                //((Lab5Page)Page).AddEdge(edge, Canva);
-                //Edges.Add(edge);
                 ((Lab5Page)Page).ConnectVertrices(this, node, weight);
             }
             else
