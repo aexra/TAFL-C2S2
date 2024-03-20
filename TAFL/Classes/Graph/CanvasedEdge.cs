@@ -58,14 +58,10 @@ public class CanvasedEdge
         arcFigure.Segments.Add(segment); // Add segment to figure
         pg.Figures.Add(arcFigure); // Add figure to geometry
 
-        // Set geometry as Data of Path object
-        path.Data = pg;
-
-        // Save path object in edge
-        PathObject = path;
-
-        // Return path object
-        return path;
+        // All figures ready to be set
+        path.Data = pg; // Set geometry as Data of Path object
+        PathObject = path; // Save path object in edge
+        return path; // Return path object
     }
     public void ToArc()
     {
