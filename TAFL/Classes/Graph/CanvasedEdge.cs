@@ -14,12 +14,14 @@ using Windows.UI;
 namespace TAFL.Classes.Graph;
 public class CanvasedEdge
 {
+    public static readonly int LoopAngleModifier = 40;
     public GraphNodeControl Left;
     public GraphNodeControl Right;
     public bool ToRight;
     public string Weight => wb.Text; // a,b,c,...,e
     public bool IsArc = false;
     public bool IsSelf = false;
+    public int Angle = 0;
 
     private Vector2 Size;
     private TextBox wb;
@@ -38,11 +40,14 @@ public class CanvasedEdge
         if (left == right)
         {
             Size = new Vector2(30, 20);
+            left.Loops++;
+            Angle = LoopAngleModifier * (left.Loops - 1);
         }
         else
         {
             Size = new Vector2(0.3f, 0.1f);
         }
+        LogService.Log($"loops: {left.Loops}, angle: {Angle}");
     }
 
     public Microsoft.UI.Xaml.Shapes.Path UpdatePath()
@@ -75,7 +80,7 @@ public class CanvasedEdge
             Point = endPoint,
             SweepDirection = ToRight ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
             Size = new Windows.Foundation.Size(Size.X, IsArc ? Size.Y : 0),
-            RotationAngle = _a,
+            RotationAngle = Left == Right? Angle : _a,
             IsLargeArc = Left == Right
         });
         pd.Figures.Add(pf);

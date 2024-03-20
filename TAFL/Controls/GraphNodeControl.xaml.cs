@@ -48,6 +48,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         }
     }
     public Page Page;
+    public int Loops = 0;
 
     public List<CanvasedEdge> Edges = new();
 
@@ -238,7 +239,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
                 //    await DialogHelper.ErrorDialog("Надо сделать фичу с ребрами в ту же вершину", XamlRoot);
                 //    return;
                 //}
-                if (((Lab5Page)Page).IsEdgeExists(edge))
+                if (((Lab5Page)Page).IsEdgeExists(edge) && !(edge.Left == edge.Right))
                 {
                     await DialogHelper.ErrorDialog("Ребро уже существует", XamlRoot);
                     return;
