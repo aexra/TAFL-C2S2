@@ -21,7 +21,7 @@ public class CanvasedEdge
     public bool IsLoop => Left == Right;
     public int LoopIndex = 0;
 
-    private Vector2 Size;
+    public Vector2 Size;
     private TextBox wb;
 
     public Microsoft.UI.Xaml.Shapes.Path PathObject;

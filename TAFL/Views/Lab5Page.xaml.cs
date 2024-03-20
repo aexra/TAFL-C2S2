@@ -146,7 +146,7 @@ public sealed partial class Lab5Page : Page
     {
         foreach (var edgee in Edges1)
         {
-            if (edgee.Left == edge.Right && edgee.Right == edge.Left)
+            if (edgee.Left == edge.Right && edgee.Right == edge.Left && !edge.IsLoop)
             {
                 edgee.ToArc();
                 edge.ToArc();
@@ -158,6 +158,12 @@ public sealed partial class Lab5Page : Page
         UpdateEdges1(edge.Left);
         canv.Children.Add(edge.PathObject);
         Canvas.SetZIndex(edge.PathObject, EdgeZ);
+        var str = "";
+        foreach (var e in Edges1)
+        {
+            str += $"x: {e.Size.X}, y: {e.Size.Y}\n";
+        }
+        LogService.Log(str);
     }
     public void RemoveEdge(CanvasedEdge edge)
     {
