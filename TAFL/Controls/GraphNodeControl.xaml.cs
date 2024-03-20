@@ -233,11 +233,11 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             if (node != null)
             {
                 var edge = new CanvasedEdge(this, node, flag, weight);
-                if (edge.Left == edge.Right)
-                {
-                    await DialogHelper.ErrorDialog("Надо сделать фичу с ребрами в ту же вершину", XamlRoot);
-                    return;
-                }
+                //if (edge.Left == edge.Right)
+                //{
+                //    await DialogHelper.ErrorDialog("Надо сделать фичу с ребрами в ту же вершину", XamlRoot);
+                //    return;
+                //}
                 if (((Lab5Page)Page).IsEdgeExists(edge))
                 {
                     await DialogHelper.ErrorDialog("Ребро уже существует", XamlRoot);

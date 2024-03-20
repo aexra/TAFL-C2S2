@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Controls;
@@ -19,6 +21,7 @@ public class CanvasedEdge
     public bool IsArc = false;
     public bool IsSelf = false;
 
+    private Vector2 Size;
     private TextBox wb;
 
     public Microsoft.UI.Xaml.Shapes.Path PathObject;
@@ -31,6 +34,15 @@ public class CanvasedEdge
         Right = right;
         ToRight = toRight;
         wb = new() { Text=weight };
+
+        if (left == right)
+        {
+            Size = new Vector2(30, 20);
+        }
+        else
+        {
+            Size = new Vector2(0.3f, 0.1f);
+        }
     }
 
     public Microsoft.UI.Xaml.Shapes.Path UpdatePath()
@@ -51,13 +63,20 @@ public class CanvasedEdge
                 new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius),
             IsClosed = false
         };
-        pf.Segments.Add(new ArcSegment() { 
-            Point = ToRight ?
+        var endPoint = ToRight ?
                 new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius) :
-                new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius),
+                new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius);
+        if (Left == Right)
+        {
+            //endPoint.X += 1;
+            endPoint.Y += 1;
+        }
+        pf.Segments.Add(new ArcSegment() { 
+            Point = endPoint,
             SweepDirection = ToRight ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
-            Size = new Windows.Foundation.Size(0.3, IsArc ? 0.1 : 0),
-            RotationAngle = _a
+            Size = new Windows.Foundation.Size(Size.X, IsArc ? Size.Y : 0),
+            RotationAngle = _a,
+            IsLargeArc = Left == Right
         });
         pd.Figures.Add(pf);
         path.Data = pd;

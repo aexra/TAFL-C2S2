@@ -151,6 +151,7 @@ public sealed partial class Lab5Page : Page
                 break;
             }
         }
+        if (edge.Left == edge.Right) edge.IsArc = true;
         Edges1.Add(edge);
         edge.UpdatePath();
         UpdateEdges1(edge.Left);
