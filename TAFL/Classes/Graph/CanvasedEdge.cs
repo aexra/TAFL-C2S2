@@ -121,7 +121,7 @@ public class CanvasedEdge
     {
         var EndPoint = new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius);
         var AngleD = LoopAngleModifier * LoopIndex;
-        var AnglePI = AngleD / 180 * Math.PI;
+        var AnglePI = (double)AngleD / 180 * Math.PI;
         EndPoint.X += Math.Cos(AnglePI);
         EndPoint.Y += Math.Sin(AnglePI);
         return EndPoint;
