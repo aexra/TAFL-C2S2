@@ -14,7 +14,7 @@ using Windows.UI;
 namespace TAFL.Classes.Graph;
 public class CanvasedEdge
 {
-    public static readonly int LoopAngleModifier = 40;
+    public static readonly int LoopAngleModifier = 10;
     public GraphNodeControl Left;
     public GraphNodeControl Right;
     public string Weight => wb.Text; // a,b,c,...,e
@@ -110,12 +110,21 @@ public class CanvasedEdge
     {
         if (IsLoop)
         {
-            return new(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius + 1);
+            return CalculateLoopedEndPoint();
         }
         else
         {
             return new(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius);
         }
+    }
+    private Windows.Foundation.Point CalculateLoopedEndPoint()
+    {
+        var EndPoint = new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius);
+        var AngleD = LoopAngleModifier * LoopIndex;
+        var AnglePI = AngleD / 180 * Math.PI;
+        EndPoint.X += Math.Cos(AnglePI);
+        EndPoint.Y += Math.Sin(AnglePI);
+        return EndPoint;
     }
     private ArcSegment GetArcSegment(Windows.Foundation.Point endPoint, double angle)
     {

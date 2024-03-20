@@ -14,7 +14,9 @@ namespace TAFL.Views;
 
 public sealed partial class Lab5Page : Page
 {
-    List<CanvasedEdge> Edges1 = new();
+    private readonly List<CanvasedEdge> Edges1 = new();
+    private static readonly int VertexZ = 10;
+    private static readonly int EdgeZ = 20;
 
     public Lab5ViewModel ViewModel
     {
@@ -75,7 +77,7 @@ public sealed partial class Lab5Page : Page
 
         Canvas.SetLeft(node, node.Position.X);
         Canvas.SetTop(node, node.Position.Y);
-        Canvas.SetZIndex(node, 10);
+        Canvas.SetZIndex(node, VertexZ);
 
         LogService.Log($"Новая вершина в [{node.Position.X}, {node.Position.Y}]");
     }
@@ -155,7 +157,7 @@ public sealed partial class Lab5Page : Page
         edge.UpdatePath();
         UpdateEdges1(edge.Left);
         canv.Children.Add(edge.PathObject);
-        Canvas.SetZIndex(edge.PathObject, 0);
+        Canvas.SetZIndex(edge.PathObject, EdgeZ);
     }
     public void RemoveEdge(CanvasedEdge edge)
     {
