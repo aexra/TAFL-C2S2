@@ -8,6 +8,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using System.Xml.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -234,14 +235,9 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             if (node != null)
             {
                 var edge = new CanvasedEdge(this, node, flag, weight);
-                //if (edge.Left == edge.Right)
-                //{
-                //    await DialogHelper.ErrorDialog("Надо сделать фичу с ребрами в ту же вершину", XamlRoot);
-                //    return;
-                //}
-                if (((Lab5Page)Page).IsEdgeExists(edge) && !(edge.Left == edge.Right))
+                if (((Lab5Page)Page).IsEdgeExists(edge) && !edge.IsLoop)
                 {
-                    await DialogHelper.ErrorDialog("Ребро уже существует", XamlRoot);
+                    await DialogHelper.ShowErrorDialogAsync("Ребро уже существует", XamlRoot);
                     return;
                 }
                 ((Lab5Page)Page).AddEdge(edge, Canva);
@@ -249,12 +245,21 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             }
             else
             {
-                await DialogHelper.ErrorDialog("Не найдена вершина с именем " + toConnectName, XamlRoot);
+                await DialogHelper.ShowErrorDialogAsync("Не найдена вершина с именем " + toConnectName, XamlRoot);
             }
         }
     }
-    private void FlyoutLoopButton_Click(object sender, RoutedEventArgs e)
+    private async void FlyoutLoopButton_Click(object sender, RoutedEventArgs e)
     {
+        var weight = await DialogHelper.ShowSingleInputDialogAsync(XamlRoot, "Создать петлю", "Введите вес");
+        weight ??= string.Empty;
+        AddLoop(weight);
+    }
 
+    public void AddLoop(string weight)
+    {
+        var edge = new CanvasedEdge(this, this, false, weight);
+        ((Lab5Page)Page).AddEdge(edge, Canva);
+        Edges.Add(edge);
     }
 }

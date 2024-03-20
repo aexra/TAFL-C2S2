@@ -17,7 +17,7 @@ public class CanvasedEdge
     public static readonly int LoopAngleModifier = 40;
     public GraphNodeControl Left;
     public GraphNodeControl Right;
-    public bool ToRight;
+    public bool ToLeft;
     public string Weight => wb.Text; // a,b,c,...,e
     public bool IsLoop => Left == Right;
     public int LoopIndex = 0;
@@ -33,7 +33,7 @@ public class CanvasedEdge
     {
         Left = left;
         Right = right;
-        ToRight = toRight;
+        ToLeft = toRight;
         wb = new() { Text=weight };
 
         CalculateArcSize();
@@ -116,7 +116,7 @@ public class CanvasedEdge
         }
         else
         {
-            return ToRight ?
+            return !ToLeft ?
                 new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius) :
                 new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius);
         }
@@ -125,7 +125,7 @@ public class CanvasedEdge
     {
         return new ArcSegment() {
             Point = endPoint,
-            SweepDirection = ToRight ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
+            SweepDirection = ToLeft ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
             Size = new Windows.Foundation.Size(Size.X, Size.Y),
             RotationAngle = IsLoop ? 0 : angle,
             IsLargeArc = IsLoop
@@ -135,7 +135,7 @@ public class CanvasedEdge
     {
         return new PathFigure()
         {
-            StartPoint = ToRight ?
+            StartPoint = ToLeft ?
                 new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius) :
                 new Windows.Foundation.Point(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius),
             IsClosed = false
