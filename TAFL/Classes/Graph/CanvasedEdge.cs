@@ -110,7 +110,7 @@ public class CanvasedEdge
     {
         if (IsLoop)
         {
-            return new();
+            return new(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius + 1);
         }
         else
         {
