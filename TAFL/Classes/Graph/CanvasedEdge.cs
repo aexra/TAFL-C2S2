@@ -31,7 +31,14 @@ public class CanvasedEdge
 
     private readonly Vector2 DefaultTextBoxSize = new(60, 30);
     private readonly Vector2 DefaultTextBoxMaxSize = new(100, 30);
-    private readonly System.Drawing.Color DefaultPathStrokeColor = System.Drawing.Color.Gray;
+    private static readonly System.Drawing.Color DefaultPathStrokeColor = System.Drawing.Color.Gray;
+
+    private readonly Brush DefaultStrokeBrush = new SolidColorBrush(Color.FromArgb(
+            DefaultPathStrokeColor.A,
+            DefaultPathStrokeColor.R,
+            DefaultPathStrokeColor.G,
+            DefaultPathStrokeColor.B));
+    private readonly Brush HoverStrokeBrush = new SolidColorBrush(Color.FromArgb(255, 100, 149, 237));
 
     public CanvasedEdge(GraphNodeControl left, GraphNodeControl right, string weight)
     {
@@ -97,9 +104,23 @@ public class CanvasedEdge
         // Relocate Weight Box to fit new edge position
         RelocateTextBox();
 
+        // Events for edges
+        PathObject.PointerEntered += PathObject_PointerEntered;
+        PathObject.PointerExited += PathObject_PointerExited;
+
         return path; // Return path object
     }
-    
+
+    private void PathObject_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        PathObject.Stroke = DefaultStrokeBrush;
+    }
+
+    private void PathObject_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        PathObject.Stroke = HoverStrokeBrush;
+    }
+
     // ARC METHODS
     public void ToArc()
     {
@@ -127,11 +148,7 @@ public class CanvasedEdge
     private Microsoft.UI.Xaml.Shapes.Path GetPath()
     {
         return new Microsoft.UI.Xaml.Shapes.Path() {
-            Stroke = new SolidColorBrush(Color.FromArgb(
-            DefaultPathStrokeColor.A,
-            DefaultPathStrokeColor.R,
-            DefaultPathStrokeColor.G,
-            DefaultPathStrokeColor.B )), StrokeThickness = 4 
+            Stroke = DefaultStrokeBrush, StrokeThickness = 4 
         };
     }
     private Point GetEndPoint()
