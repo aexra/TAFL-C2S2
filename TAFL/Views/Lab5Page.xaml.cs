@@ -329,31 +329,25 @@ public sealed partial class Lab5Page : Page
 
         return graph;
     }
-    private List<Edge> GetTransitionsE(out string output, out Dictionary<Node, List<Node>> locke)
+    private List<Edge> GetTransitionsE(out string output, out Dictionary<Node, List<Node>> locks)
     {
         List<Edge> edgesE = new();
-        locke = new();
         output = "Эпсилон замыкания";
+        locks = new();
 
         var graph = GetRawGraph();
         foreach (var node in graph.Nodes)
         {
-            locke.Add(node, new());
-            output += "\n( " + node.Name + " ) = { ";
-            var found = false;
+            locks.Add(node, new());
+            output += "\n( " + node.Name + " ) = { " + node.Name;
             foreach (var edge in node.Edges)
             {
                 if (ParseWeights(edge.Weight).Contains("ε"))
                 {
-                    locke[node].Add(edge.Right);
+                    locks[node].Add(edge.Right);
                     edgesE.Add(edge);
-                    output += $"{edge.Right.Name}, ";
-                    found = true;
+                    output += $", {edge.Right.Name}";
                 }
-            }
-            if (!found)
-            {
-                output += "-";
             }
             output += " }";
         }
