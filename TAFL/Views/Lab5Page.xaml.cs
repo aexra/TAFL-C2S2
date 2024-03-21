@@ -355,4 +355,25 @@ public sealed partial class Lab5Page : Page
         return edgesE;
     }
     private string[] ParseWeights(string weight) => weight.Split(',');
+    private List<string> GetAlphabet()
+    {
+        List<string> alphabet = new();
+
+        foreach (var node in GetRawGraph().Nodes)
+        {
+            foreach (var edge in node.Edges)
+            {
+                var letters = ParseWeights(edge.Weight);
+                foreach (var letter in letters)
+                {
+                    if (!alphabet.Contains(letter))
+                    {
+                        alphabet.Add(letter);
+                    }
+                }
+            }
+        }
+
+        return alphabet;
+    }
 }
