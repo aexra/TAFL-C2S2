@@ -55,7 +55,16 @@ public class CanvasedEdge
             MaxWidth=DefaultTextBoxMaxSize.X,
             MaxHeight=DefaultTextBoxMaxSize.Y,
         };
-        WeightBox.TextChanged += (s, e) => { RelocateTextBox(); };
+        WeightBox.TextChanged += (s, e) => { 
+            RelocateTextBox();
+        };
+        WeightBox.TextChanging += (s, e) => {
+            if (Weight.EndsWith("eps"))
+            {
+                WeightBox.Text = Weight.Replace("eps", "ε");
+                s.SelectionStart = Weight.Length;
+            }
+        };
 
         CalculateArcSize();
     }
