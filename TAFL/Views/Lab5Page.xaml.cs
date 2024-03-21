@@ -272,13 +272,14 @@ public sealed partial class Lab5Page : Page
         LogService.Log(ets);
 
         var alphabet = GetAlphabet();
+        var tableS = GetSTable(locks, alphabet);
     }
 
     private string GetQTable()
     {
         return GetRawGraph().ToString();
     }
-    private string GetSTable()
+    private string GetSTable(List<EpsLock> locks, List<string> alphabet)
     {
         return string.Empty;
     }
