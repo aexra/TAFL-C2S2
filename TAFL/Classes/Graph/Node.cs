@@ -8,12 +8,12 @@ using TAFL.Interfaces;
 namespace TAFL.Classes.Graph;
 public class Node : INode
 {
-    public IGraph Graph;
+    public IGraph? Graph;
     public string Name;
     public List<Edge> Edges;
 
 
-    public Node(string name, IGraph graph)
+    public Node(string name)
     {
         Name = name;
         Graph = graph;

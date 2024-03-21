@@ -18,6 +18,7 @@ public class Graph : IGraph
     public void AddNode(Node node)
     {
         Nodes.Add(node);
+        node.Graph = this;
     }
     public void RemoveNode(Node node)
     {

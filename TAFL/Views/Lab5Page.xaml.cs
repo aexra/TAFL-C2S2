@@ -308,6 +308,12 @@ public sealed partial class Lab5Page : Page
             }
         }
 
+        // Формируем граф
+        foreach (var node in nodes)
+        {
+            graph.AddNode(new Node(node.Name));
+        }
+
         return graph;
     }
 }
