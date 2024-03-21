@@ -82,6 +82,10 @@ public class CanvasedEdge
         geometryGroup.Children.Add(arrowGeometry); // Add arrow geomtry group
         path.Data = geometryGroup; // Set geometryGroup as Data of Path object
         PathObject = path; // Save path object in edge
+
+        // Relocate Weight Box to fit new edge position
+        RelocateTextBox();
+
         return path; // Return path object
     }
     
