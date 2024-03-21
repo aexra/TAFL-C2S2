@@ -21,6 +21,7 @@ public class CanvasedEdge
     public string Weight => wb.Text; // a,b,c,...,e
     public bool IsLoop => Left == Right;
     public int LoopIndex = 0;
+    public bool IsArc = false;
 
     public Vector2 Size;
     private TextBox wb;
@@ -85,10 +86,12 @@ public class CanvasedEdge
     public void ToArc()
     {
         Size.Y = 0.1f;
+        IsArc = true;
     }
     public void ToLine()
     {
         Size.Y = 0;
+        IsArc = false;
     }
     private void CalculateArcSize()
     {
@@ -165,7 +168,35 @@ public class CanvasedEdge
         }
         else
         {
-            return new((Left.Center.X + Right.Center.X) / 2, (Left.Center.Y + Right.Center.Y) / 2 + 4);
+            if (IsArc)
+            {
+                var pos1 = Left.Center;
+                var pos2 = Right.Center;
+                var center = new Vector2((pos1.X + pos2.X) / 2, (pos1.Y + pos2.Y) / 2 + 4);
+                var distance = (pos1 - pos2).Length();
+                var rawAngle = Math.Atan2(pos1.Y - pos2.Y, pos1.X - pos2.X);
+                var dm = distance * Size.Y * 1.68;
+                //var angle = Math.Atan2(Math.Abs(pos1.Y - pos2.Y), Math.Abs(pos2.X - pos1.X));
+                //double beta = 0;
+                //if (angle > 0) beta = Math.PI / 2 - angle;
+                //else if (angle < 0) beta = angle + Math.PI / 2;
+                //var dm = distance * Size.Y * (a1 > 0? 1 : -1);
+
+                if (rawAngle < 0)
+                {
+
+                }
+                else
+                {
+                
+                }
+
+                return new(center.X + dm * Math.Cos(Math.PI / 2 + rawAngle), center.Y + dm * Math.Sin(Math.PI / 2 + rawAngle));
+            }
+            else
+            {
+                return new((Left.Center.X + Right.Center.X) / 2, (Left.Center.Y + Right.Center.Y) / 2 + 4);
+            }
         }
     }
     private LineSegment GetArrowLineSegment(bool leftSide, Point sp)
