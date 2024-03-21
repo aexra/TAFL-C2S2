@@ -19,14 +19,14 @@ public class CanvasedEdge
     public static readonly int LoopAngleModifier = 60;
     public GraphNodeControl Left;
     public GraphNodeControl Right;
-    public string Weight => wb.Text; // a,b,c,...,e
+    public string Weight => WeightBox.Text; // a,b,c,...,e
     public bool IsLoop => Left == Right;
     public int LoopIndex = 0;
     public bool IsArc = false;
 
     public Vector2 Size;
-    private TextBox wb;
 
+    public TextBox WeightBox;
     public Microsoft.UI.Xaml.Shapes.Path PathObject;
 
     private readonly System.Drawing.Color DefaultPathStrokeColor = System.Drawing.Color.Gray;
@@ -35,7 +35,7 @@ public class CanvasedEdge
     {
         Left = left;
         Right = right;
-        wb = new() { Text=weight, HorizontalTextAlignment=TextAlignment.Center, HorizontalAlignment=HorizontalAlignment.Center };
+        WeightBox = new() { Text=weight, HorizontalTextAlignment=TextAlignment.Center, HorizontalAlignment=HorizontalAlignment.Center };
 
         CalculateArcSize();
     }
@@ -197,5 +197,11 @@ public class CanvasedEdge
         {
             return new() { Point=new(sp.X + 10, sp.Y - 10) };
         }
+    }
+
+    // WEIGHT INPUT BOX METHODS
+    private void RelocateTextBox()
+    {
+        
     }
 }

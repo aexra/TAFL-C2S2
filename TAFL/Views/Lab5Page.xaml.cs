@@ -153,6 +153,7 @@ public sealed partial class Lab5Page : Page
         edge.UpdatePath();
         UpdateConnectedEdges(edge.Left);
         canv.Children.Add(edge.PathObject);
+        canv.Children.Add(edge.WeightBox);
         Canvas.SetZIndex(edge.PathObject, EdgeZ);
     }
     public void RemoveEdge(CanvasedEdge edge)
@@ -163,7 +164,10 @@ public sealed partial class Lab5Page : Page
             if (child is Microsoft.UI.Xaml.Shapes.Path path && edge.PathObject == path)
             {
                 Canva.Children.Remove(child);
-                break;
+            }
+            if (child is TextBox box && edge.WeightBox == box)
+            {
+                Canva.Children.Remove(child);
             }
         }
     }
