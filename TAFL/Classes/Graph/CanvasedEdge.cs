@@ -84,6 +84,8 @@ public class CanvasedEdge
         PathObject = path; // Save path object in edge
         return path; // Return path object
     }
+    
+    // ARC METHODS
     public void ToArc()
     {
         Size.Y = 0.1f;
