@@ -102,7 +102,7 @@ public sealed partial class Lab5Page : Page
             var found = false;
             foreach (var element in canv.Children)
             {
-                if (element is GraphNodeControl node && node.Title == $"p{counter}")
+                if (element is GraphNodeControl node && node.Title == $"q{counter}")
                 {
                     found = true;
                     break;
@@ -114,7 +114,7 @@ public sealed partial class Lab5Page : Page
             }
             else
             {
-                return "p" + counter.ToString();
+                return "q" + counter.ToString();
             }
         } 
     }

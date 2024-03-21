@@ -121,7 +121,7 @@ public class CanvasedEdge
         }
         else
         {
-            Size = new Vector2(0.3f, 0);
+            Size = new Vector2(1f, 0);
         }
     }
     private Microsoft.UI.Xaml.Shapes.Path GetPath()
@@ -197,7 +197,7 @@ public class CanvasedEdge
                 var center = new Vector2((pos1.X + pos2.X) / 2, (pos1.Y + pos2.Y) / 2 + 4);
                 var distance = (pos1 - pos2).Length();
                 var rawAngle = Math.Atan2(pos1.Y - pos2.Y, pos1.X - pos2.X);
-                var dm = distance * Size.Y * 1.68 + mod;
+                var dm = distance * Size.Y * 0.5 + mod;
                 return new(center.X + dm * Math.Cos(Math.PI / 2 + rawAngle), center.Y + dm * Math.Sin(Math.PI / 2 + rawAngle));
             }
             else
