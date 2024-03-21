@@ -263,11 +263,11 @@ public sealed partial class Lab5Page : Page
     {
 
     }
-
+     
     private void SolveLabButton_Click(object sender, RoutedEventArgs e)
     {
         LogService.Log(GetQTable());
-        GetTransitionsE(out var ets);
+        GetTransitionsE(out var ets, out var locks);
         LogService.Log(ets);
     }
 
@@ -329,20 +329,23 @@ public sealed partial class Lab5Page : Page
 
         return graph;
     }
-    private List<Edge> GetTransitionsE(out string output)
+    private List<Edge> GetTransitionsE(out string output, out Dictionary<Node, List<Node>> locke)
     {
         List<Edge> edgesE = new();
+        locke = new();
         output = "Эпсилон переходы";
 
         var graph = GetRawGraph();
         foreach (var node in graph.Nodes)
         {
+            locke.Add(node, new());
             output += $"\n{node.Name}: ";
             var found = false;
             foreach (var edge in node.Edges)
             {
                 if (ParseWeights(edge.Weight).Contains("ε"))
                 {
+                    locke[node].Add(edge.Right);
                     edgesE.Add(edge);
                     output += $"{edge.Right.Name}, ";
                     found = true;
