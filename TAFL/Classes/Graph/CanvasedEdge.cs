@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using TAFL.Controls;
 using TAFL.Services;
+using TAFL.Views;
 using Windows.Foundation;
 using Windows.UI;
 
@@ -25,6 +26,7 @@ public class CanvasedEdge
     public bool IsArc = false;
 
     public Vector2 Size;
+    public Lab5Page Page5;
 
     public TextBox WeightBox;
     public Microsoft.UI.Xaml.Shapes.Path PathObject;
@@ -107,8 +109,18 @@ public class CanvasedEdge
         // Events for edges
         PathObject.PointerEntered += PathObject_PointerEntered;
         PathObject.PointerExited += PathObject_PointerExited;
+        PathObject.PointerPressed += PathObject_PointerPressed;
 
         return path; // Return path object
+    }
+
+    private void PathObject_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        var props = e.GetCurrentPoint(null).Properties;
+        if (props.IsRightButtonPressed)
+        {
+            Page5.RemoveEdge(this);
+        }
     }
 
     private void PathObject_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
