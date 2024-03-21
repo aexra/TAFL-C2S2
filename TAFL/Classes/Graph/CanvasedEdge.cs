@@ -29,6 +29,8 @@ public class CanvasedEdge
     public TextBox WeightBox;
     public Microsoft.UI.Xaml.Shapes.Path PathObject;
 
+    private readonly Vector2 DefaultTextBoxSize = new(60, 30);
+    private readonly Vector2 DefaultTextBoxMaxSize = new(100, 30);
     private readonly System.Drawing.Color DefaultPathStrokeColor = System.Drawing.Color.Gray;
 
     public CanvasedEdge(GraphNodeControl left, GraphNodeControl right, string weight)
@@ -39,6 +41,10 @@ public class CanvasedEdge
             Text=weight, 
             HorizontalAlignment=HorizontalAlignment.Center,
             TextAlignment=TextAlignment.Center,
+            Width=DefaultTextBoxSize.X,
+            Height=DefaultTextBoxSize.Y,
+            MaxWidth=DefaultTextBoxMaxSize.X,
+            MaxHeight=DefaultTextBoxMaxSize.Y,
         };
         WeightBox.TextChanged += (s, e) => { RelocateTextBox(); };
 
@@ -219,8 +225,8 @@ public class CanvasedEdge
     public void RelocateTextBox()
     {
         var point = GetArrowStartPoint(20);
-        Canvas.SetLeft(WeightBox, point.X - WeightBox.ActualWidth / 2);
-        Canvas.SetTop(WeightBox, point.Y - WeightBox.ActualHeight / 2);
+        Canvas.SetLeft(WeightBox, point.X - (WeightBox.ActualWidth > 0? WeightBox.ActualWidth / 2 : DefaultTextBoxSize.X / 2));
+        Canvas.SetTop(WeightBox, point.Y - (WeightBox.ActualHeight > 0? WeightBox.ActualHeight / 2 : DefaultTextBoxSize.Y / 2));
         Canvas.SetZIndex(WeightBox, 5);
     }
 }
