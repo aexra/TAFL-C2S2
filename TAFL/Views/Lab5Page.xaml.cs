@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Shapes;
 using TAFL.Classes.Graph;
 using TAFL.Controls;
 using TAFL.Services;
@@ -281,5 +282,32 @@ public sealed partial class Lab5Page : Page
         return string.Empty;
     }
 
+    private Graph GetRawGraph()
+    {
+        var graph = new Graph();
 
+        // Получаем списоки всех вершин и ребер
+        List<GraphNodeControl> nodes = new();
+        List<CanvasedEdge> edges = new();
+        foreach (var child in Canva.Children)
+        {
+            if (child is GraphNodeControl gnc)
+            {
+                nodes.Add(gnc);
+            }
+            else if (child is Microsoft.UI.Xaml.Shapes.Path path)
+            {
+                foreach (var edge in Edges1)
+                {
+                    if (edge.PathObject == path)
+                    {
+                        edges.Add(edge);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return graph;
+    }
 }
