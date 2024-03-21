@@ -167,11 +167,11 @@ public class CanvasedEdge
     {
         return new(){ IsClosed = false, StartPoint = sp = GetArrowStartPoint() };
     }
-    private Point GetArrowStartPoint()
+    private Point GetArrowStartPoint(double mod = 0)
     {
         if (IsLoop)
         {
-            var distance = 58;
+            var distance = 58 + mod;
             var center = Left.Center;
             center.Y += 4;
             var rawAngle = (double)LoopAngleModifier * LoopIndex / 180 * Math.PI - Math.PI / 2;
@@ -186,7 +186,7 @@ public class CanvasedEdge
                 var center = new Vector2((pos1.X + pos2.X) / 2, (pos1.Y + pos2.Y) / 2 + 4);
                 var distance = (pos1 - pos2).Length();
                 var rawAngle = Math.Atan2(pos1.Y - pos2.Y, pos1.X - pos2.X);
-                var dm = distance * Size.Y * 1.68;
+                var dm = distance * Size.Y * 1.68 + mod;
                 return new(center.X + dm * Math.Cos(Math.PI / 2 + rawAngle), center.Y + dm * Math.Sin(Math.PI / 2 + rawAngle));
             }
             else
@@ -210,6 +210,9 @@ public class CanvasedEdge
     // WEIGHT INPUT BOX METHODS
     private void RelocateTextBox()
     {
-        
+        var point = GetArrowStartPoint();
+        Canvas.SetLeft(WeightBox, point.X);
+        Canvas.SetTop(WeightBox, point.Y);
+        Canvas.SetZIndex(WeightBox, 5);
     }
 }
