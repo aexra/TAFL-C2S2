@@ -333,13 +333,13 @@ public sealed partial class Lab5Page : Page
     {
         List<Edge> edgesE = new();
         locke = new();
-        output = "Эпсилон переходы";
+        output = "Эпсилон замыкания";
 
         var graph = GetRawGraph();
         foreach (var node in graph.Nodes)
         {
             locke.Add(node, new());
-            output += $"\n{node.Name}: ";
+            output += "\n( " + node.Name + " ) = { ";
             var found = false;
             foreach (var edge in node.Edges)
             {
@@ -355,6 +355,7 @@ public sealed partial class Lab5Page : Page
             {
                 output += "-";
             }
+            output += " }";
         }
 
         return edgesE;
