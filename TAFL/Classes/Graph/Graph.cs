@@ -61,7 +61,7 @@ public class Graph : IGraph
 
         foreach (var node in Nodes)
         {
-            output += $"\n{node.Name}\t -> ";
+            output += $"\n{node.Name} -> ";
             foreach (var edge in node.Edges)
             {
                 output += $"{edge.Right.Name}[{edge.Weight}] ";
