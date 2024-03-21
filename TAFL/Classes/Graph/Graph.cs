@@ -8,5 +8,23 @@ using TAFL.Interfaces;
 namespace TAFL.Classes.Graph;
 public class Graph : IGraph
 {
-    public List<IGraphNode> Nodes { private set; get; }
+    public List<Node> Nodes;
+
+    public Graph()
+    {
+        Nodes = new();
+    }
+
+    public void AddNode(Node node)
+    {
+        Nodes.Add(node);
+    }
+    public void RemoveNode(Node node)
+    {
+        Nodes.Remove(node);
+    }
+    public void Clear()
+    {
+        Nodes.Clear();
+    }
 }

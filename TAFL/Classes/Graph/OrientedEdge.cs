@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 using TAFL.Interfaces;
 
 namespace TAFL.Classes.Graph;
-public class OrientedGraph : Graph
+public class OrientedEdge : Edge
 {
-    
+    public OrientedEdge(Node left, Node right, string weight) : base(left, right, weight)
+    {
+
+    }
 }

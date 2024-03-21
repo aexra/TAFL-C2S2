@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TAFL.Interfaces;
-public interface IGraphNode
+public interface IEdge
 {
-
+    public void Remove();
 }

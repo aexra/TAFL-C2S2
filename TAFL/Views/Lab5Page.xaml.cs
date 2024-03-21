@@ -247,4 +247,39 @@ public sealed partial class Lab5Page : Page
     {
         Canva.Children.Clear();
     }
+
+    private void BuildQButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void BuildSButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void BuildSButton_Click_1(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void SolveLabButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private string GetQTable()
+    {
+        return string.Empty;
+    }
+    private string GetSTable()
+    {
+        return string.Empty;
+    }
+    private string GetPTable()
+    {
+        return string.Empty;
+    }
+
+
 }
