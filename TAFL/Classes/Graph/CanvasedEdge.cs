@@ -68,7 +68,7 @@ public class CanvasedEdge
         arrowFigureR.Segments.Add(arrowSegmentR);
         arrowGeometry.Figures.Add(arrowFigureL);
         arrowGeometry.Figures.Add(arrowFigureR);
-        var tmpa = AngleD + (IsLoop? -90 : 90);
+        var tmpa = IsLoop? LoopIndex * LoopAngleModifier - 90 : AngleD + 90;
         if (tmpa > 1 || tmpa < -1)
         {
             var arrowTransformGroup = new TransformGroup();
@@ -171,7 +171,9 @@ public class CanvasedEdge
     {
         if (IsLoop)
         {
-            return new(100, 100);
+            var center = Left.Center;
+            var rawAngle = LoopAngleModifier * LoopIndex / 180 * Math.PI;
+            return new(center.X + 100 * Math.Cos(rawAngle), center.Y + 100 * Math.Sin(rawAngle));
         }
         else
         {
