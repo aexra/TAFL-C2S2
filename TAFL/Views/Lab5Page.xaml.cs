@@ -335,13 +335,19 @@ public sealed partial class Lab5Page : Page
         var graph = GetRawGraph();
         foreach (var node in graph.Nodes)
         {
-            output += $"\n{node.Name} -> ";
+            output += $"\n{node.Name}: ";
+            var found = false;
             foreach (var edge in node.Edges)
             {
                 if (ParseWeights(edge.Weight).Contains("ε"))
                 {
                     output += $"{edge.Right.Name}, ";
+                    found = true;
                 }
+            }
+            if (!found)
+            {
+                output += "-";
             }
         }
 
