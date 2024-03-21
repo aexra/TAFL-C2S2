@@ -196,7 +196,10 @@ public class CanvasedEdge
             }
             else
             {
-                return new((Left.Center.X + Right.Center.X) / 2, (Left.Center.Y + Right.Center.Y) / 2 + 4);
+                var pos1 = Left.Center;
+                var pos2 = Right.Center;
+                var rawAngle = Math.Atan2(pos1.Y - pos2.Y, pos1.X - pos2.X);
+                return new((Left.Center.X + Right.Center.X) / 2 + mod * Math.Cos(rawAngle - Math.PI / 2), (Left.Center.Y + Right.Center.Y) / 2 + 4 + mod * Math.Sin(rawAngle - Math.PI / 2));
             }
         }
     }
