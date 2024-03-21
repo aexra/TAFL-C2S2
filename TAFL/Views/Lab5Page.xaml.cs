@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Shapes;
 using TAFL.Classes.Graph;
 using TAFL.Controls;
 using TAFL.Services;
+using TAFL.Structures;
 using TAFL.ViewModels;
 
 namespace TAFL.Views;
@@ -269,6 +270,8 @@ public sealed partial class Lab5Page : Page
         LogService.Log(GetQTable());
         GetTransitionsE(out var ets, out var locks);
         LogService.Log(ets);
+
+        var alphabet = GetAlphabet();
     }
 
     private string GetQTable()
@@ -329,22 +332,23 @@ public sealed partial class Lab5Page : Page
 
         return graph;
     }
-    private List<Edge> GetTransitionsE(out string output, out Dictionary<Node, List<Node>> locks)
+    private List<Edge> GetTransitionsE(out string output, out List<EpsLock> locks)
     {
         List<Edge> edgesE = new();
         output = "Эпсилон замыкания";
         locks = new();
 
         var graph = GetRawGraph();
+        var counter = -1;
         foreach (var node in graph.Nodes)
         {
-            locks.Add(node, new());
+            locks.Add(new() { Name=$"S{++counter}", Origin=node, Nodes=new() });
             output += "\n( " + node.Name + " ) = { " + node.Name;
             foreach (var edge in node.Edges)
             {
                 if (ParseWeights(edge.Weight).Contains("ε"))
                 {
-                    locks[node].Add(edge.Right);
+                    locks.Last().Nodes.Add(edge.Right);
                     edgesE.Add(edge);
                     output += $", {edge.Right.Name}";
                 }
