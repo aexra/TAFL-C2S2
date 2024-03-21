@@ -11,6 +11,7 @@ public class Edge : IEdge
     public Node Left;
     public Node Right;
     public string Weight;
+    public bool IsLoop => Left == Right;
 
     public Edge(Node left, Node right, string weight)
     {

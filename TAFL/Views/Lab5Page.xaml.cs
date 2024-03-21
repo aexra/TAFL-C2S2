@@ -312,12 +312,17 @@ public sealed partial class Lab5Page : Page
         // Добавим все вершины
         foreach (var node in nodes)
         {
-            graph.AddNode(new Node(node.Name));
+            graph.AddNode(new Node(node.Title));
         }
         // Добавим все связи
         foreach (var edge in edges)
         {
-            
+            var node1 = graph.GetNode(edge.Left.Title);
+            var node2 = graph.GetNode(edge.Right.Title);
+            if (!graph.IsConnectionExists(node1, node2))
+            {
+                node1.Connect(node2, edge.Weight, true);
+            }
         }
 
         return graph;
