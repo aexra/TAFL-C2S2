@@ -230,11 +230,10 @@ public sealed partial class Lab5Page : Page
         {
             if (edge.Left == node || edge.Right == node)
             {
-                Canva.Children.Remove(edge.PathObject);
                 toDelete.Add(edge);
             }
         }
-        toDelete.ForEach(x => Edges1.Remove(x));
+        toDelete.ForEach(RemoveEdge);
         Canva.Children.Remove(node);
     }
 

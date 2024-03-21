@@ -171,9 +171,11 @@ public class CanvasedEdge
     {
         if (IsLoop)
         {
+            var distance = 58;
             var center = Left.Center;
-            var rawAngle = LoopAngleModifier * LoopIndex / 180 * Math.PI;
-            return new(center.X + 100 * Math.Cos(rawAngle), center.Y + 100 * Math.Sin(rawAngle));
+            center.Y += 4;
+            var rawAngle = (double)LoopAngleModifier * LoopIndex / 180 * Math.PI - Math.PI / 2;
+            return new(center.X + distance * Math.Cos(rawAngle), center.Y + distance * Math.Sin(rawAngle));
         }
         else
         {
