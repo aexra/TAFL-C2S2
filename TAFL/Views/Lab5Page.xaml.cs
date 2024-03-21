@@ -309,9 +309,15 @@ public sealed partial class Lab5Page : Page
         }
 
         // Формируем граф
+        // Добавим все вершины
         foreach (var node in nodes)
         {
             graph.AddNode(new Node(node.Name));
+        }
+        // Добавим все связи
+        foreach (var edge in edges)
+        {
+            
         }
 
         return graph;
