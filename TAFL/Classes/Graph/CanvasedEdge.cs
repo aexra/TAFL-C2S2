@@ -5,6 +5,7 @@ using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using TAFL.Controls;
@@ -34,7 +35,7 @@ public class CanvasedEdge
     {
         Left = left;
         Right = right;
-        wb = new() { Text=weight };
+        wb = new() { Text=weight, HorizontalTextAlignment=TextAlignment.Center, HorizontalAlignment=HorizontalAlignment.Center };
 
         CalculateArcSize();
     }
