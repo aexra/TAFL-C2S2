@@ -266,7 +266,8 @@ public sealed partial class Lab5Page : Page
 
     private void SolveLabButton_Click(object sender, RoutedEventArgs e)
     {
-
+        LogService.Log(GetQTable());
+        LogService.Log(GetTransitionsE());
     }
 
     private string GetQTable()
@@ -327,4 +328,24 @@ public sealed partial class Lab5Page : Page
 
         return graph;
     }
+    private string GetTransitionsE()
+    {
+        var output = "Эпсилон переходы";
+
+        var graph = GetRawGraph();
+        foreach (var node in graph.Nodes)
+        {
+            output += $"\n{node.Name} -> ";
+            foreach (var edge in node.Edges)
+            {
+                if (ParseWeights(edge.Weight).Contains("ε"))
+                {
+                    output += $"{edge.Right.Name}, ";
+                }
+            }
+        }
+
+        return output;
+    }
+    private string[] ParseWeights(string weight) => weight.Split(',');
 }
