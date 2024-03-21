@@ -68,7 +68,7 @@ public class CanvasedEdge
         arrowFigureR.Segments.Add(arrowSegmentR);
         arrowGeometry.Figures.Add(arrowFigureL);
         arrowGeometry.Figures.Add(arrowFigureR);
-        var tmpa = AngleD + 90;
+        var tmpa = AngleD + (IsLoop? -90 : 90);
         if (tmpa > 1 || tmpa < -1)
         {
             var arrowTransformGroup = new TransformGroup();
