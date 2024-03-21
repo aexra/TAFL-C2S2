@@ -366,7 +366,7 @@ public sealed partial class Lab5Page : Page
                 var letters = ParseWeights(edge.Weight);
                 foreach (var letter in letters)
                 {
-                    if (!alphabet.Contains(letter))
+                    if (letter != "ε" && !alphabet.Contains(letter))
                     {
                         alphabet.Add(letter);
                     }
