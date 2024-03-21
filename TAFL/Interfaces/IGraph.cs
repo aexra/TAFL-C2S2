@@ -9,4 +9,5 @@ public interface IGraph
     public Node? GetNode(string name);
     public bool IsConnectionExists(Node node1, Node node2);
     public bool IsConnectionExists(string name1, string name2);
+    public string ToString();
 }

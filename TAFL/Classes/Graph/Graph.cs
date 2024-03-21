@@ -55,4 +55,16 @@ public class Graph : IGraph
         }
         return false;
     }
+    public override string ToString()
+    {
+        var output = "\t|\t";
+
+        foreach (var node in Nodes)
+        {
+            output += node.Name + "|\t";
+        }
+        output += "\n";
+
+        return output;
+    }
 }
