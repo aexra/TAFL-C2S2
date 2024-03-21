@@ -57,13 +57,16 @@ public class Graph : IGraph
     }
     public override string ToString()
     {
-        var output = "\t|\t";
+        var output = "Граф";
 
         foreach (var node in Nodes)
         {
-            output += node.Name + "|\t";
+            output += $"\n{node.Name}\t -> ";
+            foreach (var edge in node.Edges)
+            {
+                output += $"{edge.Right.Name}[{edge.Weight}] ";
+            }
         }
-        output += "\n";
 
         return output;
     }
