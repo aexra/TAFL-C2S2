@@ -35,7 +35,12 @@ public class CanvasedEdge
     {
         Left = left;
         Right = right;
-        WeightBox = new() { Text=weight, HorizontalTextAlignment=TextAlignment.Center, HorizontalAlignment=HorizontalAlignment.Center };
+        WeightBox = new() { 
+            Text=weight, 
+            HorizontalAlignment=HorizontalAlignment.Center,
+            TextAlignment=TextAlignment.Center,
+        };
+        WeightBox.TextChanged += (s, e) => { RelocateTextBox(); };
 
         CalculateArcSize();
     }
@@ -208,11 +213,11 @@ public class CanvasedEdge
     }
 
     // WEIGHT INPUT BOX METHODS
-    private void RelocateTextBox()
+    public void RelocateTextBox()
     {
-        var point = GetArrowStartPoint();
-        Canvas.SetLeft(WeightBox, point.X);
-        Canvas.SetTop(WeightBox, point.Y);
+        var point = GetArrowStartPoint(20);
+        Canvas.SetLeft(WeightBox, point.X - WeightBox.ActualWidth / 2);
+        Canvas.SetTop(WeightBox, point.Y - WeightBox.ActualHeight / 2);
         Canvas.SetZIndex(WeightBox, 5);
     }
 }
