@@ -16,7 +16,6 @@ public class Node : INode
     public Node(string name)
     {
         Name = name;
-        Graph = graph;
         Edges = new();
     }
 

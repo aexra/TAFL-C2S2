@@ -139,7 +139,7 @@
             <Button x:Name="ClearCanvasButton" Content="Очистить канвас" Click="ClearCanvasButton_Click"/>
             <Button x:Name="BuildQButton" Content="Построить Q таблицу" Click="BuildQButton_Click"/>
             <Button x:Name="BuildSButton" Content="Построить S таблицу" Click="BuildSButton_Click"/>
-            <Button x:Name="BuildSButton" Content="Построить P таблицу" Click="BuildSButton_Click_1"/>
+            <Button x:Name="BuildPButton" Content="Построить P таблицу" Click="BuildPButton_Click"/>
             <Button x:Name="SolveLabButton" Content="Решить задачу" Click="SolveLabButton_Click"/>
         </StackPanel>
         

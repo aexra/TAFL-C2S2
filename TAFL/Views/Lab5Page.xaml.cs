@@ -251,7 +251,7 @@ public sealed partial class Lab5Page : Page
 
     private void BuildQButton_Click(object sender, RoutedEventArgs e)
     {
-
+        LogService.Log(GetQTable());
     }
 
     private void BuildSButton_Click(object sender, RoutedEventArgs e)
@@ -259,7 +259,7 @@ public sealed partial class Lab5Page : Page
 
     }
 
-    private void BuildSButton_Click_1(object sender, RoutedEventArgs e)
+    private void BuildPButton_Click(object sender, RoutedEventArgs e)
     {
 
     }
@@ -271,7 +271,7 @@ public sealed partial class Lab5Page : Page
 
     private string GetQTable()
     {
-        return string.Empty;
+        return GetRawGraph().ToString();
     }
     private string GetSTable()
     {
