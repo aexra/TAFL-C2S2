@@ -105,7 +105,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     private readonly Color DefaultSubStateColor = Color.Transparent;
     private readonly Color SelectionColor = Color.OrangeRed;
     private readonly Color DraggingColor = Color.Lime;
-    //private readonly Color DraggingColor = Color.DeepSkyBlue;
     
     // BRUSHES
 

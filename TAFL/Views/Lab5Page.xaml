@@ -22,13 +22,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <Canvas
-                    x:Name="Canva"
-                    Background="Transparent"
-                    PointerPressed="Canva_PointerPressed"
-                    PointerMoved="Canva_PointerMoved"
-                    KeyDown="Canva_KeyDown">
-                </Canvas>
+                <Canvas x:Name="ConstructorCanvas"/>
             </Border>
             
             <Grid Grid.Column="1" RowSpacing="10" ColumnSpacing="10">
@@ -128,7 +122,7 @@
                 </Border>
 
                 <Border Grid.Row="1" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                    
+                    <Canvas x:Name="OutputCanvas"/>
                 </Border>
 
             </Grid>
