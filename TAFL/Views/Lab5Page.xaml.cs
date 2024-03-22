@@ -22,7 +22,7 @@ public sealed partial class Lab5Page : Page
         InitializeComponent();
 
         Constructor = new(ConstructorCanvas);
-        Output = new(OutputCanvas);
+        Output = new(OutputCanvas) { ReadOnly=true };
     }
 
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
