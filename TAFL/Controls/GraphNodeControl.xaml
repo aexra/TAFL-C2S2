@@ -9,18 +9,20 @@
     mc:Ignorable="d">
 
     <Border 
-        Background="#ccc" 
-        Height="{x:Bind Diameter}" 
-        Width="{x:Bind Diameter}" 
+        Background="{x:Bind SelectionBrush, Mode=OneWay}" 
+        Height="{x:Bind SelectionDiameter}" 
+        Width="{x:Bind SelectionDiameter}" 
         CornerRadius="90" 
         PointerPressed="Border_PointerPressed"
         PointerReleased="Border_PointerReleased"
         PointerMoved="Border_PointerMoved"
         PointerExited="Border_PointerExited"
-        > 
-        <Border Background="{x:Bind SelectionBrush, Mode=OneWay}" Height="{x:Bind SelectionDiameter}" Width="{x:Bind SelectionDiameter}" CornerRadius="90">
-            <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="{x:Bind InnerDiameter}" Width="{x:Bind InnerDiameter}" CornerRadius="90">
-                <TextBlock Text="{x:Bind Title, Mode=OneWay}" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        >
+        <Border Background="#ccc" Height="{x:Bind Diameter}" Width="{x:Bind Diameter}" CornerRadius="90">
+            <Border Background="{x:Bind SubStateBrush, Mode=OneWay}" Height="{x:Bind SubStateDiameter}" Width="{x:Bind SubStateDiameter}" CornerRadius="90">
+                <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="{x:Bind InnerDiameter}" Width="{x:Bind InnerDiameter}" CornerRadius="90">
+                    <TextBlock Text="{x:Bind Title, Mode=OneWay}" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Border>
             </Border>
         </Border>
     </Border>

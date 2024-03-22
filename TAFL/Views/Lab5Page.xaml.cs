@@ -20,7 +20,7 @@ public sealed partial class Lab5Page : Page
     private GraphNodeControl? SelectedNode => GetSelectedNode();
     private List<GraphNodeControl>? SelectedNodes => GetSelectedNodes();
 
-    public SelectionMode SelectionMode = SelectionMode.None;
+    public SelectionMode SelectionMode = SelectionMode.Single;
 
     public Lab5ViewModel ViewModel
     {

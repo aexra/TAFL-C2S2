@@ -19,10 +19,12 @@ namespace TAFL.Controls;
 public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChanged
 {
     public Vector2 Position;
-    public float Radius = 40;
-    public float Diameter => Radius * 2;
-    public float SelectionRadius = 37;
+    public float SelectionRadius = 40;
     public float SelectionDiameter => SelectionRadius * 2;
+    public float Radius = 38;
+    public float Diameter => Radius * 2;
+    public float SubStateRadius = 37;
+    public float SubStateDiameter => SubStateRadius * 2;
     public float InnerRadius = 34;
     public float InnerDiameter => InnerRadius * 2;
     public Page Page;
@@ -171,7 +173,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         {
             Deselect();
         }
-        else if (SubState == NodeSubState.Default) 
+        else 
         {
             Select();
         }
@@ -215,6 +217,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
                     Move(Position.X, Position.Y);
                     Page5.UpdateConnectedEdges(this);
                     IsDragging = true;
+                    Select();
                 }
                 else
                 {
