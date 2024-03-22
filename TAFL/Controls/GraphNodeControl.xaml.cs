@@ -277,13 +277,17 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
                 await errorDialog.ShowAsync();
             }
         }
+
+        ContextFlyout.Hide();
     }
     private void FlyoutDeleteButton_Click(object sender, RoutedEventArgs e)
     {
         Graph.RemoveNode(this);
+        ContextFlyout.Hide();
     }
     private void FlyoutConnectButton_Click(object sender, RoutedEventArgs e)
     {
+        ContextFlyout.Hide();
         Graph.SelectionMode = Enums.SelectionMode.Multiple;
         Select();
         Graph.RequestSelection((node) => {
@@ -336,6 +340,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         var weight = await DialogHelper.ShowSingleInputDialogAsync(XamlRoot, "Создать петлю", "Введите вес");
         weight ??= string.Empty;
         AddLoop(weight);
+        ContextFlyout.Hide();
     }
     
     // NODE MANIPULATION METHODS

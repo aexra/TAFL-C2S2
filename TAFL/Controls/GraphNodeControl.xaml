@@ -27,7 +27,7 @@
         </Border>
     </Border>
     <FlyoutBase.AttachedFlyout>
-        <Flyout>
+        <Flyout x:Name="ContextFlyout">
             <StackPanel Spacing="10">
                 <Button x:Name="FlyoutConnectButton" Click="FlyoutConnectButton_Click" HorizontalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" Spacing="10">
