@@ -40,7 +40,7 @@ public sealed partial class Lab5Page : Page
         {
             if (child is GraphNodeControl node)
             {
-                if (node.State == Enums.NodeControlState.Selected)
+                if (node.IsSelected)
                 {
                     return node;
                 }
@@ -56,7 +56,7 @@ public sealed partial class Lab5Page : Page
         {
             if (child is GraphNodeControl node)
             {
-                if (node.State == Enums.NodeControlState.Selected)
+                if (node.IsSelected)
                 {
                     nodes.Add(node);
                 }

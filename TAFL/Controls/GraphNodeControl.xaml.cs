@@ -97,7 +97,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
     private readonly Color DefaultSubStateColor = Color.Transparent;
     private readonly Color SelectionColor = Color.DarkOrange;
-    private readonly Color DraggingColor = Color.CornflowerBlue;
+    private readonly Color DraggingColor = Color.DarkOrange;
     
     // BRUSHES
 
@@ -195,10 +195,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         {
             Deselect();
         }
-        else
-        {
-            Select();
-        }
+        IsDragging = false;
     }
     private void Border_PointerMoved(object sender, PointerRoutedEventArgs e)
     {
@@ -236,10 +233,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     private void Border_PointerExited(object sender, PointerRoutedEventArgs e)
     {
-        if (SubState != NodeSubState.Selected)
-        {
-            SubState = NodeSubState.Default;
-        }
+        
     }
 
     // FLYOUT EVENTS
