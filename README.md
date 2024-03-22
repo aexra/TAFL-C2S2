@@ -9,10 +9,12 @@
 
 ### Лексикографическое кодирование
 Представляет из себя страницу с несколькими текстовыми полями для ввода и вывода. Предоставляет возможность закодировать и декодировать данные по переданным алфавитам и словам/кодам.
+
 ![image](https://github.com/aexra/TAFL-C2S2/assets/121866384/a722354b-87f3-4cc3-ace6-2fb25b2ab28f)
 
 ### Регулярные выражения
 Представляет из себя страницу с возможностью вывести m строк в лексикографическом порядке среди n глубины поиска в соответствии с введенным регулярным выражением стандарта .NET 7.0
+
 ![image](https://github.com/aexra/TAFL-C2S2/assets/121866384/8d49961e-ba26-455e-a3a0-25cad1e7d895)
 
 ### Детерминизация
@@ -34,12 +36,12 @@ public sealed partial class SamplePage : Page
         ViewModel = App.GetService<SamplePageViewModel>();
         InitializeComponent();
 
+        // Подразумевается, что на странице в XAML разметке создан канвас ConstructorCanvas
         GraphConstructor = new(ConstructorCanvas);
     }
 }
 ```
-Подразумевается, что на странице в XAML разметке создан канвас ConstructorCanvas.
-
 Немного скриншотов реализации:
+
 ![image](https://github.com/aexra/TAFL-C2S2/assets/121866384/f2d960a4-b53d-43e8-ac41-83be6902d3be)
 ![image](https://github.com/aexra/TAFL-C2S2/assets/121866384/a2e0be0f-0603-4a0b-ba33-ddd4bcccd69b)
