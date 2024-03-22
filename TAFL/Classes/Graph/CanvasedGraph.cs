@@ -100,8 +100,6 @@ public class CanvasedGraph
         Canvas.SetLeft(node, node.Position.X);
         Canvas.SetTop(node, node.Position.Y);
         Canvas.SetZIndex(node, VertexZ);
-
-        LogService.Log($"Новая вершина в [{node.Position.X}, {node.Position.Y}]");
     }
     public void RemoveNode(GraphNodeControl node)
     {
