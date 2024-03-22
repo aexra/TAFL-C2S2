@@ -19,41 +19,26 @@ using TAFL.Views;
 namespace TAFL.Controls;
 public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChanged
 {
+    // COMPTIME CONSTANTS
+    public static readonly float SelectionRadius = 40;
+    public static readonly float Radius = 38;
+    public static readonly float SubStateRadius = 37;
+    public static readonly float InnerRadius = 34;
+    
+    // RUNTIME CONSTANTS
+    public static float SelectionDiameter => SelectionRadius * 2;
+    public static float Diameter => Radius * 2;
+    public static float SubStateDiameter => SubStateRadius * 2;
+    public static float InnerDiameter => InnerRadius * 2;
+
+    // INPUT PROPS
     public Vector2 Position;
-    public float SelectionRadius = 40;
-    public float SelectionDiameter => SelectionRadius * 2;
-    public float Radius = 38;
-    public float Diameter => Radius * 2;
-    public float SubStateRadius = 37;
-    public float SubStateDiameter => SubStateRadius * 2;
-    public float InnerRadius = 34;
-    public float InnerDiameter => InnerRadius * 2;
-    public Page Page;
-    public int Loops = 0;
-    public Vector2 Center => new(Position.X + Radius, Position.Y + Radius);
-
-    // Title property
-
-    private string title = "A";
-    public string Title
-    {
-        get => title;
-        set
-        {
-            if (value != title)
-            {
-                title = value;
-                NotifyPropertyChanged();
-            }
-        }
-    }
-
-    // PARENT GRAPH
-
     private readonly CanvasedGraph Graph;
 
-    // SUBSTATE Enumeration
-
+    // COUNTERS
+    public int Loops = 0;
+    
+    // ENUMS
     private NodeSubState subState = NodeSubState.Default;
     public NodeSubState SubState
     {
@@ -68,9 +53,14 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         }
     }
 
-    // FLAGS
+    // VARIABLE FIELDS
+    private string title = "A";
 
+    // FLAGS
     private bool isSelected = false;
+    private bool isDragging = false;
+    
+    // PUBLIC GET-SET ABSTRACTIONS
     public bool IsSelected
     {
         get => isSelected;
@@ -83,8 +73,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             }
         }
     }
-
-    private bool isDragging = false;
     public bool IsDragging
     {
         get => isDragging;
@@ -97,18 +85,31 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             }
         }
     }
+    public string Title
+    {
+        get => title;
+        set
+        {
+            if (value != title)
+            {
+                title = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
 
     // Костыль чтобы прерывать первое перемещение вызовом события PointerMove
     private bool IsFirstInteraction = true;
 
-    // COLORS
+    // OTHER
+    public Vector2 Center => new(Position.X + Radius, Position.Y + Radius);
 
+    // COLORS
     private readonly Color DefaultSubStateColor = Color.Transparent;
     private readonly Color SelectionColor = Color.OrangeRed;
     private readonly Color DraggingColor = Color.Lime;
     
     // BRUSHES
-
     public Brush SelectionBrush
     {
         get
@@ -143,7 +144,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
 
     // NotifyPropertyChanged event for OneWay (TwoWay) bindings
-
     public event PropertyChangedEventHandler? PropertyChanged;
     private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
     {
@@ -151,7 +151,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
 
     // CONSTRUCTORS
-
     public GraphNodeControl(Vector2 position, CanvasedGraph graph)
     {
         Position = new Vector2(position.X - Radius, position.Y - Radius);
@@ -161,7 +160,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
 
     // SELECTION METHODS
-
     public void Select()
     {
         if (Graph.SelectionMode == Enums.SelectionMode.None) return;
@@ -188,7 +186,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
 
     // POINTER EVENTS
-
     private void Border_PointerPressed(object sender, PointerRoutedEventArgs e)
     {
         e.Handled = true;
@@ -252,7 +249,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
 
     // FLYOUT EVENTS
-
     private async void FlyoutRenameButton_Click(object sender, RoutedEventArgs e)
     {
         var content = new StringInputDialog();
@@ -342,7 +338,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     
     // NODE MANIPULATION METHODS
-    
     public void AddLoop(string weight)
     {
         Graph.ConnectNodes(this, this, weight);
