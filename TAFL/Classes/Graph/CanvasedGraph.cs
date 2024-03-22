@@ -22,7 +22,7 @@ public class CanvasedGraph
     public Canvas Canvas;
 
     // OTHERS
-    public List<CanvasedEdge> Edges => Canvas.Children.Where(x => x is CanvasedEdge).Cast<CanvasedEdge>().ToList();
+    public List<CanvasedEdge> Edges = new();
     public GraphNodeControl? SelectedNode => GetSelectedNode();
     public List<GraphNodeControl>? SelectedNodes => GetSelectedNodes();
     public SelectionMode SelectionMode = SelectionMode.Single;
@@ -127,6 +127,7 @@ public class CanvasedGraph
     // EDGES MANIPULATION METHODS
     public void NewEdge(CanvasedEdge edge)
     {
+        Edges.Add(edge);
         foreach (var edgee in Edges)
         {
             if (edgee.Left == edge.Right && edgee.Right == edge.Left && !edge.IsLoop)
