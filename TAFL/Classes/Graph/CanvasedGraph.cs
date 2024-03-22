@@ -63,7 +63,7 @@ public class CanvasedGraph
     // NODES
     public void NewNode(double x, double y)
     {
-        var node = new GraphNodeControl(new Vector2((float)x, (float)y), Canvas);
+        var node = new GraphNodeControl(new Vector2((float)x, (float)y), this);
 
         if (CheckNodeCollisions(node)) return;
 
@@ -109,8 +109,8 @@ public class CanvasedGraph
     }
     public void ConnectNodes(GraphNodeControl node1, GraphNodeControl node2, string weight)
     {
-        var edge = new CanvasedEdge(node1, node2, weight);
-        NewEdge(edge, Canvas);
+        var edge = new CanvasedEdge(node1, node2, weight, this);
+        NewEdge(edge);
         Edges.Add(edge);
     }
     public void DeselectAllNodes()
@@ -292,8 +292,7 @@ public class CanvasedGraph
             {
                 if (node == c) continue;
                 var d = Math.Sqrt(Math.Pow(c.Position.X - node.Position.X, 2) + Math.Pow(c.Position.Y - node.Position.Y, 2));
-                var mind = c.Radius + node.Radius;
-                if (d < mind)
+                if (d < GraphNodeControl.Diameter)
                 {
                     return true;
                 }

@@ -185,12 +185,12 @@ public class CanvasedEdge
         }
         else
         {
-            return new(Right.Position.X + Right.Radius, Right.Position.Y + Right.Radius);
+            return new(Right.Position.X + GraphNodeControl.Radius, Right.Position.Y + GraphNodeControl.Radius);
         }
     }
     private Point CalculateLoopedEndPoint()
     {
-        var EndPoint = new Windows.Foundation.Point(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius);
+        var EndPoint = new Windows.Foundation.Point(Left.Position.X + GraphNodeControl.Radius, Left.Position.Y + GraphNodeControl.Radius);
         var AngleD = LoopAngleModifier * LoopIndex;
         var AnglePI = (double)AngleD / 180 * Math.PI;
         EndPoint.X += Math.Cos(AnglePI);
@@ -211,7 +211,7 @@ public class CanvasedEdge
     {
         return new PathFigure()
         {
-            StartPoint = new(Left.Position.X + Left.Radius, Left.Position.Y + Left.Radius),
+            StartPoint = new(Left.Position.X + GraphNodeControl.Radius, Left.Position.Y + GraphNodeControl.Radius),
             IsClosed = false
         };
     }
