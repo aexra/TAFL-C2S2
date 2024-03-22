@@ -21,6 +21,9 @@ public class CanvasedGraph
     // INPUT PROPS
     public Canvas Canvas;
 
+    // FLAGS
+    public bool ReadOnly = false;
+
     // OTHERS
     public List<GraphNodeControl> Nodes => Canvas.Children.Where(x => x is GraphNodeControl).Cast<GraphNodeControl>().ToList();
     public List<CanvasedEdge> Edges = new();
@@ -43,6 +46,7 @@ public class CanvasedGraph
     // POINTER EVENTS
     private void PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
+        if (ReadOnly) return;
         if (SelectedNode != null)
         {
             DeselectAllNodes();

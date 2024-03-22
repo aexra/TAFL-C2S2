@@ -216,6 +216,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     private void Border_PointerPressed(object sender, PointerRoutedEventArgs e)
     {
         e.Handled = true;
+        if (Graph.ReadOnly) return;
         var props = e.GetCurrentPoint(Graph.Canvas).Properties;
         if (props.IsLeftButtonPressed) ToggleSelection();
         if (props.IsRightButtonPressed)
@@ -225,6 +226,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     private void Border_PointerReleased(object sender, PointerRoutedEventArgs e)
     {
+        if (Graph.ReadOnly) return;
         if (Graph.SelectionMode == Enums.SelectionMode.None)
         {
             Deselect();
@@ -233,6 +235,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     private void Border_PointerMoved(object sender, PointerRoutedEventArgs e)
     {
+        if (Graph.ReadOnly) return;
         if (IsFirstInteraction)
         {
             IsFirstInteraction = false;
@@ -273,6 +276,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     private void Border_PointerExited(object sender, PointerRoutedEventArgs e)
     {
+        if (Graph.ReadOnly) return;
         IsDragging = false;
     }
 

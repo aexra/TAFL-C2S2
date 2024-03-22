@@ -132,6 +132,7 @@ public class CanvasedEdge
     // POINTER EVENTS
     private void PathObject_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
+        if (Graph.ReadOnly) return;
         var props = e.GetCurrentPoint(null).Properties;
         if (props.IsRightButtonPressed)
         {
@@ -140,11 +141,13 @@ public class CanvasedEdge
     }
     private void PathObject_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
+        if (Graph.ReadOnly) return;
         PathObject.Stroke = DefaultStrokeBrush;
         PathObject.StrokeThickness = 4;
     }
     private void PathObject_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
+        if (Graph.ReadOnly) return;
         PathObject.Stroke = HoverStrokeBrush;
         PathObject.StrokeThickness = 6;
     }
