@@ -97,7 +97,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         }
     }
 
-    // Костыль чтобы прерывать первый вызов события PointerMove
+    // Костыль чтобы прерывать первое перемещение вызовом события PointerMove
     private bool IsFirstInteraction = true;
 
     // COLORS
