@@ -17,31 +17,35 @@ using Windows.UI;
 namespace TAFL.Classes.Graph;
 public class CanvasedEdge
 {
+    // COMPTIME CONSTANTS
     public static readonly int LoopAngleModifier = 60;
-    public GraphNodeControl Left;
-    public GraphNodeControl Right;
-    public string Weight => WeightBox.Text; // a,b,c,...,e
-    public bool IsLoop => Left == Right;
-    public int LoopIndex = 0;
-    public bool IsArc = false;
-
-    public Vector2 Size;
-    private readonly CanvasedGraph Graph;
-
-    public TextBox WeightBox;
-    public Microsoft.UI.Xaml.Shapes.Path PathObject;
-
-    private readonly Vector2 DefaultTextBoxSize = new(60, 30);
-    private readonly Vector2 DefaultTextBoxMaxSize = new(100, 30);
     private static readonly System.Drawing.Color DefaultPathStrokeColor = System.Drawing.Color.Gray;
 
-    private readonly Brush DefaultStrokeBrush = new SolidColorBrush(Color.FromArgb(
-            DefaultPathStrokeColor.A,
-            DefaultPathStrokeColor.R,
-            DefaultPathStrokeColor.G,
-            DefaultPathStrokeColor.B));
+    // RUNTIME CONSTANTS
+    private readonly Vector2 DefaultTextBoxSize = new(60, 30);
+    private readonly Vector2 DefaultTextBoxMaxSize = new(100, 30);
+    private readonly Brush DefaultStrokeBrush = new SolidColorBrush(Color.FromArgb( DefaultPathStrokeColor.A, DefaultPathStrokeColor.R, DefaultPathStrokeColor.G, DefaultPathStrokeColor.B));
     private readonly Brush HoverStrokeBrush = new SolidColorBrush(Color.FromArgb(255, 100, 149, 237));
 
+    // INPUT PROPS
+    private readonly CanvasedGraph Graph;
+    public GraphNodeControl Left;
+    public GraphNodeControl Right;
+    public string Weight => WeightBox.Text;
+
+    // FLAGS
+    public bool IsLoop => Left == Right;
+    public bool IsArc = false;
+
+    // CALCULATED PROPS
+    public int LoopIndex = 0;
+    public Vector2 Size;
+
+    // UIELEMENTS
+    public TextBox WeightBox;
+    public Microsoft.UI.Xaml.Shapes.Path PathObject;
+    
+    // CONSTRUCTORS
     public CanvasedEdge(GraphNodeControl left, GraphNodeControl right, string weight, CanvasedGraph graph)
     {
         Graph = graph;
@@ -70,6 +74,7 @@ public class CanvasedEdge
         CalculateArcSize();
     }
 
+    // EDGE MANIPULATION METHODS
     public Microsoft.UI.Xaml.Shapes.Path UpdatePath()
     {
         // Angle between two vertices
@@ -124,6 +129,7 @@ public class CanvasedEdge
         return path; // Return path object
     }
 
+    // POINTER EVENTS
     private void PathObject_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
         var props = e.GetCurrentPoint(null).Properties;
@@ -132,18 +138,16 @@ public class CanvasedEdge
             Graph.RemoveEdge(this);
         }
     }
-
     private void PathObject_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
         PathObject.Stroke = DefaultStrokeBrush;
     }
-
     private void PathObject_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
         PathObject.Stroke = HoverStrokeBrush;
     }
 
-    // ARC METHODS
+    // ARC CALCULATION METHODS
     public void ToArc()
     {
         Size.Y = 0.1f;
@@ -212,7 +216,7 @@ public class CanvasedEdge
         };
     }
 
-    // ARROW METHODS
+    // ARROW CALCULATION METHODS
     private PathFigure GetArrowFigure(out Point sp)
     {
         return new(){ IsClosed = false, StartPoint = sp = GetArrowStartPoint() };
