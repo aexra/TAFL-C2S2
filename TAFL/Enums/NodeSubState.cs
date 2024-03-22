@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TAFL.Enums;
-public enum NodeControlState
+public enum NodeSubState
 {
     Default,
-    Selected,
-    Moving
+    Final
 }

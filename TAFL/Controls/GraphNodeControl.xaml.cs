@@ -43,40 +43,102 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         }
     }
 
+    // TODO: PARENT CANVAS (асбтрагировать на уровне CanvasedGraph)
+
     private readonly Canvas Canva;
-    private NodeControlState state = NodeControlState.Default;
-    public NodeControlState State
+
+    // SUBSTATE Enumeration
+
+    private NodeSubState subState = NodeSubState.Default;
+    public NodeSubState SubState
     {
-        get => state;
+        get => subState;
         set
         {
-            if (value != state)
+            if (value != subState)
             {
-                state = value;
-                NotifyPropertyChanged(nameof(SelectedBrush));
+                subState = value;
+                NotifyPropertyChanged(nameof(SubStateBrush));
             } 
         }
     }
-    private readonly Color DefaultSelectionColor = Color.DarkOrange;
-    private readonly Color DefaultMovingColor = Color.CornflowerBlue;
-    public Brush SelectedBrush
+
+    // FLAGS
+
+    private bool isSelected = false;
+    public bool IsSelected
     {
-        get
+        get => isSelected;
+        set
         {
-            switch (State)
+            if (value != isSelected)
             {
-                case NodeControlState.Selected:
-                    return new SolidColorBrush(Windows.UI.Color.FromArgb(DefaultSelectionColor.A, DefaultSelectionColor.R, DefaultSelectionColor.G, DefaultSelectionColor.B));
-                case NodeControlState.Moving:
-                    return new SolidColorBrush(Windows.UI.Color.FromArgb(DefaultMovingColor.A, DefaultMovingColor.R, DefaultMovingColor.G, DefaultMovingColor.B));
-                default:
-                    Resources.ThemeDictionaries.TryGetValue("ApplicationPageBackgroundThemeBrush", out var brush);
-                    return brush != null ? brush is Brush ? (Brush)brush : null : null;
+                isSelected = value;
+                NotifyPropertyChanged(nameof(SelectionBrush));
             }
         }
     }
 
+    private bool isDragging = false;
+    public bool IsDragging
+    {
+        get => isDragging;
+        set
+        {
+            if (value != isDragging)
+            {
+                isDragging = value;
+                NotifyPropertyChanged(nameof(SelectionBrush));
+            }
+        }
+    }
+
+    // COLORS
+
+    private readonly Color DefaultSubStateColor = Color.Transparent;
+    private readonly Color SelectionColor = Color.DarkOrange;
+    private readonly Color DraggingColor = Color.CornflowerBlue;
+    
+    // BRUSHES
+
+    public Brush SelectionBrush
+    {
+        get
+        {
+            if (IsDragging)
+            {
+                return new SolidColorBrush(Windows.UI.Color.FromArgb(DraggingColor.A, DraggingColor.R, DraggingColor.G, DraggingColor.B));
+            }
+            else if (IsSelected)
+            {
+                return new SolidColorBrush(Windows.UI.Color.FromArgb(SelectionColor.A, SelectionColor.R, SelectionColor.G, SelectionColor.B));
+            }
+            else
+            {
+                Resources.ThemeDictionaries.TryGetValue("ApplicationPageBackgroundThemeBrush", out var brush);
+                return brush != null ? brush is Brush ? (Brush)brush : null : null;
+            }
+        }
+    }
+    public Brush SubStateBrush
+    {
+        get
+        {
+            switch (SubState)
+            {
+                case NodeSubState.Final:
+                    return new SolidColorBrush(Windows.UI.Color.FromArgb(SelectionColor.A, SelectionColor.R, SelectionColor.G, SelectionColor.B));
+                default:
+                    return new SolidColorBrush(Windows.UI.Color.FromArgb(DefaultSubStateColor.A, DefaultSubStateColor.R, DefaultSubStateColor.G, DefaultSubStateColor.B));
+            }
+        }
+    }
+
+    // TODO: PARENT (сейчас это тупо страница с лабой, надо переделать)
+
     private Lab5Page Page5 => (Lab5Page)Page;
+
+    // NotifyPropertyChanged event for OneWay (TwoWay) bindings
 
     public event PropertyChangedEventHandler? PropertyChanged;
     private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
@@ -87,31 +149,35 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     public GraphNodeControl(Vector2 position, Canvas canva)
     {
         Position = new Vector2(position.X - Radius, position.Y - Radius);
-        state = NodeControlState.Default;
+        subState = NodeSubState.Default;
         Canva = canva;
         this.InitializeComponent();
     }
 
+    // SELECTION METHODS
+
     public void Select()
     {
         if (Page5.SelectionMode == Enums.SelectionMode.None) return;
-        State = NodeControlState.Selected;
+        IsSelected = true;
     }
     public void Deselect()
     {
-        State = NodeControlState.Default;
+        IsSelected = false;
     }
     public void ToggleSelection()
     {
-        if (State == NodeControlState.Selected)
+        if (IsSelected)
         {
             Deselect();
         }
-        else if (State == NodeControlState.Default) 
+        else if (SubState == NodeSubState.Default) 
         {
             Select();
         }
     }
+
+    // POINTER EVENTS
 
     private void Border_PointerPressed(object sender, PointerRoutedEventArgs e)
     {
@@ -149,12 +215,9 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             {
                 if (!l5.CheckNodeCollisions(this, Canva))
                 {
-                    Canvas.SetLeft(this, Position.X);
-                    Canvas.SetTop(this, Position.Y);
-
-                    ((Lab5Page)Page).UpdateConnectedEdges(this);
-
-                    State = NodeControlState.Moving;
+                    Move(Position.X, Position.Y);
+                    Page5.UpdateConnectedEdges(this);
+                    IsDragging = true;
                 }
                 else
                 {
@@ -166,14 +229,20 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
                 return;
             }
         }
+        else
+        {
+            IsDragging = false;
+        }
     }
     private void Border_PointerExited(object sender, PointerRoutedEventArgs e)
     {
-        if (State != NodeControlState.Selected)
+        if (SubState != NodeSubState.Selected)
         {
-            State = NodeControlState.Default;
+            SubState = NodeSubState.Default;
         }
     }
+
+    // FLYOUT EVENTS
 
     private async void FlyoutRenameButton_Click(object sender, RoutedEventArgs e)
     {
@@ -262,8 +331,16 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         weight ??= string.Empty;
         AddLoop(weight);
     }
+    
+    // NODE MANIPULATION METHODS
+    
     public void AddLoop(string weight)
     {
         Page5.ConnectVertrices(this, this, weight);
+    }
+    public void Move(float x, float y)
+    {
+        Canvas.SetLeft(this, Position.X);
+        Canvas.SetTop(this, Position.Y);
     }
 }
