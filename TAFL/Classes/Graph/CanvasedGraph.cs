@@ -14,10 +14,14 @@ using SelectionMode = TAFL.Enums.SelectionMode;
 namespace TAFL.Classes.Graph;
 public class CanvasedGraph
 {
+    // COMPTIME CONSTANTS
     public static readonly int VertexZ = 10;
     public static readonly int EdgeZ = 0;
 
+    // INPUT PROPS
     public Canvas Canvas;
+
+    // OTHERS
     public List<CanvasedEdge> Edges => Canvas.Children.Where(x => x is CanvasedEdge).Cast<CanvasedEdge>().ToList();
     public GraphNodeControl? SelectedNode => GetSelectedNode();
     public List<GraphNodeControl>? SelectedNodes => GetSelectedNodes();
@@ -25,7 +29,6 @@ public class CanvasedGraph
     public Queue<Action<GraphNodeControl>> SelectionRequests = new();
 
     // CONSTRUCTORS
-
     public CanvasedGraph(Canvas canvas)
     {
         Canvas = canvas;
@@ -37,7 +40,6 @@ public class CanvasedGraph
     }
 
     // POINTER EVENTS
-
     private void PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
         if (SelectedNode != null)
@@ -53,14 +55,12 @@ public class CanvasedGraph
     }
 
     // GRAPH MANIPULATION METHODS
-
-    // GRAPH
     public void Clear()
     {
         Canvas.Children.Clear();
     }
 
-    // NODES
+    // NODES MANIPULATION METHODS
     public void NewNode(double x, double y)
     {
         var node = new GraphNodeControl(new Vector2((float)x, (float)y), this);
@@ -124,7 +124,7 @@ public class CanvasedGraph
         }
     }
 
-    // EDGES
+    // EDGES MANIPULATION METHODS
     public void NewEdge(CanvasedEdge edge)
     {
         foreach (var edgee in Edges)
@@ -292,7 +292,7 @@ public class CanvasedGraph
             {
                 if (node == c) continue;
                 var d = Math.Sqrt(Math.Pow(c.Position.X - node.Position.X, 2) + Math.Pow(c.Position.Y - node.Position.Y, 2));
-                if (d < GraphNodeControl.Diameter)
+                if (d < c.Radius + node.Radius)
                 {
                     return true;
                 }

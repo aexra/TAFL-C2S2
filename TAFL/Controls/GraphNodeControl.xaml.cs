@@ -19,18 +19,6 @@ using TAFL.Views;
 namespace TAFL.Controls;
 public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChanged
 {
-    // COMPTIME CONSTANTS
-    public static readonly float SelectionRadius = 40;
-    public static readonly float Radius = 38;
-    public static readonly float SubStateRadius = 37;
-    public static readonly float InnerRadius = 34;
-    
-    // RUNTIME CONSTANTS
-    public static float SelectionDiameter => SelectionRadius * 2;
-    public static float Diameter => Radius * 2;
-    public static float SubStateDiameter => SubStateRadius * 2;
-    public static float InnerDiameter => InnerRadius * 2;
-
     // INPUT PROPS
     public Vector2 Position;
     private readonly CanvasedGraph Graph;
@@ -55,6 +43,14 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
     // VARIABLE FIELDS
     private string title = "A";
+    public float SelectionRadius = 40;
+    public float Radius = 38;
+    public float SubStateRadius = 37;
+    public float InnerRadius = 34;
+    public float SelectionDiameter => SelectionRadius * 2;
+    public float Diameter => Radius * 2;
+    public float SubStateDiameter => SubStateRadius * 2;
+    public float InnerDiameter => InnerRadius * 2;
 
     // FLAGS
     private bool isSelected = false;
