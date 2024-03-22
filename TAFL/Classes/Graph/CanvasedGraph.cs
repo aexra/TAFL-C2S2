@@ -22,11 +22,12 @@ public class CanvasedGraph
     public Canvas Canvas;
 
     // OTHERS
+    public List<GraphNodeControl> Nodes => Canvas.Children.Where(x => x is GraphNodeControl).Cast<GraphNodeControl>().ToList();
     public List<CanvasedEdge> Edges = new();
     public GraphNodeControl? SelectedNode => GetSelectedNode();
     public List<GraphNodeControl>? SelectedNodes => GetSelectedNodes();
     public SelectionMode SelectionMode = SelectionMode.None;
-    public Queue<Action<GraphNodeControl>> SelectionRequests = new();
+    public Queue<Action<GraphNodeControl, bool>> SelectionRequests = new();
 
     // CONSTRUCTORS
     public CanvasedGraph(Canvas canvas)
@@ -59,7 +60,7 @@ public class CanvasedGraph
     {
         Canvas.Children.Clear();
     }
-    public void RequestSelection(Action<GraphNodeControl> selected)
+    public void RequestSelection(Action<GraphNodeControl, bool> selected)
     {
         SelectionRequests.Enqueue(selected);
     }
@@ -125,6 +126,20 @@ public class CanvasedGraph
             {
                 node.Deselect();
             }
+        }
+    }
+    public void LockAllNodesPosition()
+    {
+        foreach (var node in Nodes)
+        {
+            node.LockPosition();
+        }
+    }
+    public void UnlockAllNodesPosition()
+    {
+        foreach (var node in Nodes)
+        {
+            node.UnlockPosition();
         }
     }
 
@@ -354,23 +369,23 @@ public class CanvasedGraph
     }
 
     // GRAPH EVENTS
-    public bool NodeSelecting(GraphNodeControl node)
+    public bool NodeSelecting(GraphNodeControl node, bool ephemeral = false)
     {
         switch (SelectionMode)
         {
             case SelectionMode.Single:
                 DeselectAllNodes();
-                NodeSelected(node); 
+                NodeSelected(node, ephemeral); 
                 return true;
             case SelectionMode.Multiple:
-                NodeSelected(node);
+                NodeSelected(node, ephemeral);
                 return true;
             default:
                 return false;
         }
     }
-    public void NodeSelected(GraphNodeControl node)
+    public void NodeSelected(GraphNodeControl node, bool ephemeral = false)
     {
-        node.Selected();
+        node.Selected(ephemeral);
     }
 }

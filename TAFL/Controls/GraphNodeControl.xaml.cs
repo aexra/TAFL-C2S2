@@ -56,6 +56,8 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     // FLAGS
     private bool isSelected = false;
     private bool isDragging = false;
+    private bool isDeselectable = true;
+    private bool isDraggable = true;
     
     // PUBLIC GET-SET ABSTRACTIONS
     public bool IsSelected
@@ -79,6 +81,30 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             {
                 isDragging = value;
                 NotifyPropertyChanged(nameof(SelectionBrush));
+            }
+        }
+    }
+    public bool IsDraggable
+    {
+        get => isDraggable;
+        set
+        {
+            if (value != isDraggable)
+            {
+                isDraggable = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+    public bool IsDeselectable
+    {
+        get => isDeselectable;
+        set
+        {
+            if (value != isDeselectable)
+            {
+                isDeselectable = value;
+                NotifyPropertyChanged();
             }
         }
     }
@@ -157,10 +183,11 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
 
     // SELECTION METHODS
-    public void Select()
+    public void Select(bool deselectable = true, bool ephemeral = false)
     {
         if (Graph.SelectionMode == Enums.SelectionMode.None) return;
-        Graph.NodeSelecting(this);
+        Graph.NodeSelecting(this, ephemeral);
+        isDeselectable = deselectable;
     }
     public void Deselect()
     {
@@ -170,7 +197,14 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     {
         if (IsSelected)
         {
-            Deselect();
+            if (IsDeselectable)
+            {
+                Deselect();
+            }
+            else
+            {
+                Select(true, true);
+            }
         }
         else 
         {
@@ -204,6 +238,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             IsFirstInteraction = false;
             return;
         }
+        if (!IsDraggable) return;
         var props = e.GetCurrentPoint(null).Properties;
         if (props.IsLeftButtonPressed)
         {
@@ -289,11 +324,13 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     {
         ContextFlyout.Hide();
         Graph.SelectionMode = Enums.SelectionMode.Multiple;
-        Select();
-        Graph.RequestSelection((node) => {
+        Graph.LockAllNodesPosition();
+        Select(false);
+        Graph.RequestSelection((node, ephemeral) => {
             Graph.ConnectNodes(this, node, "");
             Graph.DeselectAllNodes();
             Graph.SelectionMode = Enums.SelectionMode.None;
+            Graph.UnlockAllNodesPosition();
         });
 
         //var content = new StringInputDialog2();
@@ -353,14 +390,22 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         Canvas.SetLeft(this, Position.X);
         Canvas.SetTop(this, Position.Y);
     }
+    public void LockPosition()
+    {
+        IsDraggable = false;
+    }
+    public void UnlockPosition()
+    {
+        IsDraggable = true;
+    }
 
     // NODE EVENTS
-    public void Selected()
+    public void Selected(bool ephemeral = false)
     {
         IsSelected = true;
         if (Graph.SelectionRequests.Count > 0)
         {
-            Graph.SelectionRequests.Dequeue().Invoke(this);
+            Graph.SelectionRequests.Dequeue().Invoke(this, ephemeral);
         }
     }
 }
