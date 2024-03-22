@@ -141,10 +141,12 @@ public class CanvasedEdge
     private void PathObject_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
         PathObject.Stroke = DefaultStrokeBrush;
+        PathObject.StrokeThickness = 4;
     }
     private void PathObject_PointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
         PathObject.Stroke = HoverStrokeBrush;
+        PathObject.StrokeThickness = 6;
     }
 
     // ARC CALCULATION METHODS
