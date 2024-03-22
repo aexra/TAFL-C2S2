@@ -19,10 +19,10 @@ public sealed partial class Lab5Page : Page
     public Lab5Page()
     {
         ViewModel = App.GetService<Lab5ViewModel>();
+        InitializeComponent();
+
         Constructor = new(ConstructorCanvas);
         Output = new(OutputCanvas);
-
-        InitializeComponent();
     }
 
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
