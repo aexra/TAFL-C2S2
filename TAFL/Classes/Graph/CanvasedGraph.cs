@@ -59,6 +59,10 @@ public class CanvasedGraph
     {
         Canvas.Children.Clear();
     }
+    public void RequestSelection(Action<GraphNodeControl> selected)
+    {
+        SelectionRequests.Enqueue(selected);
+    }
 
     // NODES MANIPULATION METHODS
     public void NewNode(double x, double y)
