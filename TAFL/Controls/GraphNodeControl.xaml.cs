@@ -282,46 +282,54 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     {
         Graph.RemoveNode(this);
     }
-    private async void FlyoutConnectButton_Click(object sender, RoutedEventArgs e)
+    private void FlyoutConnectButton_Click(object sender, RoutedEventArgs e)
     {
-        var content = new StringInputDialog2();
-        var dialog = new ContentDialog();
+        Graph.SelectionMode = Enums.SelectionMode.Multiple;
+        Select();
+        Graph.RequestSelection((node) => {
+            Graph.ConnectNodes(this, node, "");
+            Graph.DeselectAllNodes();
+            Graph.SelectionMode = Enums.SelectionMode.None;
+        });
 
-        dialog.XamlRoot = this.XamlRoot;
-        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-        dialog.Title = $"Присоединить вершину";
-        dialog.PrimaryButtonText = "Соединить";
-        dialog.CloseButtonText = "Отмена";
-        dialog.DefaultButton = ContentDialogButton.Primary;
-        content.Placeholder1 = "Введите имя вершины";
-        content.Placeholder2 = "Введите вес ребра";
-        content.CheckBoxContent = "От указанной к этой?";
-        dialog.Content = content;
+        //var content = new StringInputDialog2();
+        //var dialog = new ContentDialog();
 
-        var result = await dialog.ShowAsync();
+        //dialog.XamlRoot = this.XamlRoot;
+        //dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+        //dialog.Title = $"Присоединить вершину";
+        //dialog.PrimaryButtonText = "Соединить";
+        //dialog.CloseButtonText = "Отмена";
+        //dialog.DefaultButton = ContentDialogButton.Primary;
+        //content.Placeholder1 = "Введите имя вершины";
+        //content.Placeholder2 = "Введите вес ребра";
+        //content.CheckBoxContent = "От указанной к этой?";
+        //dialog.Content = content;
 
-        if (result == ContentDialogResult.Primary)
-        {
-            var toConnectName = content.First;
-            var weight = content.Second;
-            var isBackwards = content.Flag;
+        //var result = await dialog.ShowAsync();
 
-            var node = Graph.GetNode(toConnectName);
+        //if (result == ContentDialogResult.Primary)
+        //{
+        //    var toConnectName = content.First;
+        //    var weight = content.Second;
+        //    var isBackwards = content.Flag;
 
-            if (node != null)
-            {
-                if (Graph.IsEdgeExists(this, node) && this != node)
-                {
-                    await DialogHelper.ShowErrorDialogAsync("Ребро уже существует", XamlRoot);
-                    return;
-                }
-                Graph.ConnectNodes(this, node, weight);
-            }
-            else
-            {
-                await DialogHelper.ShowErrorDialogAsync("Не найдена вершина с именем " + toConnectName, XamlRoot);
-            }
-        }
+        //    var node = Graph.GetNode(toConnectName);
+
+        //    if (node != null)
+        //    {
+        //        if (Graph.IsEdgeExists(this, node) && this != node)
+        //        {
+        //            await DialogHelper.ShowErrorDialogAsync("Ребро уже существует", XamlRoot);
+        //            return;
+        //        }
+        //        Graph.ConnectNodes(this, node, weight);
+        //    }
+        //    else
+        //    {
+        //        await DialogHelper.ShowErrorDialogAsync("Не найдена вершина с именем " + toConnectName, XamlRoot);
+        //    }
+        //}
     }
     private async void FlyoutLoopButton_Click(object sender, RoutedEventArgs e)
     {

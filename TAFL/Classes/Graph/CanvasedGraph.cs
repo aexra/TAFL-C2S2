@@ -25,7 +25,7 @@ public class CanvasedGraph
     public List<CanvasedEdge> Edges = new();
     public GraphNodeControl? SelectedNode => GetSelectedNode();
     public List<GraphNodeControl>? SelectedNodes => GetSelectedNodes();
-    public SelectionMode SelectionMode = SelectionMode.Single;
+    public SelectionMode SelectionMode = SelectionMode.None;
     public Queue<Action<GraphNodeControl>> SelectionRequests = new();
 
     // CONSTRUCTORS
