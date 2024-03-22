@@ -323,54 +323,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     private void FlyoutConnectButton_Click(object sender, RoutedEventArgs e)
     {
         ContextFlyout.Hide();
-        Graph.SelectionMode = Enums.SelectionMode.Multiple;
-        Graph.LockAllNodesPosition();
-        Select(false);
-        Graph.RequestSelection((node, ephemeral) => {
-            Graph.ConnectNodes(this, node, "");
-            Graph.DeselectAllNodes();
-            Graph.SelectionMode = Enums.SelectionMode.None;
-            Graph.UnlockAllNodesPosition();
-        });
-
-        //var content = new StringInputDialog2();
-        //var dialog = new ContentDialog();
-
-        //dialog.XamlRoot = this.XamlRoot;
-        //dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-        //dialog.Title = $"Присоединить вершину";
-        //dialog.PrimaryButtonText = "Соединить";
-        //dialog.CloseButtonText = "Отмена";
-        //dialog.DefaultButton = ContentDialogButton.Primary;
-        //content.Placeholder1 = "Введите имя вершины";
-        //content.Placeholder2 = "Введите вес ребра";
-        //content.CheckBoxContent = "От указанной к этой?";
-        //dialog.Content = content;
-
-        //var result = await dialog.ShowAsync();
-
-        //if (result == ContentDialogResult.Primary)
-        //{
-        //    var toConnectName = content.First;
-        //    var weight = content.Second;
-        //    var isBackwards = content.Flag;
-
-        //    var node = Graph.GetNode(toConnectName);
-
-        //    if (node != null)
-        //    {
-        //        if (Graph.IsEdgeExists(this, node) && this != node)
-        //        {
-        //            await DialogHelper.ShowErrorDialogAsync("Ребро уже существует", XamlRoot);
-        //            return;
-        //        }
-        //        Graph.ConnectNodes(this, node, weight);
-        //    }
-        //    else
-        //    {
-        //        await DialogHelper.ShowErrorDialogAsync("Не найдена вершина с именем " + toConnectName, XamlRoot);
-        //    }
-        //}
+        ConnectFromSelection();
     }
     private async void FlyoutLoopButton_Click(object sender, RoutedEventArgs e)
     {
@@ -397,6 +350,59 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     public void UnlockPosition()
     {
         IsDraggable = true;
+    }
+    public async Task ConnectFromDialogAsync()
+    {
+        var content = new StringInputDialog2();
+        var dialog = new ContentDialog();
+
+        dialog.XamlRoot = this.XamlRoot;
+        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+        dialog.Title = $"Присоединить вершину";
+        dialog.PrimaryButtonText = "Соединить";
+        dialog.CloseButtonText = "Отмена";
+        dialog.DefaultButton = ContentDialogButton.Primary;
+        content.Placeholder1 = "Введите имя вершины";
+        content.Placeholder2 = "Введите вес ребра";
+        content.CheckBoxContent = "От указанной к этой?";
+        dialog.Content = content;
+
+        var result = await dialog.ShowAsync();
+
+        if (result == ContentDialogResult.Primary)
+        {
+            var toConnectName = content.First;
+            var weight = content.Second;
+            var isBackwards = content.Flag;
+
+            var node = Graph.GetNode(toConnectName);
+
+            if (node != null)
+            {
+                if (Graph.IsEdgeExists(this, node) && this != node)
+                {
+                    await DialogHelper.ShowErrorDialogAsync("Ребро уже существует", XamlRoot);
+                    return;
+                }
+                Graph.ConnectNodes(this, node, weight);
+            }
+            else
+            {
+                await DialogHelper.ShowErrorDialogAsync("Не найдена вершина с именем " + toConnectName, XamlRoot);
+            }
+        }
+    }
+    public void ConnectFromSelection()
+    {
+        Graph.SelectionMode = Enums.SelectionMode.Multiple;
+        Graph.LockAllNodesPosition();
+        Select(false);
+        Graph.RequestSelection((node, ephemeral) => {
+            Graph.ConnectNodes(this, node, "");
+            Graph.DeselectAllNodes();
+            Graph.SelectionMode = Enums.SelectionMode.None;
+            Graph.UnlockAllNodesPosition();
+        });
     }
 
     // NODE EVENTS
