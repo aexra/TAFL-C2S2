@@ -7,6 +7,8 @@ using TAFL.Controls;
 using TAFL.Services;
 using TAFL.Structures;
 using TAFL.ViewModels;
+using TAFL.Enums;
+using SelectionMode = TAFL.Enums.SelectionMode;
 
 namespace TAFL.Views;
 
@@ -15,6 +17,10 @@ public sealed partial class Lab5Page : Page
     private readonly List<CanvasedEdge> Edges1 = new();
     private static readonly int VertexZ = 10;
     private static readonly int EdgeZ = 0;
+    private GraphNodeControl? SelectedNode => GetSelectedNode();
+    private List<GraphNodeControl>? SelectedNodes => GetSelectedNodes();
+
+    public SelectionMode SelectionMode = SelectionMode.None;
 
     public Lab5ViewModel ViewModel
     {
@@ -27,12 +33,50 @@ public sealed partial class Lab5Page : Page
         InitializeComponent();
     }
 
+    private GraphNodeControl? GetSelectedNode()
+    {
+        if (SelectionMode != SelectionMode.Single) return null;
+        foreach (var child in Canva.Children)
+        {
+            if (child is GraphNodeControl node)
+            {
+                if (node.State == Enums.NodeControlState.Selected)
+                {
+                    return node;
+                }
+            }
+        }
+        return null;
+    }
+    private List<GraphNodeControl>? GetSelectedNodes()
+    {
+        if (SelectionMode != SelectionMode.Multiple) return null;
+        List<GraphNodeControl> nodes = new();
+        foreach (var child in Canva.Children)
+        {
+            if (child is GraphNodeControl node)
+            {
+                if (node.State == Enums.NodeControlState.Selected)
+                {
+                    nodes.Add(node);
+                }
+            }
+        }
+        return nodes;
+    }
+
     private void Canva_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
+        if (SelectedNode != null)
+        {
+            DeselectAllNodes();
+            return;
+        }
         var pos = e.GetCurrentPoint(Canva).Position;
         var props = e.GetCurrentPoint(Canva).Properties;
 
         if (props.IsLeftButtonPressed) NewNode(pos.X, pos.Y);
+
     }
 
     private void Canva_PointerMoved(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
@@ -380,5 +424,16 @@ public sealed partial class Lab5Page : Page
         }
 
         return alphabet;
+    }
+
+    private void DeselectAllNodes()
+    {
+        foreach (var child in Canva.Children)
+        {
+            if (child is GraphNodeControl node)
+            {
+                node.Deselect();
+            }
+        }
     }
 }

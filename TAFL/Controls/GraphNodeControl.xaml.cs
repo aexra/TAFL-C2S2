@@ -1,27 +1,16 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Xml.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using TAFL.Classes.Graph;
+using TAFL.Enums;
 using TAFL.Helpers;
 using TAFL.Services;
 using TAFL.Views;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,18 +25,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     public float SelectionDiameter => SelectionRadius * 2;
     public float InnerRadius = 34;
     public float InnerDiameter => InnerRadius * 2;
-    public bool IsSelected
-    {
-        get => isSelected;
-        set
-        {
-            if (value != isSelected)
-            {
-                isSelected = value;
-                NotifyPropertyChanged("SelectedBrush");
-            }
-        }
-    }
     public Page Page;
     public int Loops = 0;
     public Vector2 Center => new(Position.X + Radius, Position.Y + Radius);
@@ -67,20 +44,34 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
 
     private readonly Canvas Canva;
-    private bool isSelected;
+    private NodeControlState state = NodeControlState.Default;
+    public NodeControlState State
+    {
+        get => state;
+        set
+        {
+            if (value != state)
+            {
+                state = value;
+                NotifyPropertyChanged(nameof(SelectedBrush));
+            } 
+        }
+    }
     private readonly Color DefaultSelectionColor = Color.DarkOrange;
+    private readonly Color DefaultMovingColor = Color.CornflowerBlue;
     public Brush SelectedBrush
     {
         get
         {
-            if (isSelected)
+            switch (State)
             {
-                return new SolidColorBrush(Windows.UI.Color.FromArgb(DefaultSelectionColor.A, DefaultSelectionColor.R, DefaultSelectionColor.G, DefaultSelectionColor.B));
-            }
-            else
-            {
-                Resources.ThemeDictionaries.TryGetValue("ApplicationPageBackgroundThemeBrush", out var brush);
-                return brush != null ? brush is Brush ? (Brush)brush : null : null;
+                case NodeControlState.Selected:
+                    return new SolidColorBrush(Windows.UI.Color.FromArgb(DefaultSelectionColor.A, DefaultSelectionColor.R, DefaultSelectionColor.G, DefaultSelectionColor.B));
+                case NodeControlState.Moving:
+                    return new SolidColorBrush(Windows.UI.Color.FromArgb(DefaultMovingColor.A, DefaultMovingColor.R, DefaultMovingColor.G, DefaultMovingColor.B));
+                default:
+                    Resources.ThemeDictionaries.TryGetValue("ApplicationPageBackgroundThemeBrush", out var brush);
+                    return brush != null ? brush is Brush ? (Brush)brush : null : null;
             }
         }
     }
@@ -96,29 +87,37 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     public GraphNodeControl(Vector2 position, Canvas canva)
     {
         Position = new Vector2(position.X - Radius, position.Y - Radius);
-        isSelected = false;
+        state = NodeControlState.Default;
         Canva = canva;
         this.InitializeComponent();
     }
 
     public void Select()
     {
-        IsSelected = true;
+        if (Page5.SelectionMode == Enums.SelectionMode.None) return;
+        State = NodeControlState.Selected;
     }
     public void Deselect()
     {
-        IsSelected = false;
+        State = NodeControlState.Default;
     }
-    public bool ToggleSelection()
+    public void ToggleSelection()
     {
-        IsSelected = !IsSelected;
-        return isSelected;
+        if (State == NodeControlState.Selected)
+        {
+            Deselect();
+        }
+        else if (State == NodeControlState.Default) 
+        {
+            Select();
+        }
     }
 
     private void Border_PointerPressed(object sender, PointerRoutedEventArgs e)
     {
+        e.Handled = true;
         var props = e.GetCurrentPoint(Canva).Properties;
-        if (props.IsLeftButtonPressed) Select();
+        if (props.IsLeftButtonPressed) ToggleSelection();
         if (props.IsRightButtonPressed)
         {
             FlyoutBase.ShowAttachedFlyout(this);
@@ -126,11 +125,19 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     private void Border_PointerReleased(object sender, PointerRoutedEventArgs e)
     {
-        Deselect();
+        if (Page5.SelectionMode == Enums.SelectionMode.None)
+        {
+            Deselect();
+        }
+        else
+        {
+            Select();
+        }
     }
     private void Border_PointerMoved(object sender, PointerRoutedEventArgs e)
-    { 
-        if (IsSelected)
+    {
+        var props = e.GetCurrentPoint(null).Properties;
+        if (props.IsLeftButtonPressed)
         {
             var pos = e.GetCurrentPoint(Canva).Position;
             var tr_pos = new Vector2((float)pos.X - Radius, (float)pos.Y - Radius);
@@ -146,6 +153,8 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
                     Canvas.SetTop(this, Position.Y);
 
                     ((Lab5Page)Page).UpdateConnectedEdges(this);
+
+                    State = NodeControlState.Moving;
                 }
                 else
                 {
@@ -160,7 +169,10 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     private void Border_PointerExited(object sender, PointerRoutedEventArgs e)
     {
-        Deselect();
+        if (State != NodeControlState.Selected)
+        {
+            State = NodeControlState.Default;
+        }
     }
 
     private async void FlyoutRenameButton_Click(object sender, RoutedEventArgs e)
