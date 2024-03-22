@@ -348,4 +348,23 @@ public class CanvasedGraph
 
         return graph;
     }
+
+    // GRAPH EVENTS
+    public bool NodeSelecting(GraphNodeControl node)
+    {
+        var select = SelectionMode != SelectionMode.None;
+        if (select)
+        {
+            NodeSelected(node);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public void NodeSelected(GraphNodeControl node)
+    {
+        node.Selected();
+    }
 }

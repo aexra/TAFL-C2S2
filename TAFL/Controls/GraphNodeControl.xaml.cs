@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Newtonsoft.Json.Bson;
 using TAFL.Classes.Graph;
 using TAFL.Enums;
 using TAFL.Helpers;
@@ -159,11 +160,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     public void Select()
     {
         if (Graph.SelectionMode == Enums.SelectionMode.None) return;
-        IsSelected = true;
-        if (Graph.SelectionRequests.Count > 0)
-        {
-            Graph.SelectionRequests.Dequeue().Invoke(this);
-        }
+        Graph.NodeSelecting(this);
     }
     public void Deselect()
     {
@@ -342,5 +339,15 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     {
         Canvas.SetLeft(this, Position.X);
         Canvas.SetTop(this, Position.Y);
+    }
+
+    // NODE EVENTS
+    public void Selected()
+    {
+        IsSelected = true;
+        if (Graph.SelectionRequests.Count > 0)
+        {
+            Graph.SelectionRequests.Dequeue().Invoke(this);
+        }
     }
 }
