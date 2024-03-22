@@ -170,6 +170,10 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     {
         if (Page5.SelectionMode == Enums.SelectionMode.None) return;
         IsSelected = true;
+        if (Page5.SelectionRequests.Count > 0)
+        {
+            Page5.SelectionRequests.Dequeue().Invoke(this);
+        }
     }
     public void Deselect()
     {

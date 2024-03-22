@@ -21,6 +21,7 @@ public sealed partial class Lab5Page : Page
     private List<GraphNodeControl>? SelectedNodes => GetSelectedNodes();
 
     public SelectionMode SelectionMode = SelectionMode.Single;
+    public Queue<Action<GraphNodeControl>> SelectionRequests = new();
 
     public Lab5ViewModel ViewModel
     {
