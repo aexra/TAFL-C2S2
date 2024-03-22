@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using TAFL.Classes.Graph;
 using TAFL.Enums;
 using TAFL.Helpers;
 using TAFL.Services;
@@ -47,9 +48,9 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         }
     }
 
-    // TODO: PARENT CANVAS (асбтрагировать на уровне CanvasedGraph)
+    // PARENT GRAPH
 
-    private readonly Canvas Canva;
+    private readonly CanvasedGraph Graph;
 
     // SUBSTATE Enumeration
 
@@ -141,10 +142,6 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         }
     }
 
-    // TODO: PARENT (сейчас это тупо страница с лабой, надо переделать)
-
-    private Lab5Page Page5 => (Lab5Page)Page;
-
     // NotifyPropertyChanged event for OneWay (TwoWay) bindings
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -155,11 +152,11 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
     // CONSTRUCTORS
 
-    public GraphNodeControl(Vector2 position, Canvas canva)
+    public GraphNodeControl(Vector2 position, CanvasedGraph graph)
     {
         Position = new Vector2(position.X - Radius, position.Y - Radius);
         subState = NodeSubState.Default;
-        Canva = canva;
+        Graph = graph;
         this.InitializeComponent();
     }
 
@@ -167,11 +164,11 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
     public void Select()
     {
-        if (Page5.SelectionMode == Enums.SelectionMode.None) return;
+        if (Graph.SelectionMode == Enums.SelectionMode.None) return;
         IsSelected = true;
-        if (Page5.SelectionRequests.Count > 0)
+        if (Graph.SelectionRequests.Count > 0)
         {
-            Page5.SelectionRequests.Dequeue().Invoke(this);
+            Graph.SelectionRequests.Dequeue().Invoke(this);
         }
     }
     public void Deselect()
@@ -195,7 +192,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     private void Border_PointerPressed(object sender, PointerRoutedEventArgs e)
     {
         e.Handled = true;
-        var props = e.GetCurrentPoint(Canva).Properties;
+        var props = e.GetCurrentPoint(Graph.Canvas).Properties;
         if (props.IsLeftButtonPressed) ToggleSelection();
         if (props.IsRightButtonPressed)
         {
@@ -204,7 +201,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     private void Border_PointerReleased(object sender, PointerRoutedEventArgs e)
     {
-        if (Page5.SelectionMode == Enums.SelectionMode.None)
+        if (Graph.SelectionMode == Enums.SelectionMode.None)
         {
             Deselect();
         }
@@ -220,7 +217,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         var props = e.GetCurrentPoint(null).Properties;
         if (props.IsLeftButtonPressed)
         {
-            var pos = e.GetCurrentPoint(Canva).Position;
+            var pos = e.GetCurrentPoint(Graph.Canvas).Position;
             var tr_pos = new Vector2((float)pos.X - Radius, (float)pos.Y - Radius);
 
             if (Position - tr_pos == Vector2.Zero)
@@ -232,23 +229,16 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             var last_pos = Position;
             Position = tr_pos;
 
-            if (Page != null && Page is Lab5Page l5)
+            if (!Graph.CheckNodeCollisions(this))
             {
-                if (!l5.CheckNodeCollisions(this, Canva))
-                {
-                    Move(Position.X, Position.Y);
-                    Page5.UpdateConnectedEdges(this);
-                    IsDragging = true;
-                    Select();
-                }
-                else
-                {
-                    Position = last_pos;
-                }
+                Move(Position.X, Position.Y);
+                Graph.UpdateConnectedEdges(this);
+                IsDragging = true;
+                Select();
             }
             else
             {
-                return;
+                Position = last_pos;
             }
         }
         else
@@ -281,7 +271,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
         if (result == ContentDialogResult.Primary)
         {
-            if (((Lab5Page)Page).IsNameUnique(content.Input, Canva))
+            if (Graph.IsNameUnique(content.Input))
             {
                 Title = content.Input;
             }
@@ -301,7 +291,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     private void FlyoutDeleteButton_Click(object sender, RoutedEventArgs e)
     {
-        Page5.RemoveVertex(this);
+        Graph.RemoveNode(this);
     }
     private async void FlyoutConnectButton_Click(object sender, RoutedEventArgs e)
     {
@@ -327,16 +317,16 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
             var weight = content.Second;
             var isBackwards = content.Flag;
 
-            var node = ((Lab5Page)Page).GetNode(toConnectName, Canva);
+            var node = Graph.GetNode(toConnectName);
 
             if (node != null)
             {
-                if (((Lab5Page)Page).IsConnectionExists(this, node) && this != node)
+                if (Graph.IsEdgeExists(this, node) && this != node)
                 {
                     await DialogHelper.ShowErrorDialogAsync("Ребро уже существует", XamlRoot);
                     return;
                 }
-                ((Lab5Page)Page).ConnectVertrices(this, node, weight);
+                Graph.ConnectNodes(this, node, weight);
             }
             else
             {
@@ -355,7 +345,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     
     public void AddLoop(string weight)
     {
-        Page5.ConnectVertrices(this, this, weight);
+        Graph.ConnectNodes(this, this, weight);
     }
     public void Move(float x, float y)
     {

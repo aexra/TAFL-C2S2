@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using TAFL.Controls;
 using TAFL.Services;
+using SelectionMode = TAFL.Enums.SelectionMode;
 
 namespace TAFL.Classes.Graph;
 public class CanvasedGraph
@@ -178,7 +179,7 @@ public class CanvasedGraph
             }
         }
     }
-    private void UpdateEdge(CanvasedEdge edge)
+    public void UpdateEdge(CanvasedEdge edge)
     {
         foreach (var child in Canvas.Children)
         {
@@ -259,7 +260,7 @@ public class CanvasedGraph
             }
         }
     }
-    private bool IsNameUnique(string name)
+    public bool IsNameUnique(string name)
     {
         foreach (var element in Canvas.Children)
         {
@@ -267,7 +268,7 @@ public class CanvasedGraph
         }
         return true;
     }
-    private bool IsEdgeExists(CanvasedEdge edge)
+    public bool IsEdgeExists(CanvasedEdge edge)
     {
         foreach (var edgee in Edges)
         {
@@ -275,7 +276,7 @@ public class CanvasedGraph
         }
         return false;
     }
-    private bool IsEdgeExists(GraphNodeControl node1, GraphNodeControl node2)
+    public bool IsEdgeExists(GraphNodeControl node1, GraphNodeControl node2)
     {
         foreach (var edgee in Edges)
         {
@@ -283,7 +284,7 @@ public class CanvasedGraph
         }
         return false;
     }
-    private bool CheckNodeCollisions(GraphNodeControl c)
+    public bool CheckNodeCollisions(GraphNodeControl c)
     {
         foreach (var element in Canvas.Children)
         {

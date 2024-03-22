@@ -26,7 +26,7 @@ public class CanvasedEdge
     public bool IsArc = false;
 
     public Vector2 Size;
-    public Lab5Page Page5;
+    private readonly CanvasedGraph Graph;
 
     public TextBox WeightBox;
     public Microsoft.UI.Xaml.Shapes.Path PathObject;
@@ -42,8 +42,9 @@ public class CanvasedEdge
             DefaultPathStrokeColor.B));
     private readonly Brush HoverStrokeBrush = new SolidColorBrush(Color.FromArgb(255, 100, 149, 237));
 
-    public CanvasedEdge(GraphNodeControl left, GraphNodeControl right, string weight)
+    public CanvasedEdge(GraphNodeControl left, GraphNodeControl right, string weight, CanvasedGraph graph)
     {
+        Graph = graph;
         Left = left;
         Right = right;
         WeightBox = new() { 
@@ -128,7 +129,7 @@ public class CanvasedEdge
         var props = e.GetCurrentPoint(null).Properties;
         if (props.IsRightButtonPressed)
         {
-            Page5.RemoveEdge(this);
+            Graph.RemoveEdge(this);
         }
     }
 
