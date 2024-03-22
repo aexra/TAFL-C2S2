@@ -352,15 +352,17 @@ public class CanvasedGraph
     // GRAPH EVENTS
     public bool NodeSelecting(GraphNodeControl node)
     {
-        var select = SelectionMode != SelectionMode.None;
-        if (select)
+        switch (SelectionMode)
         {
-            NodeSelected(node);
-            return true;
-        }
-        else
-        {
-            return false;
+            case SelectionMode.Single:
+                DeselectAllNodes();
+                NodeSelected(node); 
+                return true;
+            case SelectionMode.Multiple:
+                NodeSelected(node);
+                return true;
+            default:
+                return false;
         }
     }
     public void NodeSelected(GraphNodeControl node)
