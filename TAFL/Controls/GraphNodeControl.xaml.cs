@@ -31,6 +31,8 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     public int Loops = 0;
     public Vector2 Center => new(Position.X + Radius, Position.Y + Radius);
 
+    // Title property
+
     private string title = "A";
     public string Title
     {
@@ -95,11 +97,14 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         }
     }
 
+    // Костыль чтобы прерывать первый вызов события PointerMove
+    private bool IsFirstInteraction = true;
+
     // COLORS
 
     private readonly Color DefaultSubStateColor = Color.Transparent;
     private readonly Color SelectionColor = Color.DarkOrange;
-    private readonly Color DraggingColor = Color.DarkOrange;
+    private readonly Color DraggingColor = Color.DeepSkyBlue;
     
     // BRUSHES
 
@@ -147,6 +152,8 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
+    // CONSTRUCTORS
 
     public GraphNodeControl(Vector2 position, Canvas canva)
     {
@@ -201,11 +208,22 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     }
     private void Border_PointerMoved(object sender, PointerRoutedEventArgs e)
     {
+        if (IsFirstInteraction)
+        {
+            IsFirstInteraction = false;
+            return;
+        }
         var props = e.GetCurrentPoint(null).Properties;
         if (props.IsLeftButtonPressed)
         {
             var pos = e.GetCurrentPoint(Canva).Position;
             var tr_pos = new Vector2((float)pos.X - Radius, (float)pos.Y - Radius);
+
+            if (Position - tr_pos == Vector2.Zero)
+            {
+                IsDragging = false;
+                return;
+            }
 
             var last_pos = Position;
             Position = tr_pos;
