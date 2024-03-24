@@ -16,6 +16,7 @@ public sealed partial class Lab5Page : Page
         get;
     }
 
+    // CONSTRUCTOR
     public Lab5Page()
     {
         ViewModel = App.GetService<Lab5ViewModel>();
