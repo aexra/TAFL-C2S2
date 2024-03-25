@@ -24,6 +24,33 @@ public sealed partial class Lab5Page : Page
 
         Constructor = new(ConstructorCanvas);
         Output = new(OutputCanvas) { ReadOnly=true };
+
+        Constructor.NodeCreated += Constructor_NodeCreated;
+        Constructor.NodeRemoved += Constructor_NodeRemoved;
+        Constructor.EdgeCreated += Constructor_EdgeCreated;
+        Constructor.EdgeRemoved += Constructor_EdgeRemoved;
+        Constructor.GraphCleared += Constructor_GraphCleared;
+    }
+
+    private void Constructor_NodeCreated(Controls.GraphNodeControl node)
+    {
+        LogService.Log($"Создана вершина {node.Title}");
+    }
+    private void Constructor_NodeRemoved(Controls.GraphNodeControl node)
+    {
+        LogService.Log($"Удалена вершина {node.Title}");
+    }
+    private void Constructor_EdgeCreated(CanvasedEdge edge)
+    {
+        LogService.Log(edge.Left != edge.Right ? $"Соединены вершины {edge.Left.Title} и {edge.Right.Title}" : $"Создана петля в {edge.Left.Title}");
+    }
+    private void Constructor_EdgeRemoved(CanvasedEdge edge)
+    {
+        LogService.Log(edge.Left != edge.Right? $"Удалено ребро между {edge.Left.Title} и {edge.Right.Title}" : $"Удалена петля в {edge.Left.Title}");
+    }
+    private void Constructor_GraphCleared()
+    {
+        LogService.Log($"Граф очищен");
     }
 
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

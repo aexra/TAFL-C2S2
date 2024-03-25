@@ -32,6 +32,23 @@ public class CanvasedGraph
     public SelectionMode SelectionMode = SelectionMode.None;
     public Queue<Action<GraphNodeControl, bool>> SelectionRequests = new();
 
+    // EVENT HANDLERS
+    public delegate void NodeCreatedHandler(GraphNodeControl node);
+    public delegate void NodeRemovedHandler(GraphNodeControl node);
+    public delegate void NodeSelectedHandler(GraphNodeControl node);
+    public delegate void EdgeCreatedHandler(CanvasedEdge edge);
+    public delegate void EdgeRemovedHandler(CanvasedEdge edge);
+    public delegate void GraphClearedHandler();
+
+    // EVENTS
+    public event NodeCreatedHandler? NodeCreated;
+    public event NodeRemovedHandler? NodeRemoved;
+    public event NodeSelectedHandler? NodeSelected;
+    public event EdgeCreatedHandler? EdgeCreated;
+    public event EdgeRemovedHandler? EdgeRemoved;
+    public event GraphClearedHandler? GraphCleared;
+
+
     // CONSTRUCTORS
     public CanvasedGraph(Canvas canvas)
     {
@@ -65,7 +82,7 @@ public class CanvasedGraph
         Canvas.Children.Clear();
         Edges.Clear();
         SelectionRequests.Clear();
-        LogService.Log($"Граф очищен");
+        GraphCleared?.Invoke();
     }
     public void RequestSelection(Action<GraphNodeControl, bool> selected)
     {
@@ -104,7 +121,7 @@ public class CanvasedGraph
         Canvas.SetTop(node, node.Position.Y);
         Canvas.SetZIndex(node, VertexZ);
 
-        LogService.Log($"Создана вершина {node.Title}");
+        NodeCreated?.Invoke(node);
     }
     public void RemoveNode(GraphNodeControl node)
     {
@@ -118,7 +135,7 @@ public class CanvasedGraph
         }
         toDelete.ForEach(RemoveEdge);
         Canvas.Children.Remove(node);
-        LogService.Log($"Удалена вершина {node.Title}");
+        NodeRemoved?.Invoke(node);
     }
     public void ConnectNodes(GraphNodeControl left, GraphNodeControl right, string weight)
     {
@@ -168,7 +185,7 @@ public class CanvasedGraph
         Canvas.Children.Add(edge.PathObject);
         Canvas.Children.Add(edge.WeightBox);
         Canvas.SetZIndex(edge.PathObject, EdgeZ);
-        LogService.Log(left != right? $"Соединены вершины {left.Title} и {right.Title}" : $"Создана петля в {left.Title}");
+        EdgeCreated?.Invoke(edge);
     }
     public void RemoveEdge(CanvasedEdge edge)
     {
@@ -201,7 +218,7 @@ public class CanvasedGraph
                 }
             }
         }
-        LogService.Log($"Удалено ребро между {edge.Left.Title} и {edge.Right.Title}");
+        EdgeRemoved?.Invoke(edge);
     }
     public void UpdateAllEdges()
     {
@@ -390,23 +407,24 @@ public class CanvasedGraph
     }
 
     // GRAPH EVENTS
-    public bool NodeSelecting(GraphNodeControl node, bool ephemeral = false)
+    public bool _NodeSelecting_(GraphNodeControl node, bool ephemeral = false)
     {
         switch (SelectionMode)
         {
             case SelectionMode.Single:
                 DeselectAllNodes();
-                NodeSelected(node, ephemeral); 
+                _NodeSelected_(node, ephemeral); 
                 return true;
             case SelectionMode.Multiple:
-                NodeSelected(node, ephemeral);
+                _NodeSelected_(node, ephemeral);
                 return true;
             default:
                 return false;
         }
     }
-    public void NodeSelected(GraphNodeControl node, bool ephemeral = false)
+    public void _NodeSelected_(GraphNodeControl node, bool ephemeral = false)
     {
         node.Selected(ephemeral);
+        NodeSelected?.Invoke(node);
     }
 }

@@ -186,7 +186,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     public void Select(bool deselectable = true, bool ephemeral = false)
     {
         if (Graph.SelectionMode == Enums.SelectionMode.None) return;
-        Graph.NodeSelecting(this, ephemeral);
+        Graph._NodeSelecting_(this, ephemeral);
         isDeselectable = deselectable;
     }
     public void Deselect()
