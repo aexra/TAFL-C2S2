@@ -401,8 +401,15 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         Graph.SelectionMode = Enums.SelectionMode.Multiple;
         Graph.LockAllNodesPosition();
         Select(false);
-        Graph.RequestSelection((node, ephemeral) => {
-            Graph.ConnectNodes(this, node, "");
+        Graph.RequestSelection(async (node, ephemeral) => {
+            if (Graph.IsEdgeExists(this, node))
+            {
+                await DialogHelper.ShowErrorDialogAsync("Ребро уже существует", XamlRoot);
+            }
+            else
+            {
+                Graph.ConnectNodes(this, node, "");
+            }
             Graph.DeselectAllNodes();
             Graph.SelectionMode = Enums.SelectionMode.None;
             Graph.UnlockAllNodesPosition();

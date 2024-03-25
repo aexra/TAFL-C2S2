@@ -114,11 +114,9 @@ public class CanvasedGraph
         toDelete.ForEach(RemoveEdge);
         Canvas.Children.Remove(node);
     }
-    public void ConnectNodes(GraphNodeControl node1, GraphNodeControl node2, string weight)
+    public void ConnectNodes(GraphNodeControl left, GraphNodeControl right, string weight)
     {
-        var edge = new CanvasedEdge(node1, node2, weight, this);
-        NewEdge(edge);
-        Edges.Add(edge);
+        NewEdge(left, right, weight);
     }
     public void DeselectAllNodes()
     {
@@ -146,8 +144,9 @@ public class CanvasedGraph
     }
 
     // EDGES MANIPULATION METHODS
-    public void NewEdge(CanvasedEdge edge)
+    public void NewEdge(GraphNodeControl left, GraphNodeControl right, string weight)
     {
+        var edge = new CanvasedEdge(left, right, weight, this);
         Edges.Add(edge);
         foreach (var edgee in Edges)
         {
@@ -298,11 +297,11 @@ public class CanvasedGraph
         }
         return false;
     }
-    public bool IsEdgeExists(GraphNodeControl node1, GraphNodeControl node2)
+    public bool IsEdgeExists(GraphNodeControl left, GraphNodeControl right)
     {
         foreach (var edgee in Edges)
         {
-            if (edgee.Left == node1 && edgee.Right == node2) return true;
+            if (edgee.Left == left && edgee.Right == right) return true;
         }
         return false;
     }

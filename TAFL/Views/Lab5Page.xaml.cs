@@ -57,7 +57,7 @@ public sealed partial class Lab5Page : Page
     {
         return Constructor.GetRawGraph().ToString();
     }
-    private string GetSTable(List<EpsLock> locks, List<string> alphabet)
+    private string GetSTable(List<EpsilonClosure> closures, List<string> alphabet)
     {
         return string.Empty;
     }
@@ -66,23 +66,23 @@ public sealed partial class Lab5Page : Page
         return string.Empty;
     }
 
-    private List<Edge> GetTransitionsE(out string output, out List<EpsLock> locks)
+    private List<Edge> GetTransitionsE(out string output, out List<EpsilonClosure> closures)
     {
         List<Edge> edgesE = new();
         output = "Эпсилон замыкания";
-        locks = new();
+        closures = new();
 
         var graph = Constructor.GetRawGraph();
         var counter = -1;
         foreach (var node in graph.Nodes)
         {
-            locks.Add(new() { Name=$"S{++counter}", Origin=node, Nodes=new() });
+            closures.Add(new($"S{++counter}", node, new()));
             output += "\n( " + node.Name + " ) = { " + node.Name;
             foreach (var edge in node.Edges)
             {
                 if (ParseWeights(edge.Weight).Contains("ε"))
                 {
-                    locks.Last().Nodes.Add(edge.Right);
+                    closures.Last().Nodes.Add(edge.Right);
                     edgesE.Add(edge);
                     output += $", {edge.Right.Name}";
                 }

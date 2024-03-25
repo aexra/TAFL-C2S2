@@ -6,9 +6,16 @@ using System.Threading.Tasks;
 using TAFL.Classes.Graph;
 
 namespace TAFL.Structures;
-public struct EpsLock
+public class EpsilonClosure
 {
     public string Name;
     public Node Origin;
     public List<Node> Nodes;
+
+    public EpsilonClosure(string name, Node origin, List<Node> nodes)
+    {
+        Name = name;
+        Origin = origin;
+        Nodes = nodes;
+    }
 }
