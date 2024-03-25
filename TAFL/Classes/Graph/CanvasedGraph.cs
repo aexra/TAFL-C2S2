@@ -189,6 +189,17 @@ public class CanvasedGraph
                 break;
             }
         }
+        if (edge.Left != edge.Right)
+        {
+            foreach (var edgee in Edges)
+            {
+                if (edgee.Left == edge.Right && edgee.Right == edge.Left)
+                {
+                    edge.ToLine();
+                    break;
+                }
+            }
+        }
         LogService.Log($"Удалено ребро между {edge.Left.Title} и {edge.Right.Title}");
     }
     public void UpdateAllEdges()
