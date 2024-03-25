@@ -63,6 +63,9 @@ public class CanvasedGraph
     public void Clear()
     {
         Canvas.Children.Clear();
+        Edges.Clear();
+        SelectionRequests.Clear();
+        LogService.Log($"Граф очищен");
     }
     public void RequestSelection(Action<GraphNodeControl, bool> selected)
     {
@@ -100,6 +103,8 @@ public class CanvasedGraph
         Canvas.SetLeft(node, node.Position.X);
         Canvas.SetTop(node, node.Position.Y);
         Canvas.SetZIndex(node, VertexZ);
+
+        LogService.Log($"Создана вершина {node.Title}");
     }
     public void RemoveNode(GraphNodeControl node)
     {
@@ -113,6 +118,7 @@ public class CanvasedGraph
         }
         toDelete.ForEach(RemoveEdge);
         Canvas.Children.Remove(node);
+        LogService.Log($"Удалена вершина {node.Title}");
     }
     public void ConnectNodes(GraphNodeControl left, GraphNodeControl right, string weight)
     {
@@ -162,6 +168,7 @@ public class CanvasedGraph
         Canvas.Children.Add(edge.PathObject);
         Canvas.Children.Add(edge.WeightBox);
         Canvas.SetZIndex(edge.PathObject, EdgeZ);
+        LogService.Log(left != right? $"Соединены вершины {left.Title} и {right.Title}" : $"Создана петля в {left.Title}");
     }
     public void RemoveEdge(CanvasedEdge edge)
     {
@@ -182,6 +189,7 @@ public class CanvasedGraph
                 break;
             }
         }
+        LogService.Log($"Удалено ребро между {edge.Left.Title} и {edge.Right.Title}");
     }
     public void UpdateAllEdges()
     {
