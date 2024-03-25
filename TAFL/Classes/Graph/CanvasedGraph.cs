@@ -195,7 +195,8 @@ public class CanvasedGraph
             {
                 if (edgee.Left == edge.Right && edgee.Right == edge.Left)
                 {
-                    edge.ToLine();
+                    edgee.ToLine();
+                    UpdateEdge(edgee);
                     break;
                 }
             }
