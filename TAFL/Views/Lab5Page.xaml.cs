@@ -100,7 +100,8 @@ public sealed partial class Lab5Page : Page
         // Заполняем пути в каждой S записи
         foreach (var sline in slines)
         {
-            output += $"\n{sline.Name} = ";
+            output += $"\n";
+            var localOutput = $"{sline.Name} = ";
             foreach (var letter in alphabet)
             {
                 // Создадим в sline список SLine для этой литеры
@@ -135,7 +136,7 @@ public sealed partial class Lab5Page : Page
                 }
 
                 // Выведем полученные штуки
-                output += $"{letter}: " + SetToString(sline.Paths[letter]) + "; ";
+                localOutput += $"{letter}: " + SetToString(sline.Paths[letter]) + "; ";
             }
 
             // Если эта S является начальной, отметим это
@@ -150,6 +151,8 @@ public sealed partial class Lab5Page : Page
                 }
             }
             if (allF) sline.MakeStarting();
+
+            output += (sline.IsStarting? "-> " : "     ") + localOutput;
         }
 
         return output;
