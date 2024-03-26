@@ -59,18 +59,6 @@ public sealed partial class Lab5Page : Page
         Constructor.Clear();
     }
 
-    private void BuildQButton_Click(object sender, RoutedEventArgs e)
-    {
-        LogService.Log(GetQTable());
-    }
-    private void BuildSButton_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
-    private void BuildPButton_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
     private void SolveLabButton_Click(object sender, RoutedEventArgs e)
     {
         var graph = Constructor.GetRawGraph();
@@ -89,6 +77,9 @@ public sealed partial class Lab5Page : Page
     }
     private string GetSTable(Graph graph, List<EpsilonClosure> closures, List<string> alphabet)
     {
+        // Создаем пустую строку для вывода таблички
+        var output = "S:";
+
         // Создаем пустой список записей S таблицы
         List<SLine> slines = new();
 
@@ -101,6 +92,7 @@ public sealed partial class Lab5Page : Page
         // Заполняем пути в каждой S записи
         foreach (var sline in slines)
         {
+            output += $"\n{sline.Name} = ";
             foreach (var letter in alphabet)
             {
                 // Создадим пустой список путей для текущего веса
@@ -111,7 +103,7 @@ public sealed partial class Lab5Page : Page
                 {
                     // Список вершин в которые можно попасть через letter из start
                     var nodes = GetDestinations(graph, start, letter, null);
-
+                    output += nodes.ToString();
                 }
 
                 // Добавим к путям этой записи все пути по весу letter
