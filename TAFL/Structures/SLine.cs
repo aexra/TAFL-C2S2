@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 namespace TAFL.Structures;
 public struct SLine
 {
+    public string Name;
     public EpsilonClosure Closure;
     public Dictionary<string, List<SLine>> Paths;
 
-    public SLine(EpsilonClosure closure)
+    public SLine(string name, EpsilonClosure closure)
     {
+        Name = name;
         Closure = closure;
         Paths = new();
     }

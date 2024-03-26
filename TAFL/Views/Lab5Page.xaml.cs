@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using TAFL.Classes.Graph;
+using TAFL.Controls;
 using TAFL.Services;
 using TAFL.Structures;
 using TAFL.ViewModels;
@@ -72,21 +73,52 @@ public sealed partial class Lab5Page : Page
     }
     private void SolveLabButton_Click(object sender, RoutedEventArgs e)
     {
-        LogService.Log(GetQTable());
+        var graph = Constructor.GetRawGraph();
+        LogService.Log(GetQTable(graph));
         GetTransitionsE(out var ets, out var closures);
         LogService.Log(ets);
 
         var alphabet = GetAlphabet();
-        var tableS = GetSTable(closures, alphabet);
+        var tableS = GetSTable(graph, closures, alphabet);
         LogService.Log(tableS);
     }
 
-    private string GetQTable()
+    private string GetQTable(Graph graph)
     {
-        return Constructor.GetRawGraph().ToString();
+        return graph.ToString();
     }
-    private string GetSTable(List<EpsilonClosure> closures, List<string> alphabet)
+    private string GetSTable(Graph graph, List<EpsilonClosure> closures, List<string> alphabet)
     {
+        // Создаем пустой список записей S таблицы
+        List<SLine> slines = new();
+
+        // Заполняем пустыми S записями эквивалентными замыканиям
+        foreach (var closure in closures)
+        {
+            slines.Add(new SLine($"S{slines.Count}", closure));
+        }
+
+        // Заполняем пути в каждой S записи
+        foreach (var sline in slines)
+        {
+            foreach (var letter in alphabet)
+            {
+                // Создадим пустой список путей для текущего веса
+                List<SLine> paths = new();
+
+                // Пройдем по всем начальным вершинам и соберем списки достижимых вершин
+                foreach (var start in sline.Closure.Nodes)
+                {
+                    // Список вершин в которые можно попасть через letter из start
+                    var nodes = GetDestinations(graph, start, letter, null);
+
+                }
+
+                // Добавим к путям этой записи все пути по весу letter
+                sline.Paths.Add(letter, paths);
+            }
+        }
+
         return string.Empty;
     }
     private string GetPTable()
@@ -94,6 +126,38 @@ public sealed partial class Lab5Page : Page
         return string.Empty;
     }
 
+    private HashSet<Node> GetDestinations(Graph graph, Node start, string letter, HashSet<Node>? visited)
+    {
+        visited ??= new HashSet<Node>();
+        foreach (var edge in start.Edges)
+        {
+            if (!visited.Contains(edge.Right) && (ParseWeights(edge.Weight).Contains(letter) || ParseWeights(edge.Weight).Contains("ε")))
+            {
+                visited.Union(GetDestinations(graph, edge.Right, letter, visited));
+            }
+        }
+        return visited;
+    }
+    private EpsilonClosure? GetEpsilonClosure(List<EpsilonClosure> closures, List<Node> nodes)
+    {
+        foreach (var closure in closures)
+        {
+            if (closure.Nodes.Count == nodes.Count)
+            {
+                var ok = true;
+                foreach (var node in nodes)
+                {
+                    if (!closure.Nodes.Contains(node))
+                    {
+                        ok = false;
+                        break;
+                    }
+                }
+                if (ok) return closure;
+            }
+        }
+        return null;
+    }
     private List<Edge> GetTransitionsE(out string output, out List<EpsilonClosure> closures)
     {
         List<Edge> edgesE = new();
