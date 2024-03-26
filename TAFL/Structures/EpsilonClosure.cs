@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TAFL.Classes.Graph;
 
 namespace TAFL.Structures;
-public class EpsilonClosure
+public struct EpsilonClosure
 {
     public string Name;
     public Node Origin;
