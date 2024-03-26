@@ -73,11 +73,12 @@ public sealed partial class Lab5Page : Page
     private void SolveLabButton_Click(object sender, RoutedEventArgs e)
     {
         LogService.Log(GetQTable());
-        GetTransitionsE(out var ets, out var locks);
+        GetTransitionsE(out var ets, out var closures);
         LogService.Log(ets);
 
         var alphabet = GetAlphabet();
-        var tableS = GetSTable(locks, alphabet);
+        var tableS = GetSTable(closures, alphabet);
+        LogService.Log(tableS);
     }
 
     private string GetQTable()
