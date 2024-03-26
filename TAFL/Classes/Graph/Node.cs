@@ -18,7 +18,7 @@ public class Node : INode
         Name = name;
         Edges = new();
     }
-
+    
     public void Connect(Node to, string weight, bool isOriented)
     {
         if (isOriented)
@@ -32,7 +32,6 @@ public class Node : INode
             ((Node)to).Edges.Add(edge);
         }
     }
-
     public void Disconnect(Node node)
     {
         foreach (var edge in Edges)
@@ -51,9 +50,10 @@ public class Node : INode
             }
         }
     }
-
     public void Delete()
     {
         Graph.RemoveNode(this);
     }
+
+    public override string ToString() => Name;
 }

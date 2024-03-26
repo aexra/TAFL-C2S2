@@ -235,6 +235,19 @@ public class CanvasedGraph
     public void RemoveEdge(CanvasedEdge edge)
     {
         Edges.Remove(edge);
+        if (edge.IsLoop)
+        {
+            var deletedIndex = edge.LoopIndex;
+            edge.Left.Loops--;
+            foreach (var edgee in Edges)
+            {
+                if (edgee.IsLoop && edgee.Left == edge.Left && edgee.LoopIndex > deletedIndex)
+                {
+                    edgee.LoopIndex--;
+                }
+            }
+            UpdateConnectedEdges(edge.Left);
+        }
         foreach (var child in Canvas.Children)
         {
             if (child is Microsoft.UI.Xaml.Shapes.Path path && edge.PathObject == path)

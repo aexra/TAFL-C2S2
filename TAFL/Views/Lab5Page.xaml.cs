@@ -67,6 +67,7 @@ public sealed partial class Lab5Page : Page
         LogService.Log(ets);
 
         var alphabet = GetAlphabet();
+        alphabet.Sort();
         var tableS = GetSTable(graph, closures, alphabet);
         LogService.Log(tableS);
     }
@@ -78,7 +79,7 @@ public sealed partial class Lab5Page : Page
     private string GetSTable(Graph graph, List<EpsilonClosure> closures, List<string> alphabet)
     {
         // Создаем пустую строку для вывода таблички
-        var output = "S:";
+        var output = "Таблица S:";
 
         // Создаем пустой список записей S таблицы
         List<SLine> slines = new();
@@ -98,37 +99,42 @@ public sealed partial class Lab5Page : Page
                 // Создадим пустой список путей для текущего веса
                 List<SLine> paths = new();
 
+                // Вершины которые доступны по этой литере
+                HashSet<Node> destinations = new();
+
                 // Пройдем по всем начальным вершинам и соберем списки достижимых вершин
-                foreach (var start in sline.Closure.Nodes)
+                foreach (var start in sline.Closure.GetAllNodes())
                 {
                     // Список вершин в которые можно попасть через letter из start
-                    var nodes = GetDestinations(graph, start, letter, null);
-                    output += nodes.ToString();
+                    GetDestinations(graph, start, letter, ref destinations);
                 }
+
+                // a
+                output += $"{letter}: " + SetToString(destinations) + "; ";
 
                 // Добавим к путям этой записи все пути по весу letter
                 sline.Paths.Add(letter, paths);
             }
         }
 
-        return string.Empty;
+        return output;
     }
     private string GetPTable()
     {
         return string.Empty;
     }
 
-    private HashSet<Node> GetDestinations(Graph graph, Node start, string letter, HashSet<Node>? visited)
+    private void GetDestinations(Graph graph, Node start, string letter, ref HashSet<Node> visited)
     {
-        visited ??= new HashSet<Node>();
         foreach (var edge in start.Edges)
         {
-            if (!visited.Contains(edge.Right) && (ParseWeights(edge.Weight).Contains(letter) || ParseWeights(edge.Weight).Contains("ε")))
+            if (ParseWeights(edge.Weight).Contains(letter) || ParseWeights(edge.Weight).Contains("ε"))
             {
-                visited.Union(GetDestinations(graph, edge.Right, letter, visited));
+                if (visited.Contains(edge.Right)) continue;
+                visited.Add(edge.Right);
+                GetDestinations(graph, edge.Right, letter, ref visited);
             }
         }
-        return visited;
     }
     private EpsilonClosure? GetEpsilonClosure(List<EpsilonClosure> closures, List<Node> nodes)
     {
@@ -197,5 +203,22 @@ public sealed partial class Lab5Page : Page
         }
 
         return alphabet;
+    }
+    private string SetToString<T>(HashSet<T> set)
+    {
+        var list = new List<string>();
+        set.ToList().ForEach(x => list.Add(x.ToString()));
+        list.Sort();
+        var s = "{ ";
+        if (list.Count > 0)
+        {
+            for (var i = 0; i < list.Count - 1; i++)
+            {
+                s += list.ElementAt(i).ToString() + ", ";
+            }
+            s += list.Last().ToString();
+        }
+        s += " }";
+        return s;
     }
 }

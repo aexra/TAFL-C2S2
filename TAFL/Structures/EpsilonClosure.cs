@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using ABI.System.Collections.Generic;
 using TAFL.Classes.Graph;
 
 namespace TAFL.Structures;
@@ -17,5 +19,15 @@ public struct EpsilonClosure
         Name = name;
         Origin = origin;
         Nodes = nodes;
+    }
+    public List<Node> GetAllNodes()
+    {
+        List<Node> nodes = new();
+        foreach (var node in Nodes)
+        {
+            nodes.Add(node);
+        }
+        nodes.Add(Origin);
+        return nodes;
     }
 }
