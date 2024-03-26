@@ -9,7 +9,7 @@ public struct SLine
 {
     public string Name;
     public EpsilonClosure Closure;
-    public Dictionary<string, List<SLine>> Paths;
+    public Dictionary<string, HashSet<SLine>> Paths;
 
     public SLine(string name, EpsilonClosure closure)
     {
@@ -17,4 +17,6 @@ public struct SLine
         Closure = closure;
         Paths = new();
     }
+
+    public override string ToString() => Name;
 }

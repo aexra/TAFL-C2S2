@@ -96,8 +96,8 @@ public sealed partial class Lab5Page : Page
             output += $"\n{sline.Name} = ";
             foreach (var letter in alphabet)
             {
-                // Создадим пустой список путей для текущего веса
-                List<SLine> paths = new();
+                // Создадим в sline список SLine для этой литеры
+                sline.Paths.Add(letter, new());
 
                 // Вершины которые доступны по этой литере
                 HashSet<Node> destinations = new();
@@ -109,11 +109,26 @@ public sealed partial class Lab5Page : Page
                     GetDestinations(graph, start, letter, ref destinations);
                 }
 
-                // a
-                output += $"{letter}: " + SetToString(destinations) + "; ";
+                // Куда аткуда
+                //output += $"{letter}: " + SetToString(destinations) + "; ";
 
-                // Добавим к путям этой записи все пути по весу letter
-                sline.Paths.Add(letter, paths);
+                // Теперь найдем какие SLine соответствуют этим вершинам
+                foreach (var sline_ in slines)
+                {
+                    // Проверим что все вершины sline_ находятся в destination
+                    var allFound = true;
+                    foreach (var node in sline_.Closure.GetAllNodes())
+                    {
+                        allFound = destinations.Contains(node);
+                    }
+                    if (allFound)
+                    {
+                        sline.Paths[letter].Add(sline_);
+                    }
+                }
+
+                // Выведем полученные штуки
+                output += $"{letter}: " + SetToString(sline.Paths[letter]) + "; ";
             }
         }
 
@@ -167,7 +182,7 @@ public sealed partial class Lab5Page : Page
         foreach (var node in graph.Nodes)
         {
             closures.Add(new($"S{++counter}", node, new()));
-            output += "\n( " + node.Name + " ) = { " + node.Name;
+            output += "\nE( " + node.Name + " ) = { " + node.Name;
             foreach (var edge in node.Edges)
             {
                 if (ParseWeights(edge.Weight).Contains("ε"))
