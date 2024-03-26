@@ -68,7 +68,7 @@ public sealed partial class Lab5Page : Page
 
         var alphabet = GetAlphabet();
         alphabet.Sort();
-        var tableS = GetSTable(graph, closures, alphabet);
+        var tableS = GetSTable(graph, closures, alphabet, out var slines);
         LogService.Log(tableS);
     }
 
@@ -76,13 +76,13 @@ public sealed partial class Lab5Page : Page
     {
         return graph.ToString();
     }
-    private string GetSTable(Graph graph, List<EpsilonClosure> closures, List<string> alphabet)
+    private string GetSTable(Graph graph, List<EpsilonClosure> closures, List<string> alphabet, out List<SLine> slines)
     {
         // Создаем пустую строку для вывода таблички
         var output = "Таблица S:";
 
         // Создаем пустой список записей S таблицы
-        List<SLine> slines = new();
+        slines = new();
 
         // Заполняем пустыми S записями эквивалентными замыканиям
         foreach (var closure in closures)
