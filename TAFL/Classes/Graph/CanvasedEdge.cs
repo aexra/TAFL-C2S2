@@ -5,6 +5,7 @@ using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -59,6 +60,7 @@ public class CanvasedEdge
             Height=DefaultTextBoxSize.Y,
             MaxWidth=DefaultTextBoxMaxSize.X,
             MaxHeight=DefaultTextBoxMaxSize.Y,
+            FontWeight=FontWeights.Bold
         };
         WeightBox.TextChanged += (s, e) => { 
             RelocateTextBox();
