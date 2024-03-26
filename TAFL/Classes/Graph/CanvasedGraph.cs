@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using TAFL.Controls;
@@ -36,6 +37,7 @@ public class CanvasedGraph
     public delegate void NodeCreatedHandler(GraphNodeControl node);
     public delegate void NodeRemovedHandler(GraphNodeControl node);
     public delegate void NodeSelectedHandler(GraphNodeControl node);
+    public delegate void NodeRenamedHandler(GraphNodeControl node, string oldName);
     public delegate void EdgeCreatedHandler(CanvasedEdge edge);
     public delegate void EdgeRemovedHandler(CanvasedEdge edge);
     public delegate void GraphClearedHandler();
@@ -44,6 +46,7 @@ public class CanvasedGraph
     public event NodeCreatedHandler? NodeCreated;
     public event NodeRemovedHandler? NodeRemoved;
     public event NodeSelectedHandler? NodeSelected;
+    public event NodeRenamedHandler? NodeRenamed;
     public event EdgeCreatedHandler? EdgeCreated;
     public event EdgeRemovedHandler? EdgeRemoved;
     public event GraphClearedHandler? GraphCleared;
@@ -163,6 +166,48 @@ public class CanvasedGraph
         foreach (var node in Nodes)
         {
             node.UnlockPosition();
+        }
+    }
+    public async Task<bool> RenameNode(string target, string name)
+    {
+        var node = GetNode(target);
+        if (node != null)
+        {
+            if (IsNameValid(name))
+            {
+                var oldName = node.Title;
+                node.Title = name;
+                NodeRenamed?.Invoke(node, oldName);
+                return true;
+            }
+            else
+            {
+                ContentDialog errorDialog = new ContentDialog();
+
+                errorDialog.XamlRoot = Canvas.XamlRoot;
+                errorDialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+                errorDialog.Title = "Недопустимое имя вершины: повторяется или пустое";
+                errorDialog.CloseButtonText = "Ок";
+                errorDialog.DefaultButton = ContentDialogButton.Close;
+
+                await errorDialog.ShowAsync();
+
+                return false;
+            }
+        }
+        else
+        {
+            ContentDialog errorDialog = new ContentDialog();
+
+            errorDialog.XamlRoot = Canvas.XamlRoot;
+            errorDialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+            errorDialog.Title = "Вершина с таким именем не найдена";
+            errorDialog.CloseButtonText = "Ок";
+            errorDialog.DefaultButton = ContentDialogButton.Close;
+
+            await errorDialog.ShowAsync();
+
+            return false;
         }
     }
 
@@ -325,6 +370,10 @@ public class CanvasedGraph
             if (element is GraphNodeControl node && node.Title == name) return false;
         }
         return true;
+    }
+    public bool IsNameValid(string name)
+    {
+        return IsNameUnique(name) && !string.IsNullOrWhiteSpace(name);
     }
     public bool IsEdgeExists(CanvasedEdge edge)
     {

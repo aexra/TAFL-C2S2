@@ -299,22 +299,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
         if (result == ContentDialogResult.Primary)
         {
-            if (Graph.IsNameUnique(content.Input))
-            {
-                Title = content.Input;
-            }
-            else
-            {
-                ContentDialog errorDialog = new ContentDialog();
-
-                errorDialog.XamlRoot = this.XamlRoot;
-                errorDialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-                errorDialog.Title = "Вершина с таким именем уже существует";
-                errorDialog.CloseButtonText = "Ок";
-                errorDialog.DefaultButton = ContentDialogButton.Close;
-
-                await errorDialog.ShowAsync();
-            }
+            await Graph.RenameNode(this.Title, content.Input);
         }
 
         ContextFlyout.Hide();
