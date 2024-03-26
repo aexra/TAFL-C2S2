@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using TAFL.Classes.Graph;
 using TAFL.Controls;
+using TAFL.Interfaces;
 using TAFL.Services;
 using TAFL.Structures;
 using TAFL.ViewModels;
@@ -62,6 +63,8 @@ public sealed partial class Lab5Page : Page
     private void SolveLabButton_Click(object sender, RoutedEventArgs e)
     {
         var graph = Constructor.GetRawGraph();
+        if (graph.IsEmpty) return;
+
         LogService.Log(GetQTable(graph));
         GetTransitionsE(out var ets, out var closures);
         LogService.Log(ets);
@@ -70,6 +73,10 @@ public sealed partial class Lab5Page : Page
         alphabet.Sort();
         var tableS = GetSTable(graph, closures, alphabet, out var slines);
         LogService.Log(tableS);
+
+        
+
+        
     }
 
     private string GetQTable(Graph graph)
@@ -130,6 +137,19 @@ public sealed partial class Lab5Page : Page
                 // Выведем полученные штуки
                 output += $"{letter}: " + SetToString(sline.Paths[letter]) + "; ";
             }
+
+            // Если эта S является начальной, отметим это
+            var starts = GetStartNodes(graph, closures);
+            var allF = true;
+            foreach (var node in sline.Closure.GetAllNodes())
+            {
+                if (!starts.Contains(node))
+                {
+                    allF = false;
+                    break;
+                }
+            }
+            if (allF) sline.MakeStarting();
         }
 
         return output;
@@ -235,5 +255,26 @@ public sealed partial class Lab5Page : Page
         }
         s += " }";
         return s;
+    }
+    private List<string> GetNodesNames(Graph graph)
+    {
+        // Отсортированный список имен вершин (первая будет начальной)
+        List<string> names = new();
+        graph.Nodes.ForEach(x => names.Add(x.Name));
+        names.Sort();
+        return names;
+    }
+    private List<Node> GetStartNodes(Graph graph, List<EpsilonClosure> closures)
+    {
+        // Начальная вершина
+        var globalStartNode = graph.GetNode(GetNodesNames(graph).First());
+
+        // Эпсилон-замыкание начальной вершины
+        var startClosure = closures.Where(x => x.Origin.Name == globalStartNode.Name).First();
+
+        // Вершины эпсилон-замыкания начальной вершины также являются начальными
+        var startNodes = startClosure.GetAllNodes();
+
+        return startNodes;
     }
 }

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using TAFL.Interfaces;
+﻿using TAFL.Interfaces;
 
 namespace TAFL.Classes.Graph;
 public class Graph : IGraph
 {
     public List<Node> Nodes;
+    public bool IsEmpty => Nodes.Count == 0;
 
     public Graph()
     {
