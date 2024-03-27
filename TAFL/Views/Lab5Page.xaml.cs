@@ -26,7 +26,8 @@ public sealed partial class Lab5Page : Page
         InitializeComponent();
 
         Constructor = new(ConstructorCanvas);
-        Output = new(OutputCanvas) { ReadOnly=true };
+        Output = new(OutputCanvas);
+        //Output = new(OutputCanvas) { ReadOnly=true };
 
         Constructor.NodeCreated += Constructor_NodeCreated;
         Constructor.NodeRemoved += Constructor_NodeRemoved;
@@ -59,6 +60,7 @@ public sealed partial class Lab5Page : Page
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         Constructor.Clear();
+        Output.Clear();
     }
 
     private void SolveLabButton_Click(object sender, RoutedEventArgs e)
@@ -76,7 +78,21 @@ public sealed partial class Lab5Page : Page
 
         var tableP = GetPTable(graph, slines, out var plines);
         LogService.Log(tableP);
-        
+
+        var offset = 0;
+        Output.Clear();
+        foreach (var pline in plines)
+        {
+            Output.NewNode(offset += 60, offset, pline.Name);
+        }
+
+        foreach (var pline in plines)
+        {
+            foreach (var letter in pline.Paths.Keys)
+            {
+                Output.ConnectNodes(Output.GetNode(pline.Name) , Output.GetNode(pline.Paths[letter].First().Name),letter);
+            }
+        }
     }
 
     private string GetQTable(Graph graph)

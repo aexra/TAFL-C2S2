@@ -93,7 +93,7 @@ public class CanvasedGraph
     }
 
     // NODES MANIPULATION METHODS
-    public void NewNode(double x, double y)
+    public void NewNode(double x, double y, string? name = null)
     {
         var node = new GraphNodeControl(new Vector2((float)x, (float)y), this);
 
@@ -116,7 +116,8 @@ public class CanvasedGraph
             node.Position = new Vector2(node.Position.X, (float)Canvas.ActualHeight - 40);
         }
 
-        node.Title = GetUniqueName();
+        if (name == null) node.Title = GetUniqueName();
+        else node.Title = name;
 
         Canvas.Children.Add(node);
 
