@@ -90,6 +90,7 @@ public sealed partial class Lab5Page : Page
         {
             foreach (var letter in pline.Paths.Keys)
             {
+                if (pline.Paths[letter].Count == 0) continue;
                 Output.ConnectNodes(Output.GetNode(pline.Name) , Output.GetNode(pline.Paths[letter].First().Name),letter);
             }
         }
@@ -252,6 +253,11 @@ public sealed partial class Lab5Page : Page
             }
             else
             {
+                if (dists.Count == 0)
+                {
+                    if (!start_p.Paths.ContainsKey(letter)) start_p.Paths.Add(letter, new());
+                    continue;
+                }
                 var new_p = new PLine($"P{plines.Count}", dists);
                 plines.Add(new_p);
                 FillPLinesList(ref plines, new_p, allSlines);
