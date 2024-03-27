@@ -410,4 +410,9 @@ public sealed partial class Lab5Page : Page
 
         return startNodes;
     }
+
+    private void CheckWordButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }
