@@ -35,4 +35,12 @@ public struct SLine
     {
         return left.Name != right.Name;
     }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is SLine sline && sline.Name == this.Name) {
+            return true;
+        }
+        return false;
+    }
 }

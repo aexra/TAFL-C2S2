@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Shapes;
 using TAFL.Classes.Graph;
 using TAFL.Controls;
 using TAFL.Interfaces;
@@ -65,7 +66,6 @@ public sealed partial class Lab5Page : Page
         var graph = Constructor.GetRawGraph();
         if (graph.IsEmpty) return;
 
-        LogService.Log(GetQTable(graph));
         GetTransitionsE(out var ets, out var closures);
         LogService.Log(ets);
 
@@ -85,19 +85,19 @@ public sealed partial class Lab5Page : Page
     }
     private string GetSTable(Graph graph, List<EpsilonClosure> closures, List<string> alphabet, out List<SLine> slines)
     {
-        // Создаем пустую строку для вывода таблички
+        /// Создаем пустую строку для вывода таблички
         var output = "Таблица S:";
 
-        // Создаем пустой список записей S таблицы
+        /// Создаем пустой список записей S таблицы
         slines = new();
 
-        // Заполняем пустыми S записями эквивалентными замыканиям
+        /// Заполняем пустыми S записями эквивалентными замыканиям
         foreach (var closure in closures)
         {
             slines.Add(new SLine($"S{slines.Count}", closure));
         }
 
-        // Заполняем пути в каждой S записи
+        /// Заполняем пути в каждой S записи
         for (var i = 0; i < slines.Count; i++)
         {
             var sline = slines[i];
@@ -105,23 +105,23 @@ public sealed partial class Lab5Page : Page
             var localOutput = $"{sline.Name} = ";
             foreach (var letter in alphabet)
             {
-                // Создадим в sline список SLine для этой литеры
+                /// Создадим в sline список SLine для этой литеры
                 sline.Paths.Add(letter, new());
 
-                // Вершины которые доступны по этой литере
+                /// Вершины которые доступны по этой литере
                 HashSet<Node> destinations = new();
 
-                // Пройдем по всем начальным вершинам и соберем списки достижимых вершин
+                /// Пройдем по всем начальным вершинам и соберем списки достижимых вершин
                 foreach (var start in sline.Closure.GetAllNodes())
                 {
-                    // Список вершин в которые можно попасть через letter из start
+                    /// Список вершин в которые можно попасть через letter из start
                     GetDestinations(graph, start, letter, ref destinations);
                 }
 
                 // Куда аткуда
                 //output += $"{letter}: " + SetToString(destinations) + "; ";
 
-                // Теперь найдем какие SLine соответствуют этим вершинам
+                /// Теперь найдем какие SLine соответствуют этим вершинам
                 foreach (var sline_ in slines)
                 {
                     // Проверим что все вершины sline_ находятся в destination
@@ -136,11 +136,11 @@ public sealed partial class Lab5Page : Page
                     }
                 }
 
-                // Выведем полученные штуки
+                /// Выведем полученные штуки
                 localOutput += $"{letter}: " + SetToString(sline.Paths[letter]) + "; ";
             }
 
-            // Если эта S является начальной, отметим это
+            /// Если эта S является начальной, отметим это
             var starts = GetStartNodes(graph, closures);
             var allF = true;
             foreach (var node in sline.Closure.GetAllNodes())
@@ -162,90 +162,120 @@ public sealed partial class Lab5Page : Page
         var output = $"Таблица P:";
 
         List<PLine> plines = new();
+        var alphabet = GetAlphabet();
+        alphabet.Sort();
 
-        // Получим начальные S
+        /// Получим начальные S
         HashSet<SLine> starts = new();
         foreach (var sline in slines)
         {
             if (sline.IsStarting) starts.Add(sline);
         }
 
-        //  Создание начальной P-вершины
+        ///  Создание начальной P-вершины
         var p0 = new PLine("P0", starts);
         plines.Add(p0);
 
+        /// Заполняем список вершин P
         while (true)
         {
-            // Смотрим куда мы можем попасть через все литеры из последнего PLine
-            var pline = plines.Last();
-            var added = false;
-            foreach (var letter in GetAlphabet())
-            {
-                HashSet<SLine> destinations = new();
-                var startSlines = pline.Slines;
+            var changed = false;
 
-                // Заполняем destinations (работает)
-                foreach (var sline in startSlines)
+            foreach (var pline in plines)
+            {
+                foreach (var letter in alphabet)
                 {
-                    foreach (var pas in sline.Paths[letter])
+                    if (!pline.Paths.ContainsKey(letter))
                     {
-                        var foundPas = false;
-                        foreach (var dest in destinations)
-                        {
-                            if (dest.Name == pas.Name)
-                            {
-                                foundPas = true;
-                                break;
-                            }
-                        }
-                        if (!foundPas)
-                        {
-                            destinations.Add(pas);
-                        }
-                    }
-                }
-                
-                // Если такого p нет в plines, создадим новый
-                var hasPline = false;
-                PLine? set = null;
-                foreach (var pline_ in plines)
-                {
-                    if (SetToString(pline_.Slines) == SetToString(destinations))
-                    {
-                        hasPline = true;
-                        set = pline_;
+                        FillPLinesList(ref plines, pline, slines);
+                        changed = true;
                         break;
                     }
                 }
-                if (!hasPline)
-                {
-                    plines.Add(new($"P{plines.Count}", destinations));
-                    added = true;
-                }
-                else
-                {
-                    LogService.Log("filled");
-                    pline.Paths[letter] = new() { set.Value };
-                }
+                if (changed) break; 
             }
 
-            if (!added) break;
+            if (!changed) break;
         }
-        
+
+        /// Формирование таблицы P вершин
         foreach (var pline in plines)
         {
             output += $"\n{pline.Name}{SetToString(pline.Slines)} = ";
-            var alphabet = pline.Paths.Keys.ToList();
-            alphabet.Sort();
             foreach (var letter in alphabet)
             {
-                output += $"{letter}: {SetToString(pline.Paths[letter])}; ";
+                if (pline.Paths.ContainsKey(letter)) output += $"{letter}: {SetToString(pline.Paths[letter])}; ";
             }
         }
 
         return output;
     }
 
+    private void FillPLinesList(ref List<PLine> plines, PLine start_p, List<SLine> allSlines)
+    {
+        /// Получение алфавита
+        var alphabet = GetAlphabet();
+        alphabet.Sort();
+
+        /// Получает все достижимые SLines для всех литер в этом PLine
+        foreach (var letter in alphabet)
+        {
+            /// Получает все достижимые SLines для литеры letter в этом PLine
+            HashSet<SLine> dists = new();
+            foreach (var start_s in start_p.Slines)
+            {
+                var this_start_dests = GetSLineDestinations(start_s, letter, allSlines);
+                if (this_start_dests != null) this_start_dests.ToList().ForEach(x => dists.Add(x));
+            }
+
+            /// Проверим существует ли такой PLine в plines
+            if (SLinesSetExists(plines, dists, out var target))
+            {
+                if (!start_p.Paths.ContainsKey(letter)) start_p.Paths.Add(letter, new());
+                start_p.Paths[letter].Add(target.Value);
+            }
+            else
+            {
+                var new_p = new PLine($"P{plines.Count}", dists);
+                plines.Add(new_p);
+                FillPLinesList(ref plines, new_p, allSlines);
+            }
+        }
+    }
+    private bool SLinesSetExists(List<PLine> plines, HashSet<SLine> slines, out PLine? target)
+    {
+        target = null;
+        foreach (var pline in plines)
+        {
+            if (pline.Slines.Count != slines.Count) continue;
+            var foundAllSlines = true;
+            foreach (var sline in slines)
+            {
+                if (!pline.Slines.Contains(sline))
+                {
+                    foundAllSlines = false;
+                    break;
+                }
+            }
+            if (foundAllSlines)
+            {
+                target = pline;
+                return true;
+            }
+        }
+        return false;
+    }
+    private HashSet<SLine>? GetSLineDestinations(SLine start, string letter, List<SLine> slines)
+    {
+        foreach (var sline in slines)
+        {
+            if (sline == start)
+            {
+                return sline.Paths[letter];
+            }
+        }
+        return null;
+    }
     private void GetDestinations(Graph graph, Node start, string letter, ref HashSet<Node> visited)
     {
         foreach (var edge in start.Edges)
