@@ -8,10 +8,10 @@ namespace TAFL.Structures;
 public struct PLine
 {
     public string Name;
-    public List<SLine> Slines;
+    public HashSet<SLine> Slines;
     public Dictionary<string, HashSet<PLine>> Paths;
 
-    public PLine(string name, List<SLine> slines)
+    public PLine(string name, HashSet<SLine> slines)
     {
         Name = name;
         Slines = slines;

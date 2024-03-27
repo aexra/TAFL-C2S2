@@ -164,7 +164,7 @@ public sealed partial class Lab5Page : Page
         List<PLine> plines = new();
 
         // Получим начальные S
-        List<SLine> starts = new();
+        HashSet<SLine> starts = new();
         foreach (var sline in slines)
         {
             if (sline.IsStarting) starts.Add(sline);
@@ -202,12 +202,41 @@ public sealed partial class Lab5Page : Page
                         }
                     }
                 }
-                LogService.Log(SetToString(destinations));
+                var hasPline = false;
+                PLine? set = null;
+                foreach (var pline_ in plines)
+                {
+                    if (SetToString(pline_.Slines) == SetToString(destinations))
+                    {
+                        hasPline = true;
+                        set = pline_;
+                        break;
+                    }
+                }
+                if (!hasPline)
+                {
+                    plines.Add(new($"P{plines.Count}", destinations));
+                }
+                else
+                {
+                    pline.Paths[letter] = new() { set.Value };
+                }
             }
 
             if (!added) break;
         }
         
+        foreach (var pline in plines)
+        {
+            output += $"\n{pline.Name} = ";
+            var alphabet = GetAlphabet();
+            alphabet.Sort();
+            foreach (var letter in alphabet)
+            {
+                output += $"{letter}: {SetToString(pline.Paths[letter])}; ";
+            }
+        }
+
         return output;
     }
 
