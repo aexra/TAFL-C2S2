@@ -218,7 +218,7 @@ public sealed partial class Lab5Page : Page
         foreach (var pline in plines)
         {
             output += $"\n{pline.Name}{SetToString(pline.Slines)} = ";
-            foreach (var letter in alphabet)
+            foreach (var letter in pline.Paths.Keys)
             {
                 if (pline.Paths.ContainsKey(letter)) output += $"{letter}: {SetToString(pline.Paths[letter])}; ";
             }
