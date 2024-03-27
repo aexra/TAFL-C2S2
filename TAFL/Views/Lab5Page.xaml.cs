@@ -74,8 +74,8 @@ public sealed partial class Lab5Page : Page
         var tableS = GetSTable(graph, closures, alphabet, out var slines);
         LogService.Log(tableS);
 
-        
-
+        var tableP = GetPTable(graph, slines);
+        LogService.Log(tableP);
         
     }
 
@@ -98,8 +98,9 @@ public sealed partial class Lab5Page : Page
         }
 
         // Заполняем пути в каждой S записи
-        foreach (var sline in slines)
+        for (var i = 0; i < slines.Count; i++)
         {
+            var sline = slines[i];
             output += $"\n";
             var localOutput = $"{sline.Name} = ";
             foreach (var letter in alphabet)
@@ -150,16 +151,64 @@ public sealed partial class Lab5Page : Page
                     break;
                 }
             }
-            if (allF) sline.MakeStarting();
+            if (allF) slines[i] = new SLine(slines[i].Name, slines[i].Closure) { Paths = slines[i].Paths, IsStarting = true };
 
-            output += (sline.IsStarting? "-> " : "     ") + localOutput;
+            output += (slines[i].IsStarting? "-> " : "     ") + localOutput;
         }
-
         return output;
     }
-    private string GetPTable()
+    private string GetPTable(Graph graph, List<SLine> slines)
     {
-        return string.Empty;
+        var output = $"Таблица P:";
+
+        List<PLine> plines = new();
+
+        // Получим начальные S
+        List<SLine> starts = new();
+        foreach (var sline in slines)
+        {
+            if (sline.IsStarting) starts.Add(sline);
+        }
+
+        //  Создание начальной P-вершины
+        var p0 = new PLine("P0", starts);
+        plines.Add(p0);
+
+        while (true)
+        {
+            // Смотрим куда мы можем попасть через все литеры из последнего PLine
+            var pline = plines.Last();
+            var added = false;
+            foreach (var letter in GetAlphabet())
+            {
+                HashSet<SLine> destinations = new();
+                var startSlines = pline.Slines;
+                foreach (var sline in startSlines)
+                {
+                    foreach (var pas in sline.Paths[letter])
+                    {
+                        var foundPas = false;
+                        foreach (var dest in destinations)
+                        {
+                            if (dest.Name == pas.Name)
+                            {
+                                foundPas = true;
+                                break;
+                            }
+                        }
+                        if (!foundPas)
+                        {
+                            destinations.Add(pas);
+                        }
+                    }
+                }
+                LogService.Log(SetToString(destinations));
+            }
+
+            if (!added) break;
+        }
+        
+        return output;
     }
 
     private void GetDestinations(Graph graph, Node start, string letter, ref HashSet<Node> visited)

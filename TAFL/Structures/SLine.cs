@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,5 +25,14 @@ public struct SLine
     public void MakeStarting()
     {
         IsStarting = true;
+    }
+
+    public static bool operator == (SLine left, SLine right)
+    {
+        return left.Name == right.Name;
+    }
+    public static bool operator != (SLine left, SLine right)
+    {
+        return left.Name != right.Name;
     }
 }
