@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using System.Collections.Immutable;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Shapes;
 using TAFL.Classes.Graph;
@@ -219,7 +220,9 @@ public sealed partial class Lab5Page : Page
         foreach (var pline in plines)
         {
             output += $"\n{pline.Name}{SetToString(pline.Slines)} = ";
-            foreach (var letter in pline.Paths.Keys)
+            var keys = pline.Paths.Keys.ToList();
+            keys.Sort();
+            foreach (var letter in keys)
             {
                 if (pline.Paths.ContainsKey(letter)) output += $"{letter}: {SetToString(pline.Paths[letter])}; ";
             }
