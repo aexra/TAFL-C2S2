@@ -74,7 +74,7 @@ public sealed partial class Lab5Page : Page
         var tableS = GetSTable(graph, closures, alphabet, out var slines);
         LogService.Log(tableS);
 
-        var tableP = GetPTable(graph, slines);
+        var tableP = GetPTable(graph, slines, out var plines);
         LogService.Log(tableP);
         
     }
@@ -157,11 +157,11 @@ public sealed partial class Lab5Page : Page
         }
         return output;
     }
-    private string GetPTable(Graph graph, List<SLine> slines)
+    private string GetPTable(Graph graph, List<SLine> slines, out List<PLine> plines)
     {
         var output = $"Таблица P:";
 
-        List<PLine> plines = new();
+        plines = new();
         var alphabet = GetAlphabet();
         alphabet.Sort();
 
