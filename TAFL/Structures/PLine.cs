@@ -17,4 +17,6 @@ public struct PLine
         Slines = slines;
         Paths = new();
     }
+
+    public override string ToString() => Name;
 }

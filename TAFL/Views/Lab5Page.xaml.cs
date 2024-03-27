@@ -183,6 +183,8 @@ public sealed partial class Lab5Page : Page
             {
                 HashSet<SLine> destinations = new();
                 var startSlines = pline.Slines;
+
+                // Заполняем destinations (работает)
                 foreach (var sline in startSlines)
                 {
                     foreach (var pas in sline.Paths[letter])
@@ -202,6 +204,8 @@ public sealed partial class Lab5Page : Page
                         }
                     }
                 }
+                
+                // Если такого p нет в plines, создадим новый
                 var hasPline = false;
                 PLine? set = null;
                 foreach (var pline_ in plines)
@@ -216,9 +220,11 @@ public sealed partial class Lab5Page : Page
                 if (!hasPline)
                 {
                     plines.Add(new($"P{plines.Count}", destinations));
+                    added = true;
                 }
                 else
                 {
+                    LogService.Log("filled");
                     pline.Paths[letter] = new() { set.Value };
                 }
             }
@@ -228,8 +234,8 @@ public sealed partial class Lab5Page : Page
         
         foreach (var pline in plines)
         {
-            output += $"\n{pline.Name} = ";
-            var alphabet = GetAlphabet();
+            output += $"\n{pline.Name}{SetToString(pline.Slines)} = ";
+            var alphabet = pline.Paths.Keys.ToList();
             alphabet.Sort();
             foreach (var letter in alphabet)
             {
