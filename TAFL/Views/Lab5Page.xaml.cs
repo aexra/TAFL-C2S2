@@ -177,7 +177,6 @@ public sealed partial class Lab5Page : Page
                 }
             }
             if (allF) slines[i] = new SLine(slines[i].Name, slines[i].Closure) { Paths = slines[i].Paths, IsStarting = true };
-            //LogService.Log(SetToString(GetEndSLines(graph, slines)));
             output += (slines[i].IsStarting? "-> " : GetEndSLines(graph, slines).Contains(sline) ? "<- " : "     ") + localOutput;
         }
         return output;
@@ -221,11 +220,12 @@ public sealed partial class Lab5Page : Page
 
         /// Получим начальные P
         var starts_p = GetStartPLines(graph, slines, plines);
+        var ends_p = GetEndPLines(graph, slines, plines);
 
         /// Формирование таблицы P вершин
         foreach (var pline in plines)
         {
-            output += $"\n{(starts_p.Contains(pline) ? "-> " : "")}{pline.Name}{SetToString(pline.Slines)} = ";
+            output += $"\n{(starts_p.Contains(pline) ? "-> " : ends_p.Contains(pline) ? "<- " : "")}{pline.Name}{SetToString(pline.Slines)} = ";
             var keys = pline.Paths.Keys.ToList();
             keys.Sort();
             foreach (var letter in keys)
@@ -281,6 +281,25 @@ public sealed partial class Lab5Page : Page
             }
         }
         return ends;
+    }
+    private HashSet<PLine> GetEndPLines(Graph graph, List<SLine> slines, List<PLine> plines)
+    {
+        HashSet<PLine> ends_p = new();
+        var ends_s = GetEndSLines(graph, slines);
+        foreach (var pline in plines)
+        {
+            var found = false;
+            foreach (var end in ends_s)
+            {
+                if (pline.Slines.Contains(end))
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) ends_p.Add(pline);
+        }
+        return ends_p;
     }
 
     private void FillPLinesList(ref List<PLine> plines, PLine start_p, List<SLine> allSlines)
