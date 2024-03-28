@@ -1,4 +1,5 @@
-﻿using TAFL.Interfaces;
+﻿using Newtonsoft.Json.Linq;
+using TAFL.Interfaces;
 
 namespace TAFL.Classes.Graph;
 public class Graph : IGraph
@@ -65,6 +66,29 @@ public class Graph : IGraph
             if (node.SubState == Enums.NodeSubState.End) return node;
         }
         return null;
+    }
+    public List<string> GetWeightsAlphabet(string separator = ",")
+    {
+        List<string> alphabet = new();
+
+        foreach (var node in Nodes)
+        {
+            foreach (var edge in node.Edges)
+            {
+                var letters = edge.Weight.Split(separator);
+                foreach (var letter in letters)
+                {
+                    if (letter != "ε" && !alphabet.Contains(letter))
+                    {
+                        alphabet.Add(letter);
+                    }
+                }
+            }
+        }
+
+        alphabet.Sort();
+
+        return alphabet;
     }
     public override string ToString()
     {

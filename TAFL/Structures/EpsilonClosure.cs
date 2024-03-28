@@ -31,8 +31,9 @@ public struct EpsilonClosure
         nodes.Add(Origin);
         return nodes;
     }
-    
-    public override string ToString()
+
+    public override string ToString() => Name;
+    public string ToLongString()
     {
         var output = $"E({Origin.Name}) = {{ ";
         var sorted_nodes = GetAllNodes();

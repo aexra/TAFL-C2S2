@@ -131,7 +131,7 @@ public sealed partial class Lab5Page : Page
         {
             var sline = slines[i];
             output += $"\n";
-            var localOutput = $"{sline.Name}{SetToString(sline.Closure.GetAllNodes().ToHashSet())} = ";
+            var localOutput = $"{sline.Name}{SetHelper.SetToString(sline.Closure.GetAllNodes().ToHashSet())} = ";
             foreach (var letter in alphabet)
             {
                 /// Создадим в sline список SLine для этой литеры
@@ -166,7 +166,7 @@ public sealed partial class Lab5Page : Page
                 }
 
                 /// Выведем полученные штуки
-                localOutput += $"{letter}: " + SetToString(sline.Paths[letter]) + "; ";
+                localOutput += $"{letter}: " + SetHelper.SetToString(sline.Paths[letter]) + "; ";
             }
 
             /// Если эта S является начальной, отметим это
@@ -180,8 +180,8 @@ public sealed partial class Lab5Page : Page
                     break;
                 }
             }
-            if (allF) slines[i] = new SLine(slines[i].Name, slines[i].Closure) { Paths = slines[i].Paths, IsStarting = true };
-            output += (slines[i].IsStarting? "-> " : GetEndSLines(graph, slines).Contains(sline) ? "<- " : "     ") + localOutput;
+            if (allF) slines[i] = new SLine(slines[i].Name, slines[i].Closure) { Paths = slines[i].Paths, IsStart = true };
+            output += (slines[i].IsStart? "-> " : GetEndSLines(graph, slines).Contains(sline) ? "<- " : "     ") + localOutput;
         }
         return output;
     }
@@ -229,12 +229,12 @@ public sealed partial class Lab5Page : Page
         /// Формирование таблицы P вершин
         foreach (var pline in plines)
         {
-            output += $"\n{(starts_p.Contains(pline) ? "-> " : ends_p.Contains(pline) ? "<- " : "")}{pline.Name}{SetToString(pline.Slines)} = ";
+            output += $"\n{(starts_p.Contains(pline) ? "-> " : ends_p.Contains(pline) ? "<- " : "")}{pline.Name}{SetHelper.SetToString(pline.Slines)} = ";
             var keys = pline.Paths.Keys.ToList();
             keys.Sort();
             foreach (var letter in keys)
             {
-                if (pline.Paths.ContainsKey(letter)) output += $"{letter}: {SetToString(pline.Paths[letter])}; ";
+                if (pline.Paths.ContainsKey(letter)) output += $"{letter}: {SetHelper.SetToString(pline.Paths[letter])}; ";
             }
         }
 
@@ -246,7 +246,7 @@ public sealed partial class Lab5Page : Page
         HashSet<SLine> starts = new();
         foreach (var sline in slines)
         {
-            if (sline.IsStarting) starts.Add(sline);
+            if (sline.IsStart) starts.Add(sline);
         }
         return starts;
     }
@@ -456,23 +456,7 @@ public sealed partial class Lab5Page : Page
 
         return alphabet;
     }
-    private string SetToString<T>(HashSet<T> set)
-    {
-        var list = new List<string>();
-        set.ToList().ForEach(x => list.Add(x.ToString()));
-        list.Sort();
-        var s = "{ ";
-        if (list.Count > 0)
-        {
-            for (var i = 0; i < list.Count - 1; i++)
-            {
-                s += list.ElementAt(i).ToString() + ", ";
-            }
-            s += list.Last().ToString();
-        }
-        s += " }";
-        return s;
-    }
+    
     private List<string> GetNodesNames(Graph graph)
     {
         // Отсортированный список имен вершин (первая будет начальной)
