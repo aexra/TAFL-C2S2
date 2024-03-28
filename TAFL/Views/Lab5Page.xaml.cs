@@ -219,10 +219,13 @@ public sealed partial class Lab5Page : Page
             if (!changed) break;
         }
 
+        /// Получим начальные P
+        var starts_p = GetStartPLines(graph, slines, plines);
+
         /// Формирование таблицы P вершин
         foreach (var pline in plines)
         {
-            output += $"\n{pline.Name}{SetToString(pline.Slines)} = ";
+            output += $"\n{(starts_p.Contains(pline) ? "-> " : "")}{pline.Name}{SetToString(pline.Slines)} = ";
             var keys = pline.Paths.Keys.ToList();
             keys.Sort();
             foreach (var letter in keys)
@@ -248,9 +251,18 @@ public sealed partial class Lab5Page : Page
         HashSet<PLine> starts_p = new();
 
         var starts_s = GetStartSLines(graph, slines);
-        foreach (var sline in slines)
+        foreach (var pline in plines)
         {
-            
+            var good = true;
+            foreach (var sline in pline.Slines)
+            {
+                if (!starts_s.Contains(sline))
+                {
+                    good = false;
+                    break;
+                }
+            }
+            if (good) starts_p.Add(pline);
         }
 
         return starts_p;
