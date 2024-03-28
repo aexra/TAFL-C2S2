@@ -20,7 +20,7 @@ public class PLine
     public override string ToString() => Name;
     public string ToLongString()
     {
-        var output = $"{(SubState == NodeSubState.Start ? "-> " : SubState == NodeSubState.End ? "<- " : "")}{Name}{SetHelper.SetToString(Slines)} =";
+        var output = $"{(SubState == NodeSubState.Start ? "-> " : SubState == NodeSubState.End ? "<- " : SubState == NodeSubState.Universal ? "<>" : "")}{Name}{SetHelper.SetToString(Slines)} =";
 
         var sorted_keys = Paths.Keys.ToList();
         sorted_keys.Sort();

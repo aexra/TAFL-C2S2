@@ -253,7 +253,7 @@ public static class GraphDeterminizationService
         HashSet<SLine> starts = new();
         foreach (var sline in slines)
         {
-            if (sline.SubState == Enums.NodeSubState.Start) starts.Add(sline);
+            if (sline.SubState == Enums.NodeSubState.Start || sline.SubState == Enums.NodeSubState.Universal) starts.Add(sline);
         }
         return starts;
     }
