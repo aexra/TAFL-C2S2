@@ -1,4 +1,5 @@
 ﻿using TAFL.Classes.Graph;
+using TAFL.Helpers;
 using TAFL.Structures;
 
 namespace TAFL.Services;
@@ -9,12 +10,140 @@ public static class GraphDeterminizationService
         process = "Детерминизация графа\n\n" + graph.ToLongString() + "\n\n";
 
         var closures = GetEpsilonClosures(graph);
-        process += "Эпсилон-замыкания\n" + closures.ToLongString(true) + "\n\n";
+        process += "Эпсилон-замыкания\n" + closures.ToLongString() + "\n\n";
 
         var slines = GetSLines(graph, closures);
-        process += "S-таблица\n" + slines.ToLongString(true) + "\n\n";
+        process += "S-таблица\n" + slines.ToLongString() + "\n\n";
+
+        var plines = GetPLines(graph, slines);
+        process += "P-таблица\n" + plines.ToLongString();
 
         return new();
+    }
+
+    // P
+    private static List<PLine> GetPLines(Graph graph, List<SLine> slines)
+    {
+        List<PLine> plines = new();
+        var alphabet = graph.GetWeightsAlphabet();
+
+        /// Получим начальные S
+        var starts = GetStartSLines(graph, slines);
+
+        ///  Создание начальной P-вершины
+        var p0 = new PLine("P0", starts);
+        plines.Add(p0);
+
+        /// Заполняем список вершин P
+        while (true)
+        {
+            var changed = false;
+
+            foreach (var pline in plines)
+            {
+                foreach (var letter in alphabet)
+                {
+                    if (!pline.Paths.ContainsKey(letter))
+                    {
+                        FillPLinesList(graph, ref plines, pline, slines);
+                        changed = true;
+                        break;
+                    }
+                }
+                if (changed) break;
+            }
+
+            if (!changed) break;
+        }
+
+        /// Получим начальные P
+        var starts_p = GetStartPLines(graph, slines, plines);
+        var ends_p = GetEndPLines(graph, slines, plines);
+
+        /// Отметим если P является начальным или конечным
+        for (var i = 0; i < plines.Count; i++)
+        {
+            if (starts_p.Contains(plines[i])) plines[i].IsStart = true;
+            else if (ends_p.Contains(plines[i])) plines[i].IsEnd = true;
+        }
+
+        return plines;
+    }
+    private static void FillPLinesList(Graph graph, ref List<PLine> plines, PLine start_p, List<SLine> allSlines)
+    {
+        /// Получение алфавита
+        var alphabet = graph.GetWeightsAlphabet();
+        alphabet.Sort();
+
+        /// Получает все достижимые SLines для всех литер в этом PLine
+        foreach (var letter in alphabet)
+        {
+            /// Получает все достижимые SLines для литеры letter в этом PLine
+            HashSet<SLine> dists = new();
+            foreach (var start_s in start_p.Slines)
+            {
+                var this_start_dests = GetSLineDestinations(start_s, letter, allSlines);
+                if (this_start_dests != null) this_start_dests.ToList().ForEach(x => dists.Add(x));
+            }
+
+            /// Проверим существует ли такой PLine в plines
+            if (SLinesSetExists(graph, plines, dists, out var target))
+            {
+                if (!start_p.Paths.ContainsKey(letter)) start_p.Paths.Add(letter, new());
+                start_p.Paths[letter].Add(target);
+            }
+            else
+            {
+                if (dists.Count == 0)
+                {
+                    if (!start_p.Paths.ContainsKey(letter)) start_p.Paths.Add(letter, new());
+                    continue;
+                }
+                var new_p = new PLine($"P{plines.Count}", dists);
+                plines.Add(new_p);
+                FillPLinesList(graph, ref plines, new_p, allSlines);
+            }
+        }
+    }
+    private static HashSet<PLine> GetStartPLines(Graph graph, List<SLine> slines, List<PLine> plines)
+    {
+        HashSet<PLine> starts_p = new();
+
+        var starts_s = GetStartSLines(graph, slines);
+        foreach (var pline in plines)
+        {
+            var good = true;
+            foreach (var sline in pline.Slines)
+            {
+                if (!starts_s.Contains(sline))
+                {
+                    good = false;
+                    break;
+                }
+            }
+            if (good) starts_p.Add(pline);
+        }
+
+        return starts_p;
+    }
+    private static HashSet<PLine> GetEndPLines(Graph graph, List<SLine> slines, List<PLine> plines)
+    {
+        HashSet<PLine> ends_p = new();
+        var ends_s = GetEndSLines(graph, slines);
+        foreach (var pline in plines)
+        {
+            var found = false;
+            foreach (var end in ends_s)
+            {
+                if (pline.Slines.Contains(end))
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) ends_p.Add(pline);
+        }
+        return ends_p;
     }
 
     // S
@@ -98,6 +227,15 @@ public static class GraphDeterminizationService
             }
         }
     }
+    private static HashSet<SLine> GetStartSLines(Graph graph, List<SLine> slines)
+    {
+        HashSet<SLine> starts = new();
+        foreach (var sline in slines)
+        {
+            if (sline.IsStart) starts.Add(sline);
+        }
+        return starts;
+    }
     private static HashSet<SLine> GetEndSLines(Graph graph, List<SLine> slines)
     {
         HashSet<SLine> ends = new();
@@ -111,6 +249,40 @@ public static class GraphDeterminizationService
             }
         }
         return ends;
+    }
+    private static HashSet<SLine>? GetSLineDestinations(SLine start, string letter, List<SLine> slines)
+    {
+        foreach (var sline in slines)
+        {
+            if (sline == start)
+            {
+                return sline.Paths[letter];
+            }
+        }
+        return null;
+    }
+    private static bool SLinesSetExists(Graph graph, List<PLine> plines, HashSet<SLine> slines, out PLine? target)
+    {
+        target = null;
+        foreach (var pline in plines)
+        {
+            if (pline.Slines.Count != slines.Count) continue;
+            var foundAllSlines = true;
+            foreach (var sline in slines)
+            {
+                if (!pline.Slines.Contains(sline))
+                {
+                    foundAllSlines = false;
+                    break;
+                }
+            }
+            if (foundAllSlines)
+            {
+                target = pline;
+                return true;
+            }
+        }
+        return false;
     }
 
     // EPS
@@ -151,7 +323,7 @@ public static class GraphDeterminizationService
     private static string[] ParseWeights(string weight, string separator = ",") => weight.Split(separator);
 
     // ToString extensions
-    private static string ToLongString(this List<EpsilonClosure> closures, bool enumerate)
+    private static string ToLongString(this List<EpsilonClosure> closures)
     {
         var output = "";
 
@@ -164,7 +336,7 @@ public static class GraphDeterminizationService
 
         return output;
     }
-    private static string ToLongString(this List<SLine> slines, bool enumerate)
+    private static string ToLongString(this List<SLine> slines)
     {
         var output = "";
         
@@ -172,6 +344,19 @@ public static class GraphDeterminizationService
         foreach (var sline in slines)
         {
             output += counter == 0? sline.ToLongString() : ('\n' + sline.ToLongString());
+            counter++;
+        }
+
+        return output;
+    }
+    private static string ToLongString(this List<PLine> plines)
+    {
+        var output = "";
+
+        var counter = 0;
+        foreach (var pline in plines)
+        {
+            output += counter == 0 ? pline.ToLongString() : ('\n' + pline.ToLongString());
             counter++;
         }
 

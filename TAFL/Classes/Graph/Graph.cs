@@ -90,7 +90,7 @@ public class Graph : IGraph
 
         return alphabet;
     }
-    public override string ToLongString()
+    public string ToLongString()
     {
         var output = "Граф";
 

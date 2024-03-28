@@ -327,7 +327,7 @@ public sealed partial class Lab5Page : Page
             if (SLinesSetExists(plines, dists, out var target))
             {
                 if (!start_p.Paths.ContainsKey(letter)) start_p.Paths.Add(letter, new());
-                start_p.Paths[letter].Add(target.Value);
+                start_p.Paths[letter].Add(target);
             }
             else
             {
