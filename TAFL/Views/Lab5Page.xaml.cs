@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Shapes;
 using TAFL.Classes.Graph;
 using TAFL.Controls;
+using TAFL.Helpers;
 using TAFL.Interfaces;
 using TAFL.Services;
 using TAFL.Structures;
@@ -64,8 +65,14 @@ public sealed partial class Lab5Page : Page
         Output.Clear();
     }
 
-    private void SolveLabButton_Click(object sender, RoutedEventArgs e)
+    private async void SolveLabButton_Click(object sender, RoutedEventArgs e)
     {
+        if (Constructor.GetStartNode() == null || Constructor.GetEndNode() == null)
+        {
+            await DialogHelper.ShowErrorDialogAsync("Определите начальную и конечную вершины", XamlRoot);
+            return;
+        }
+
         var graph = Constructor.GetRawGraph();
         if (graph.IsEmpty) return;
 

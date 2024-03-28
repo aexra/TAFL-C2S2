@@ -46,7 +46,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     private string title = "A";
     public float SelectionRadius = 40;
     public float Radius = 38;
-    public float SubStateRadius = 37;
+    public float SubStateRadius = 36;
     public float InnerRadius = 34;
     public float SelectionDiameter => SelectionRadius * 2;
     public float Diameter => Radius * 2;
@@ -129,6 +129,8 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
 
     // COLORS
     private readonly Color DefaultSubStateColor = Color.Transparent;
+    private readonly Color StartSubStateColor = Color.Lime;
+    private readonly Color EndSubStateColor = Color.Blue;
     private readonly Color SelectionColor = Color.OrangeRed;
     private readonly Color DraggingColor = Color.DeepPink;
     
@@ -158,8 +160,10 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         {
             switch (SubState)
             {
-                case NodeSubState.Final:
-                    return new SolidColorBrush(Windows.UI.Color.FromArgb(SelectionColor.A, SelectionColor.R, SelectionColor.G, SelectionColor.B));
+                case NodeSubState.Start:
+                    return new SolidColorBrush(Windows.UI.Color.FromArgb(StartSubStateColor.A, StartSubStateColor.R, StartSubStateColor.G, StartSubStateColor.B));
+                case NodeSubState.End:
+                    return new SolidColorBrush(Windows.UI.Color.FromArgb(EndSubStateColor.A, EndSubStateColor.R, EndSubStateColor.G, EndSubStateColor.B));
                 default:
                     return new SolidColorBrush(Windows.UI.Color.FromArgb(DefaultSubStateColor.A, DefaultSubStateColor.R, DefaultSubStateColor.G, DefaultSubStateColor.B));
             }
@@ -321,7 +325,19 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         AddLoop(weight);
         ContextFlyout.Hide();
     }
-    
+    private void MakeMeDefault_Click(object sender, RoutedEventArgs e)
+    {
+        this.SubState = NodeSubState.Default;
+    }
+    private void MakeMeStart_Click(object sender, RoutedEventArgs e)
+    {
+        this.SubState = NodeSubState.Start;
+    }
+    private void MakeMeEnd_Click(object sender, RoutedEventArgs e)
+    {
+        this.SubState = NodeSubState.End;
+    }
+
     // NODE MANIPULATION METHODS
     public void AddLoop(string weight)
     {

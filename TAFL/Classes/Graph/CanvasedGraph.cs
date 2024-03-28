@@ -421,6 +421,22 @@ public class CanvasedGraph
         }
         return false;
     }
+    public GraphNodeControl? GetStartNode()
+    {
+        foreach (var node in Nodes)
+        {
+            if (node.SubState == Enums.NodeSubState.Start) return node;
+        }
+        return null;
+    }
+    public GraphNodeControl? GetEndNode()
+    {
+        foreach (var node in Nodes)
+        {
+            if (node.SubState == Enums.NodeSubState.End) return node;
+        }
+        return null;
+    }
 
     // RAW GRAPH THINGS
     public Graph GetRawGraph()

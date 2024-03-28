@@ -41,6 +41,15 @@
                         <TextBlock Text="Добавить петлю"/>
                     </StackPanel>
                 </Button>
+                <DropDownButton Content="Изменить тип" HorizontalAlignment="Stretch">
+                    <DropDownButton.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuFlyoutItem x:Name="MakeMeDefault" Text="Обычная" Click="MakeMeDefault_Click"/>
+                            <MenuFlyoutItem x:Name="MakeMeStart" Text="Начальная" Click="MakeMeStart_Click"/>
+                            <MenuFlyoutItem x:Name="MakeMeEnd" Text="Конечная" Click="MakeMeEnd_Click"/>
+                        </MenuFlyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
                 <Button x:Name="FlyoutRenameButton" Click="FlyoutRenameButton_Click" HorizontalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <SymbolIcon Symbol="Edit"/>

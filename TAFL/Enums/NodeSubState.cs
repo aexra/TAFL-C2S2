@@ -8,5 +8,6 @@ namespace TAFL.Enums;
 public enum NodeSubState
 {
     Default,
-    Final
+    Start,
+    End
 }
