@@ -12,6 +12,13 @@ public class Graph : IGraph
         Nodes = new();
     }
 
+    public void Connect(string left, string right, string w)
+    {
+        var l = GetNode(left);
+        var r = GetNode(right);
+        if (l == null || r == null) return;
+        l.Connect(r, w, true);
+    }
     public void AddNode(Node node)
     {
         Nodes.Add(node);

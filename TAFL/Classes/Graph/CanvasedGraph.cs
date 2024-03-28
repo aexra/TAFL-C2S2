@@ -472,6 +472,24 @@ public class CanvasedGraph
 
         return graph;
     }
+    public void FromRaw(Graph graph)
+    {
+        var offset = 0;
+        foreach (var node in graph.Nodes)
+        {
+            NewNode(offset += 60, offset, node.Name);
+        }
+        foreach (var node in graph.Nodes)
+        {
+            foreach (var edge in node.Edges)
+            {
+                var l = GetNode(node.Name);
+                var r = GetNode(edge.Right.Name);
+                if (l == null || r == null) continue;
+                ConnectNodes(l, r, edge.Weight);
+            }
+        }
+    }
 
     // GRAPH EVENTS
     public bool _NodeSelecting_(GraphNodeControl node, bool ephemeral = false)

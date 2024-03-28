@@ -18,7 +18,21 @@ public static class GraphDeterminizationService
         var plines = GetPLines(graph, slines);
         process += "P-таблица\n" + plines.ToLongString();
 
-        return new();
+        Graph output = new();
+        foreach (var pline in plines)
+        {
+            output.AddNode(new Node(pline.Name));
+        }
+        foreach (var pline in plines)
+        {
+            foreach (var letter in pline.Paths.Keys)
+            {
+                if (pline.Paths[letter].Count == 0) continue;
+                output.Connect(pline.Name, pline.Paths[letter].First().Name, letter);
+            }
+        }
+
+        return output;
     }
 
     // P
