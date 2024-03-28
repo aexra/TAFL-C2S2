@@ -4,22 +4,21 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using TAFL.Enums;
 using TAFL.Helpers;
 
 namespace TAFL.Structures;
-public struct SLine
+public class SLine
 {
     public string Name;
-    public bool IsStart;
-    public bool IsEnd;
+    public NodeSubState SubState;
     public EpsilonClosure Closure;
     public Dictionary<string, HashSet<SLine>> Paths;
 
     public SLine(string name, EpsilonClosure closure)
     {
         Name = name;
-        IsStart = false;
-        IsEnd = false;
+        SubState = NodeSubState.Default;
         Closure = closure;
         Paths = new();
     }
@@ -27,7 +26,7 @@ public struct SLine
     public override string ToString() => Name;
     public string ToLongString()
     {
-        var output = $"{(IsStart ? "-> " : IsEnd ? "<- " : "")}{Name}";
+        var output = $"{(SubState == NodeSubState.Start ? "-> " : SubState == NodeSubState.End ? "<- " : "")}{Name}";
 
         output += SetHelper.SetToString(Closure.GetAllNodes().ToHashSet()) + " =";
         foreach (var letter in Paths.Keys)
@@ -36,10 +35,6 @@ public struct SLine
         }
 
         return output;
-    }
-    public void MakeStarting()
-    {
-        IsStart = true;
     }
 
     public static bool operator == (SLine left, SLine right)

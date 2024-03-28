@@ -93,11 +93,11 @@ public class CanvasedGraph
     }
 
     // NODES MANIPULATION METHODS
-    public void NewNode(double x, double y, string? name = null)
+    public GraphNodeControl? NewNode(double x, double y, string? name = null)
     {
         var node = new GraphNodeControl(new Vector2((float)x, (float)y), this);
 
-        if (CheckNodeCollisions(node)) return;
+        if (CheckNodeCollisions(node)) return null;
 
         if (node.Position.X < 0)
         {
@@ -126,6 +126,8 @@ public class CanvasedGraph
         Canvas.SetZIndex(node, VertexZ);
 
         NodeCreated?.Invoke(node);
+
+        return node;
     }
     public void RemoveNode(GraphNodeControl node)
     {
@@ -477,7 +479,8 @@ public class CanvasedGraph
         var offset = 0;
         foreach (var node in graph.Nodes)
         {
-            NewNode(offset += 60, offset, node.Name);
+            var n = NewNode(offset += 60, offset, node.Name);
+            if (n != null) n.SubState = node.SubState;
         }
         foreach (var node in graph.Nodes)
         {

@@ -21,7 +21,9 @@ public static class GraphDeterminizationService
         Graph output = new();
         foreach (var pline in plines)
         {
-            output.AddNode(new Node(pline.Name));
+            var n = new Node(pline.Name);
+            n.SubState = pline.SubState;
+            output.AddNode(n);
         }
         foreach (var pline in plines)
         {
@@ -77,8 +79,8 @@ public static class GraphDeterminizationService
         /// Отметим если P является начальным или конечным
         for (var i = 0; i < plines.Count; i++)
         {
-            if (starts_p.Contains(plines[i])) plines[i].IsStart = true;
-            else if (ends_p.Contains(plines[i])) plines[i].IsEnd = true;
+            if (starts_p.Contains(plines[i])) plines[i].SubState = Enums.NodeSubState.Start;
+            else if (ends_p.Contains(plines[i])) plines[i].SubState = Enums.NodeSubState.End;
         }
 
         return plines;
@@ -223,8 +225,8 @@ public static class GraphDeterminizationService
                     break;
                 }
             }
-            if (allF) slines[i] = new SLine(slines[i].Name, slines[i].Closure) { Paths = slines[i].Paths, IsStart = true };
-            if (GetEndSLines(graph, slines).Contains(slines[i])) slines[i] = new SLine(slines[i].Name, slines[i].Closure) { Paths = slines[i].Paths, IsEnd = true };
+            if (allF) slines[i].SubState = Enums.NodeSubState.Start;
+            else if (GetEndSLines(graph, slines).Contains(slines[i])) slines[i].SubState = Enums.NodeSubState.End;
         }
 
         return slines;
@@ -246,7 +248,7 @@ public static class GraphDeterminizationService
         HashSet<SLine> starts = new();
         foreach (var sline in slines)
         {
-            if (sline.IsStart) starts.Add(sline);
+            if (sline.SubState == Enums.NodeSubState.Start) starts.Add(sline);
         }
         return starts;
     }
@@ -344,7 +346,7 @@ public static class GraphDeterminizationService
         var counter = 0;
         foreach (var cl in closures) 
         {
-            output += counter == 0 ? cl.ToLongString() : ('\n' + cl.ToString());
+            output += counter == 0 ? cl.ToLongString() : ('\n' + cl.ToLongString());
             counter++;
         }
 
