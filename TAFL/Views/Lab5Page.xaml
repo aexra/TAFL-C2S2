@@ -30,6 +30,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="300"/>
+                    <RowDefinition Height="300"/>
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -122,6 +123,10 @@
                 </Border>
 
                 <Border Grid.Row="1" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Canvas x:Name="InterOutputCanvas"/>
+                </Border>
+
+                <Border Grid.Row="2" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                     <Canvas x:Name="OutputCanvas"/>
                 </Border>
 

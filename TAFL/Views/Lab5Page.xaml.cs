@@ -15,6 +15,7 @@ namespace TAFL.Views;
 public sealed partial class Lab5Page : Page
 {
     private readonly CanvasedGraph Constructor;
+    private readonly CanvasedGraph InterOutput;
     private readonly CanvasedGraph Output;
     public Lab5ViewModel ViewModel
     {
@@ -28,6 +29,7 @@ public sealed partial class Lab5Page : Page
         InitializeComponent();
 
         Constructor = new(ConstructorCanvas);
+        InterOutput = new(InterOutputCanvas);
         Output = new(OutputCanvas);
         //Output = new(OutputCanvas) { ReadOnly=true };
 
@@ -62,6 +64,7 @@ public sealed partial class Lab5Page : Page
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         Constructor.Clear();
+        InterOutput.Clear();
         Output.Clear();
     }
     private async void SolveLabButton_Click(object sender, RoutedEventArgs e)
@@ -74,9 +77,12 @@ public sealed partial class Lab5Page : Page
 
         var graph = Constructor.GetRawGraph();
 
-        var dgraph = GraphDeterminizationService.GetDeterminizedGraph(graph, out var process);
+        var dgraph = GraphDeterminizationService.GetDeterminizedGraph(graph, out var process, out var sgraph);
 
         LogService.Log(process);
+
+        InterOutput.Clear();
+        InterOutput.FromRaw(sgraph);
 
         Output.Clear();
         Output.FromRaw(dgraph);

@@ -5,7 +5,7 @@ using TAFL.Structures;
 namespace TAFL.Services;
 public static class GraphDeterminizationService
 {
-    public static Graph GetDeterminizedGraph(Graph graph, out string process)
+    public static Graph GetDeterminizedGraph(Graph graph, out string process, out Graph intermediateState)
     {
         process = "Детерминизация графа\n\n" + graph.ToLongString() + "\n\n";
 
@@ -14,6 +14,25 @@ public static class GraphDeterminizationService
 
         var slines = GetSLines(graph, closures);
         process += "S-таблица\n" + slines.ToLongString() + "\n\n";
+
+        intermediateState = new Graph();
+        foreach (var sline in slines)
+        {
+            var n = new Node(sline.Name);
+            n.SubState = sline.SubState;
+            intermediateState.AddNode(n);
+        }
+        foreach (var sline in slines)
+        {
+            foreach (var letter in sline.Paths.Keys)
+            {
+                if (sline.Paths[letter].Count == 0) continue;
+                foreach (var path in sline.Paths[letter])
+                {
+                    intermediateState.Connect(sline.Name, path.Name, letter);
+                }
+            }
+        }
 
         var plines = GetPLines(graph, slines);
         process += "P-таблица\n" + plines.ToLongString();
@@ -30,7 +49,10 @@ public static class GraphDeterminizationService
             foreach (var letter in pline.Paths.Keys)
             {
                 if (pline.Paths[letter].Count == 0) continue;
-                output.Connect(pline.Name, pline.Paths[letter].First().Name, letter);
+                foreach (var path in pline.Paths[letter])
+                {
+                    output.Connect(pline.Name, path.Name, letter);
+                }
             }
         }
 
