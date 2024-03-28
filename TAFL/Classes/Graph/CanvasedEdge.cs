@@ -32,7 +32,17 @@ public class CanvasedEdge
     private readonly CanvasedGraph Graph;
     public GraphNodeControl Left;
     public GraphNodeControl Right;
-    public string Weight => WeightBox.Text;
+    public string Weight
+    {
+        get => WeightBox.Text;
+        set
+        {
+            if (value != WeightBox.Text)
+            {
+                WeightBox.Text = value;
+            }
+        }
+    }
 
     // FLAGS
     public bool IsLoop => Left == Right;

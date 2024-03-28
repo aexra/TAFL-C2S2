@@ -224,6 +224,11 @@ public static class GraphDeterminizationService
                     allF = false;
                     break;
                 }
+                if (node == graph.GetEndNode())
+                {
+                    allF = false;
+                    break;
+                }
             }
             if (allF) slines[i].SubState = Enums.NodeSubState.Start;
             else if (GetEndSLines(graph, slines).Contains(slines[i])) slines[i].SubState = Enums.NodeSubState.End;

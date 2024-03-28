@@ -489,7 +489,18 @@ public class CanvasedGraph
                 var l = GetNode(node.Name);
                 var r = GetNode(edge.Right.Name);
                 if (l == null || r == null) continue;
-                ConnectNodes(l, r, edge.Weight);
+                if (!IsEdgeExists(l, r))
+                    ConnectNodes(l, r, edge.Weight);
+                else
+                {
+                    var e = Edges.Find(x => x.Left == l && x.Right == r);
+                    if (e != null)
+                    {
+                        var ww = new string[2] { e.Weight, edge.Weight };
+                        ww.ToList().Sort();
+                        e.Weight = $"{string.Join(",", ww)}";
+                    }
+                }
             }
         }
     }
