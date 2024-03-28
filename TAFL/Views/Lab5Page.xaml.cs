@@ -177,8 +177,8 @@ public sealed partial class Lab5Page : Page
                 }
             }
             if (allF) slines[i] = new SLine(slines[i].Name, slines[i].Closure) { Paths = slines[i].Paths, IsStarting = true };
-
-            output += (slines[i].IsStarting? "-> " : "     ") + localOutput;
+            //LogService.Log(SetToString(GetEndSLines(graph, slines)));
+            output += (slines[i].IsStarting? "-> " : GetEndSLines(graph, slines).Contains(sline) ? "<- " : "     ") + localOutput;
         }
         return output;
     }
@@ -266,6 +266,21 @@ public sealed partial class Lab5Page : Page
         }
 
         return starts_p;
+    }
+
+    private HashSet<SLine> GetEndSLines(Graph graph, List<SLine> slines)
+    {
+        HashSet<SLine> ends = new();
+        var end = graph.GetEndNode();
+        if (end == null) return ends;
+        foreach (var sline in slines)
+        {
+            if (sline.Closure.GetAllNodes().Exists(x => x.Name == end.Name))
+            {
+                ends.Add(sline);
+            }
+        }
+        return ends;
     }
 
     private void FillPLinesList(ref List<PLine> plines, PLine start_p, List<SLine> allSlines)
