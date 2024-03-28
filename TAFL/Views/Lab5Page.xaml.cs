@@ -127,7 +127,7 @@ public sealed partial class Lab5Page : Page
         {
             var sline = slines[i];
             output += $"\n";
-            var localOutput = $"{sline.Name} = ";
+            var localOutput = $"{sline.Name}{SetToString(sline.Closure.GetAllNodes().ToHashSet())} = ";
             foreach (var letter in alphabet)
             {
                 /// Создадим в sline список SLine для этой литеры
@@ -191,11 +191,7 @@ public sealed partial class Lab5Page : Page
         alphabet.Sort();
 
         /// Получим начальные S
-        HashSet<SLine> starts = new();
-        foreach (var sline in slines)
-        {
-            if (sline.IsStarting) starts.Add(sline);
-        }
+        var starts = GetStartSLines(graph, slines);
 
         ///  Создание начальной P-вершины
         var p0 = new PLine("P0", starts);
@@ -236,6 +232,28 @@ public sealed partial class Lab5Page : Page
         }
 
         return output;
+    }
+
+    private HashSet<SLine> GetStartSLines(Graph graph, List<SLine> slines)
+    {
+        HashSet<SLine> starts = new();
+        foreach (var sline in slines)
+        {
+            if (sline.IsStarting) starts.Add(sline);
+        }
+        return starts;
+    }
+    private HashSet<PLine> GetStartPLines(Graph graph, List<SLine> slines, List<PLine> plines)
+    {
+        HashSet<PLine> starts_p = new();
+
+        var starts_s = GetStartSLines(graph, slines);
+        foreach (var sline in slines)
+        {
+            
+        }
+
+        return starts_p;
     }
 
     private void FillPLinesList(ref List<PLine> plines, PLine start_p, List<SLine> allSlines)
