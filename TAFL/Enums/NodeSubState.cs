@@ -9,5 +9,6 @@ public enum NodeSubState
 {
     Default,
     Start,
-    End
+    End,
+    Universal
 }

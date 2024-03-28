@@ -131,6 +131,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     private readonly Color DefaultSubStateColor = Color.Transparent;
     private readonly Color StartSubStateColor = Color.Lime;
     private readonly Color EndSubStateColor = Color.Red;
+    private readonly Color UniversalSubStateColor = Color.Yellow;
     private readonly Color SelectionColor = Color.OrangeRed;
     private readonly Color DraggingColor = Color.Blue;
     
@@ -164,6 +165,8 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
                     return new SolidColorBrush(Windows.UI.Color.FromArgb(StartSubStateColor.A, StartSubStateColor.R, StartSubStateColor.G, StartSubStateColor.B));
                 case NodeSubState.End:
                     return new SolidColorBrush(Windows.UI.Color.FromArgb(EndSubStateColor.A, EndSubStateColor.R, EndSubStateColor.G, EndSubStateColor.B));
+                case NodeSubState.Universal:
+                    return new SolidColorBrush(Windows.UI.Color.FromArgb(UniversalSubStateColor.A, UniversalSubStateColor.R, UniversalSubStateColor.G, UniversalSubStateColor.B));
                 default:
                     return new SolidColorBrush(Windows.UI.Color.FromArgb(DefaultSubStateColor.A, DefaultSubStateColor.R, DefaultSubStateColor.G, DefaultSubStateColor.B));
             }
