@@ -18,7 +18,7 @@
             
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="600"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
