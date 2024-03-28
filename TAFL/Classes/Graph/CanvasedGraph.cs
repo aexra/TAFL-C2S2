@@ -442,37 +442,25 @@ public class CanvasedGraph
     public Graph GetRawGraph()
     {
         var graph = new Graph();
-
-        // Получаем списоки всех вершин и ребер
-        List<GraphNodeControl> nodes = new();
-        List<CanvasedEdge> edges = new();
-        foreach (var child in Canvas.Children)
-        {
-            if (child is GraphNodeControl gnc)
-            {
-                nodes.Add(gnc);
-            }
-            else if (child is Microsoft.UI.Xaml.Shapes.Path path)
-            {
-                foreach (var edge in Edges)
-                {
-                    if (edge.PathObject == path)
-                    {
-                        edges.Add(edge);
-                        break;
-                    }
-                }
-            }
-        }
+        var start = GetStartNode();
+        var end = GetEndNode();
 
         // Формируем граф
         // Добавим все вершины
-        foreach (var node in nodes)
+        foreach (var node in Nodes)
         {
             graph.AddNode(new Node(node.Title));
+            if (node == start)
+            {
+                graph.Nodes.Last().SubState = Enums.NodeSubState.Start;
+            }
+            else if (node == end)
+            {
+                graph.Nodes.Last().SubState = Enums.NodeSubState.End;
+            }
         }
         // Добавим все связи
-        foreach (var edge in edges)
+        foreach (var edge in Edges)
         {
             var node1 = graph.GetNode(edge.Left.Title);
             var node2 = graph.GetNode(edge.Right.Title);

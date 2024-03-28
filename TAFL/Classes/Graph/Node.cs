@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TAFL.Enums;
 using TAFL.Interfaces;
 
 namespace TAFL.Classes.Graph;
@@ -11,7 +12,7 @@ public class Node : INode
     public IGraph? Graph;
     public string Name;
     public List<Edge> Edges;
-
+    public NodeSubState SubState = NodeSubState.Default;
 
     public Node(string name)
     {

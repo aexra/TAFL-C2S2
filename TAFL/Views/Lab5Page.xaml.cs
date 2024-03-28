@@ -416,7 +416,7 @@ public sealed partial class Lab5Page : Page
     private List<Node> GetStartNodes(Graph graph, List<EpsilonClosure> closures)
     {
         // Начальная вершина
-        var globalStartNode = graph.GetNode(GetNodesNames(graph).First());
+        var globalStartNode = graph.GetStartNode();
 
         // Эпсилон-замыкание начальной вершины
         var startClosure = closures.Where(x => x.Origin.Name == globalStartNode.Name).First();
