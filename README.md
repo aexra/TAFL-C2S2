@@ -43,9 +43,9 @@ public sealed partial class SamplePage : Page
 ```
 Немного скриншотов реализации:
 
-![image](https://github.com/aexra/TAFL-C2S2/assets/121866384/f2d960a4-b53d-43e8-ac41-83be6902d3be)
-![image](https://github.com/aexra/TAFL-C2S2/assets/121866384/a2e0be0f-0603-4a0b-ba33-ddd4bcccd69b)
 ![image](https://github.com/aexra/TAFL-C2S2/assets/121866384/6d6d2013-de45-45d9-960e-5298622463f9)
+![image](https://github.com/aexra/TAFL-C2S2/assets/121866384/b0f6d77a-4169-4aba-96cf-ce355e3aadc1)
+
 
 
 > Логгер сбоку это другой мой прикольный прикол который еще нужно закончить, сейчас он работает и исправно для синхронного и асинхронного ввода, но вообще не оптимально, и требует проведения множества операций для развертки на странице и нормальной работы.
