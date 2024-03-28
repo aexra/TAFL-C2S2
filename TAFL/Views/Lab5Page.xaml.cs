@@ -76,32 +76,36 @@ public sealed partial class Lab5Page : Page
         var graph = Constructor.GetRawGraph();
         if (graph.IsEmpty) return;
 
-        GetTransitionsE(out var ets, out var closures);
-        LogService.Log(ets);
+        GraphDeterminizationService.GetDeterminizedGraph(graph, out var process);
 
-        var alphabet = GetAlphabet();
-        alphabet.Sort();
-        var tableS = GetSTable(graph, closures, alphabet, out var slines);
-        LogService.Log(tableS);
+        LogService.Log(process);
 
-        var tableP = GetPTable(graph, slines, out var plines);
-        LogService.Log(tableP);
+        //GetTransitionsE(out var ets, out var closures);
+        //LogService.Log(ets);
 
-        var offset = 0;
-        Output.Clear();
-        foreach (var pline in plines)
-        {
-            Output.NewNode(offset += 60, offset, pline.Name);
-        }
+        //var alphabet = GetAlphabet();
+        //alphabet.Sort();
+        //var tableS = GetSTable(graph, closures, alphabet, out var slines);
+        //LogService.Log(tableS);
 
-        foreach (var pline in plines)
-        {
-            foreach (var letter in pline.Paths.Keys)
-            {
-                if (pline.Paths[letter].Count == 0) continue;
-                Output.ConnectNodes(Output.GetNode(pline.Name) , Output.GetNode(pline.Paths[letter].First().Name),letter);
-            }
-        }
+        //var tableP = GetPTable(graph, slines, out var plines);
+        //LogService.Log(tableP);
+
+        //var offset = 0;
+        //Output.Clear();
+        //foreach (var pline in plines)
+        //{
+        //    Output.NewNode(offset += 60, offset, pline.Name);
+        //}
+
+        //foreach (var pline in plines)
+        //{
+        //    foreach (var letter in pline.Paths.Keys)
+        //    {
+        //        if (pline.Paths[letter].Count == 0) continue;
+        //        Output.ConnectNodes(Output.GetNode(pline.Name) , Output.GetNode(pline.Paths[letter].First().Name),letter);
+        //    }
+        //}
     }
 
     private string GetQTable(Graph graph)

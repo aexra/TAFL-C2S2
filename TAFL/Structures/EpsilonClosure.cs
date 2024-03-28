@@ -30,4 +30,15 @@ public struct EpsilonClosure
         nodes.Add(Origin);
         return nodes;
     }
+    
+    public override string ToString()
+    {
+        var output = $"E({Origin.Name}) = {{ {Origin.Name}";
+        foreach (var node in Nodes)
+        {
+            output += ", " + node.ToString();
+        }
+        output += " }";
+        return output;
+    }
 }

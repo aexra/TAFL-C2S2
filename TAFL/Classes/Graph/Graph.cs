@@ -72,10 +72,12 @@ public class Graph : IGraph
 
         foreach (var node in Nodes)
         {
-            output += $"\n{node.Name}: ";
-            foreach (var edge in node.Edges)
+            output += $"\n{node.Name}:";
+            var sorted_edges = node.Edges;
+            sorted_edges.Sort();
+            foreach (var edge in sorted_edges)
             {
-                output += $"{edge.Right.Name}[{edge.Weight}] ";
+                output += $" {edge.Right.Name}({edge.Weight});";
             }
         }
 

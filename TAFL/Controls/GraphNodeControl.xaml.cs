@@ -328,14 +328,17 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     private void MakeMeDefault_Click(object sender, RoutedEventArgs e)
     {
         this.SubState = NodeSubState.Default;
+        ContextFlyout.Hide();
     }
     private void MakeMeStart_Click(object sender, RoutedEventArgs e)
     {
         this.SubState = NodeSubState.Start;
+        ContextFlyout.Hide();
     }
     private void MakeMeEnd_Click(object sender, RoutedEventArgs e)
     {
         this.SubState = NodeSubState.End;
+        ContextFlyout.Hide();
     }
 
     // NODE MANIPULATION METHODS
