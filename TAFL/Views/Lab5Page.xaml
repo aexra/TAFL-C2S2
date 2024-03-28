@@ -21,19 +21,25 @@
                 <ColumnDefinition Width="600"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <Canvas x:Name="ConstructorCanvas"/>
-            </Border>
-            
-            <Grid Grid.Column="1" RowSpacing="10" ColumnSpacing="10">
+            <Grid Grid.Column="0" RowSpacing="10">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="300"/>
-                    <RowDefinition Height="300"/>
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Margin="10" Grid.Row="0" Text="GRAPH" FontWeight="Bold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                        <Canvas Grid.Row="1" x:Name="ConstructorCanvas"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                     <Pivot Title="LOG">
                         <PivotItem Header="All">
 
@@ -122,12 +128,35 @@
                     </Pivot>
                 </Border>
 
-                <Border Grid.Row="1" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                    <Canvas x:Name="InterOutputCanvas"/>
+            </Grid>
+
+            <Grid Grid.Column="1" RowSpacing="10" ColumnSpacing="10">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Margin="10" Grid.Row="0" Text="S-GRAPH" FontWeight="Bold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                        <Canvas Grid.Row="1" x:Name="InterOutputCanvas"/>
+                    </Grid>
                 </Border>
 
-                <Border Grid.Row="2" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                    <Canvas x:Name="OutputCanvas"/>
+                <Border Grid.Row="1" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Margin="10" Grid.Row="0" Text="P-GRAPH" FontWeight="Bold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                        <Canvas Grid.Row="1" x:Name="OutputCanvas"/>
+                    </Grid>
                 </Border>
 
             </Grid>
