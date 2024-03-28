@@ -18,9 +18,9 @@
         PointerMoved="Border_PointerMoved"
         PointerExited="Border_PointerExited"
         >
-        <Border Background="#ccc" Height="{x:Bind Diameter}" Width="{x:Bind Diameter}" CornerRadius="90">
-            <Border Background="{x:Bind SubStateBrush, Mode=OneWay}" Height="{x:Bind SubStateDiameter}" Width="{x:Bind SubStateDiameter}" CornerRadius="90">
-                <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="{x:Bind InnerDiameter}" Width="{x:Bind InnerDiameter}" CornerRadius="90">
+        <Border Background="#ccc" Height="{x:Bind Diameter}" Width="{x:Bind Diameter}" CornerRadius="90" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border Background="{x:Bind SubStateBrush, Mode=OneWay}" Height="{x:Bind SubStateDiameter}" Width="{x:Bind SubStateDiameter}" CornerRadius="90" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="{x:Bind InnerDiameter}" Width="{x:Bind InnerDiameter}" CornerRadius="90" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock Text="{x:Bind Title, Mode=OneWay}" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
             </Border>
