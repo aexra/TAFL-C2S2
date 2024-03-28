@@ -79,8 +79,11 @@ public static class GraphDeterminizationService
         /// Отметим если P является начальным или конечным
         for (var i = 0; i < plines.Count; i++)
         {
-            if (starts_p.Contains(plines[i])) plines[i].SubState = Enums.NodeSubState.Start;
-            else if (ends_p.Contains(plines[i])) plines[i].SubState = Enums.NodeSubState.End;
+            var startable = starts_p.Contains(plines[i]);
+            var endable = ends_p.Contains(plines[i]);
+            if (startable && endable) plines[i].SubState = Enums.NodeSubState.Universal;
+            else if (startable) plines[i].SubState = Enums.NodeSubState.Start;
+            else if (endable) plines[i].SubState = Enums.NodeSubState.End;
         }
 
         return plines;
