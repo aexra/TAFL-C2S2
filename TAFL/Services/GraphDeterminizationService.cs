@@ -14,10 +14,10 @@ public static class GraphDeterminizationService
 {
     public static Graph GetDeterminizedGraph(Graph graph, out string process)
     {
-        process = "Детерминизация графа:\n" + graph.ToString() + "\n\n";
+        process = "Детерминизация графа\n\n" + graph.ToString() + "\n\n";
 
         var closures = GetEpsilonClosures(graph);
-        process += "Эпсилон-замыкания:\n" + closures.ToString(true) + "\n";
+        process += "Эпсилон-замыкания\n" + closures.ToString(true) + "\n\n";
 
 
         return new();
@@ -45,9 +45,11 @@ public static class GraphDeterminizationService
     public static string ToString(this List<EpsilonClosure> closures, bool inline)
     {
         var output = "";
+        var counter = 0;
         foreach (var cl in closures) 
-        { 
-            
+        {
+            output += counter == 0 ? cl.ToString() : ('\n' + cl.ToString());
+            counter++;
         }
         return output;
     }

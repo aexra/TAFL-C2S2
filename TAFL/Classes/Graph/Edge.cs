@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TAFL.Interfaces;
 
 namespace TAFL.Classes.Graph;
-public class Edge : IEdge
+public class Edge : IEdge, IComparable<Edge>
 {
     public Node Left;
     public Node Right;
@@ -23,5 +23,11 @@ public class Edge : IEdge
     public void Remove()
     {
         
+    }
+
+    public int CompareTo(Edge? other)
+    {
+        if (other == null) return -1;
+        return Right.Name.CompareTo(other.Right.Name);
     }
 }

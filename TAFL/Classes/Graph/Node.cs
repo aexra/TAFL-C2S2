@@ -7,7 +7,7 @@ using TAFL.Enums;
 using TAFL.Interfaces;
 
 namespace TAFL.Classes.Graph;
-public class Node : INode
+public class Node : INode, IComparable<Node>
 {
     public IGraph? Graph;
     public string Name;
@@ -57,4 +57,9 @@ public class Node : INode
     }
 
     public override string ToString() => Name;
+    public int CompareTo(Node? other)
+    {
+        if (other == null) return -1;
+        return Name.CompareTo(other.Name);
+    }
 }

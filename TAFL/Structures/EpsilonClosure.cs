@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ABI.System.Collections.Generic;
 using TAFL.Classes.Graph;
+using TAFL.Services;
 
 namespace TAFL.Structures;
 public struct EpsilonClosure
@@ -33,10 +34,14 @@ public struct EpsilonClosure
     
     public override string ToString()
     {
-        var output = $"E({Origin.Name}) = {{ {Origin.Name}";
-        foreach (var node in Nodes)
+        var output = $"E({Origin.Name}) = {{ ";
+        var sorted_nodes = GetAllNodes();
+        sorted_nodes.Sort();
+        var counter = 0;
+        foreach (var node in sorted_nodes)
         {
-            output += ", " + node.ToString();
+            output += counter == 0 ? node.ToString() : (", " + node.ToString());
+            counter++;
         }
         output += " }";
         return output;
