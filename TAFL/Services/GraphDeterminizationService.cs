@@ -6,13 +6,13 @@ public static class GraphDeterminizationService
 {
     public static Graph GetDeterminizedGraph(Graph graph, out string process)
     {
-        process = "Детерминизация графа\n\n" + graph.ToString() + "\n\n";
+        process = "Детерминизация графа\n\n" + graph.ToLongString() + "\n\n";
 
         var closures = GetEpsilonClosures(graph);
-        process += "Эпсилон-замыкания\n" + closures.ToString(true) + "\n\n";
+        process += "Эпсилон-замыкания\n" + closures.ToLongString(true) + "\n\n";
 
         var slines = GetSLines(graph, closures);
-        process += "S-таблица\n" + slines.ToString(true) + "\n\n";
+        process += "S-таблица\n" + slines.ToLongString(true) + "\n\n";
 
         return new();
     }
@@ -151,7 +151,7 @@ public static class GraphDeterminizationService
     private static string[] ParseWeights(string weight, string separator = ",") => weight.Split(separator);
 
     // ToString extensions
-    private static string ToString(this List<EpsilonClosure> closures, bool enumerate)
+    private static string ToLongString(this List<EpsilonClosure> closures, bool enumerate)
     {
         var output = "";
 
@@ -164,7 +164,7 @@ public static class GraphDeterminizationService
 
         return output;
     }
-    private static string ToString(this List<SLine> slines, bool enumerate)
+    private static string ToLongString(this List<SLine> slines, bool enumerate)
     {
         var output = "";
         
