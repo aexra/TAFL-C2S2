@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using TAFL.Controls;
 using TAFL.Services;
+using Windows.Storage;
 using SelectionMode = TAFL.Enums.SelectionMode;
 
 namespace TAFL.Classes.Graph;
@@ -525,5 +526,12 @@ public class CanvasedGraph
     {
         node.Selected(ephemeral);
         NodeSelected?.Invoke(node);
+    }
+
+    // JSON CONVERTER
+    public bool FromJson(StorageFile file)
+    {
+        LogService.Log(file.Name);
+        return true;
     }
 }

@@ -9,6 +9,7 @@ using TAFL.Interfaces;
 using TAFL.Services;
 using TAFL.Structures;
 using TAFL.ViewModels;
+using Windows.Storage.Pickers;
 
 namespace TAFL.Views;
 
@@ -88,6 +89,32 @@ public sealed partial class Lab5Page : Page
         Output.FromRaw(dgraph);
     }
     private void CheckWordButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private async void LoadFromFileButton_Click(object sender, RoutedEventArgs e)
+    {
+        Constructor.Clear();
+
+        var filePicker = new FileOpenPicker();
+
+        var hwnd = App.MainWindow.GetWindowHandle();
+        WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
+
+        filePicker.FileTypeFilter.Add(".graph");
+        var file = await filePicker.PickSingleFileAsync();
+
+        if (file != null)
+        {
+            Constructor.FromJson(file);
+        }
+        else
+        {
+            LogService.Error("Не выбран подходящий файл для загрузки");
+        }
+    }
+    private void DownloadGraphFileButton_Click(object sender, RoutedEventArgs e)
     {
 
     }
