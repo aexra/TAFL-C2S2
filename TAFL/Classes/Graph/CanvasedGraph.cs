@@ -42,6 +42,7 @@ public class CanvasedGraph
     public delegate void EdgeCreatedHandler(CanvasedEdge edge);
     public delegate void EdgeRemovedHandler(CanvasedEdge edge);
     public delegate void GraphClearedHandler();
+    public delegate void LoadedHandler(string path);
 
     // EVENTS
     public event NodeCreatedHandler? NodeCreated;
@@ -51,6 +52,7 @@ public class CanvasedGraph
     public event EdgeCreatedHandler? EdgeCreated;
     public event EdgeRemovedHandler? EdgeRemoved;
     public event GraphClearedHandler? GraphCleared;
+    public event LoadedHandler? Loaded;
 
 
     // CONSTRUCTORS
@@ -532,7 +534,10 @@ public class CanvasedGraph
     public bool FromJson(StorageFile file)
     {
         Clear();
-        LogService.Log(file.Name);
+
+
+
+        Loaded?.Invoke(file.Path);
         return true;
     }
 }

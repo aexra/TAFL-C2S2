@@ -39,8 +39,13 @@ public sealed partial class Lab5Page : Page
         Constructor.EdgeCreated += Constructor_EdgeCreated;
         Constructor.EdgeRemoved += Constructor_EdgeRemoved;
         Constructor.GraphCleared += Constructor_GraphCleared;
+        Constructor.Loaded += Constructor_Loaded;
     }
 
+    private void Constructor_Loaded(string path)
+    {
+        LogService.Log($"Граф загружен из файла: {path}");
+    }
     private void Constructor_NodeCreated(Controls.GraphNodeControl node)
     {
         LogService.Log($"Создана вершина {node.Title}");
