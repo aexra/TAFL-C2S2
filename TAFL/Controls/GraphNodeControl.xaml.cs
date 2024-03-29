@@ -286,6 +286,10 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
         if (Graph.ReadOnly) return;
         IsDragging = false;
     }
+    private void Border_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+    {
+        ConnectFromSelection();
+    }
 
     // FLYOUT EVENTS
     private async void FlyoutRenameButton_Click(object sender, RoutedEventArgs e)

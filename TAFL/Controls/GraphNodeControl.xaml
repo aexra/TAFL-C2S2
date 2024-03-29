@@ -17,6 +17,7 @@
         PointerReleased="Border_PointerReleased"
         PointerMoved="Border_PointerMoved"
         PointerExited="Border_PointerExited"
+        DoubleTapped="Border_DoubleTapped"
         >
         <Border Background="#ccc" Height="{x:Bind Diameter}" Width="{x:Bind Diameter}" CornerRadius="90" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Border Background="{x:Bind SubStateBrush, Mode=OneWay}" Height="{x:Bind SubStateDiameter}" Width="{x:Bind SubStateDiameter}" CornerRadius="90" HorizontalAlignment="Center" VerticalAlignment="Center">
