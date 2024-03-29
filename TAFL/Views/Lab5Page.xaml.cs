@@ -95,8 +95,6 @@ public sealed partial class Lab5Page : Page
 
     private async void LoadFromFileButton_Click(object sender, RoutedEventArgs e)
     {
-        Constructor.Clear();
-
         var filePicker = new FileOpenPicker();
 
         var hwnd = App.MainWindow.GetWindowHandle();

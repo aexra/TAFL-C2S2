@@ -531,6 +531,7 @@ public class CanvasedGraph
     // JSON CONVERTER
     public bool FromJson(StorageFile file)
     {
+        Clear();
         LogService.Log(file.Name);
         return true;
     }
