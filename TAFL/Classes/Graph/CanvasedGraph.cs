@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Newtonsoft.Json;
 using TAFL.Controls;
 using TAFL.Services;
+using TAFL.Structures;
+using Windows.Devices.Geolocation.Geofencing;
 using Windows.Storage;
 using SelectionMode = TAFL.Enums.SelectionMode;
 
@@ -149,6 +152,13 @@ public class CanvasedGraph
     public void ConnectNodes(GraphNodeControl left, GraphNodeControl right, string weight)
     {
         NewEdge(left, right, weight);
+    }
+    public void ConnectNodes(string left, string right, string weight)
+    {
+        var l = GetNode(left);
+        var r = GetNode(right);
+        if (l == null || r == null) return;
+        NewEdge(l, r, weight);
     }
     public void DeselectAllNodes()
     {
@@ -507,6 +517,7 @@ public class CanvasedGraph
             }
         }
     }
+    
 
     // GRAPH EVENTS
     public bool _NodeSelecting_(GraphNodeControl node, bool ephemeral = false)
@@ -535,7 +546,48 @@ public class CanvasedGraph
     {
         Clear();
 
-
+        using (StreamReader r = new StreamReader(file.Path))
+        {
+            var json = r.ReadToEnd();
+            RawGraphStruct g;
+            try
+            {
+                g = JsonConvert.DeserializeObject<RawGraphStruct>(json);
+                try
+                {
+                    foreach (var name in g.Nodes.Keys)
+                    {
+                        NewNode(g.Nodes[name][0], g.Nodes[name][1], name);
+                    }
+                    foreach (var edgeAry in g.Edges)
+                    {
+                        ConnectNodes(edgeAry[0], edgeAry[1], edgeAry[2]);
+                    }
+                    foreach (var node in g.States.Keys)
+                    {
+                        var state_name = g.States[node];
+                        var node_c = GetNode(node);
+                        if (node_c == null) throw new Exception();
+                        switch (state_name)
+                        {
+                            case "Start":
+                                node_c.SubState = Enums.NodeSubState.Start;
+                                break;
+                            case "End":
+                                node_c.SubState = Enums.NodeSubState.End;
+                                break;
+                            case "Universal":
+                                node_c.SubState = Enums.NodeSubState.Universal;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                catch (Exception ex) { Clear();  LogService.Error("Exception parsing JSON\n" + ex); }
+            }
+            catch (Exception ex) { Clear();  LogService.Error("Exception converting *.graph to JSON\n" + ex); }
+        }
 
         Loaded?.Invoke(file.Path);
         return true;
