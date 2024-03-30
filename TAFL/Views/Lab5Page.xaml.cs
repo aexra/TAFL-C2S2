@@ -121,7 +121,7 @@ public sealed partial class Lab5Page : Page
             LogService.Error("Не выбран подходящий файл для загрузки");
         }
     }
-    private void DownloadGraphFileButton_Click(object sender, RoutedEventArgs e)
+    private async void DownloadGraphFileButton_Click(object sender, RoutedEventArgs e)
     {
         var json = Constructor.ToJson();
         if (json == null)
@@ -129,6 +129,31 @@ public sealed partial class Lab5Page : Page
             LogService.Error("Ошибка чтения графа в JSON");
             return;
         }
-        LogService.Log(json);
+        
+        var folderPicker = new FolderPicker();
+
+        var hwnd = App.MainWindow.GetWindowHandle();
+        WinRT.Interop.InitializeWithWindow.Initialize(folderPicker, hwnd);
+
+        folderPicker.FileTypeFilter.Add(".graph");
+        var folder = await folderPicker.PickSingleFolderAsync();
+
+        if (folder == null)
+        {
+            LogService.Warning("Не выбрана папка для сохранения");
+            return;
+        }
+
+        var name = await DialogHelper.ShowSingleInputDialogAsync(XamlRoot, "Сохранить", "Введите название файла");
+        if (name == null)
+        {
+            LogService.Warning("Не выбрано название файла");
+            return;
+        } 
+
+        var file = await folder.CreateFileAsync(name + ".graph", Windows.Storage.CreationCollisionOption.ReplaceExisting);
+        await Windows.Storage.FileIO.WriteTextAsync(file, json);
+
+        LogService.Log($"Граф успешно сохранен в файл: {file.Path}");
     }
 }

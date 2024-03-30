@@ -36,8 +36,12 @@ public static class DialogHelper
         content.Placeholder = placeholder;
         dialog.Content = content;
 
-        await dialog.ShowAsync();
+        var result = await dialog.ShowAsync();
 
-        return content.Input ?? null;
+        if (result == ContentDialogResult.Primary)
+        {
+            return content.Input ?? null;
+        }
+        return null;
     }
 }
