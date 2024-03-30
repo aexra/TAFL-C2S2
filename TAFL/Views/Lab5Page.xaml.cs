@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Runtime.InteropServices.JavaScript;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Shapes;
@@ -122,6 +123,12 @@ public sealed partial class Lab5Page : Page
     }
     private void DownloadGraphFileButton_Click(object sender, RoutedEventArgs e)
     {
-
+        var json = Constructor.ToJson();
+        if (json == null)
+        {
+            LogService.Error("Ошибка чтения графа в JSON");
+            return;
+        }
+        LogService.Log(json);
     }
 }
