@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using TAFL.Controls;
 using TAFL.Services;
 using TAFL.Structures;
+using Windows.Devices.Bluetooth.Advertisement;
 using Windows.Devices.Geolocation.Geofencing;
 using Windows.Storage;
 using SelectionMode = TAFL.Enums.SelectionMode;
@@ -517,7 +518,26 @@ public class CanvasedGraph
             }
         }
     }
-    
+    public RawGraphStruct GetRawGraphStruct()
+    {
+        var s = new RawGraphStruct();
+
+        s.Nodes = new();
+        s.States = new();
+        s.Edges = new();
+
+        foreach (var node in Nodes)
+        {
+            s.Nodes.Add(node.Title, new float[] { node.Position.X, node.Position.Y });
+            s.States.Add(node.Title, node.SubState.ToString());
+        }
+        foreach (var edge in Edges)
+        {
+            s.Edges.Add(new string[] { edge.Left.Title, edge.Right.Title, edge.Weight });
+        }
+
+        return s;
+    }
 
     // GRAPH EVENTS
     public bool _NodeSelecting_(GraphNodeControl node, bool ephemeral = false)
@@ -584,12 +604,18 @@ public class CanvasedGraph
                         }
                     }
                 }
-                catch (Exception ex) { Clear();  LogService.Error("Exception parsing JSON\n" + ex); }
+                catch { Clear();   return false; }
             }
-            catch (Exception ex) { Clear();  LogService.Error("Exception converting *.graph to JSON\n" + ex); }
+            catch { Clear(); return false; }
         }
 
         Loaded?.Invoke(file.Path);
         return true;
+    }
+    public string? ToJson()
+    {
+        var s = GetRawGraphStruct();
+        var json = JsonConvert.SerializeObject(s);
+        return json;
     }
 }

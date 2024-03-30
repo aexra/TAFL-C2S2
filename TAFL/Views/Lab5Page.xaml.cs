@@ -110,7 +110,10 @@ public sealed partial class Lab5Page : Page
 
         if (file != null)
         {
-            Constructor.FromJson(file);
+            if (!Constructor.FromJson(file))
+            {
+                LogService.Error($"Ошибка парсинга файла графа: {file.Path}");
+            }
         }
         else
         {

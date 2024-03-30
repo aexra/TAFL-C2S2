@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TAFL.Structures;
 public struct RawGraphStruct
 {
-    public Dictionary<string, int[]> Nodes;
-    public string[][] Edges;
+    public Dictionary<string, float[]> Nodes;
+    public List<string[]> Edges;
     public Dictionary<string, string> States;
 }
