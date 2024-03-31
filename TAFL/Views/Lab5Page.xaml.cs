@@ -97,8 +97,14 @@ public sealed partial class Lab5Page : Page
     private async void CheckWordButton_Click(object sender, RoutedEventArgs e)
     {
         var w = await DialogHelper.ShowSingleInputDialogAsync(XamlRoot, "Проверить", "Введите слово");
+        if (w == null)
+        {
+            LogService.Warning("Не введено слово для проверки");
+            return;
+        }
         var dgraph = GraphDeterminizationService.GetDeterminizedGraph(Constructor.GetRawGraph(), out var process, out var sgraph);
-        LogService.Log(dgraph.Match(w ?? ""));
+        if (dgraph.Match(w)) LogService.Log($"{w} - подходит");
+        else LogService.Log($"{w} - не подходит");
     }
 
     private async void LoadFromFileButton_Click(object sender, RoutedEventArgs e)
