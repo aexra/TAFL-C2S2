@@ -74,6 +74,15 @@ public class Graph : IGraph
         }
         return null;
     }
+    public List<Node> GetStartNodes()
+    {
+        List<Node> nodes = new();
+        foreach (var node in Nodes)
+        {
+            if (node.SubState == Enums.NodeSubState.Start || node.SubState == Enums.NodeSubState.Universal) nodes.Add(node);
+        }
+        return nodes;
+    }
     public List<string> GetWeightsAlphabet(string separator = ",")
     {
         List<string> alphabet = new();

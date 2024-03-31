@@ -94,9 +94,11 @@ public sealed partial class Lab5Page : Page
         Output.Clear();
         Output.FromRaw(dgraph);
     }
-    private void CheckWordButton_Click(object sender, RoutedEventArgs e)
+    private async void CheckWordButton_Click(object sender, RoutedEventArgs e)
     {
-
+        var w = await DialogHelper.ShowSingleInputDialogAsync(XamlRoot, "Проверить", "Введите слово");
+        var dgraph = GraphDeterminizationService.GetDeterminizedGraph(Constructor.GetRawGraph(), out var process, out var sgraph);
+        LogService.Log(dgraph.Match(w ?? ""));
     }
 
     private async void LoadFromFileButton_Click(object sender, RoutedEventArgs e)

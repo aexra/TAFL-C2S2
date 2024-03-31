@@ -133,7 +133,7 @@ public sealed partial class GraphNodeControl : UserControl, INotifyPropertyChang
     private readonly Color EndSubStateColor = Color.Red;
     private readonly Color UniversalSubStateColor = Color.Yellow;
     private readonly Color SelectionColor = Color.OrangeRed;
-    private readonly Color DraggingColor = Color.Yellow;
+    private readonly Color DraggingColor = Color.Magenta;
     
     // BRUSHES
     public Brush SelectionBrush

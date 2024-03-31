@@ -365,6 +365,42 @@ public static class GraphDeterminizationService
     // HELPERS
     private static string[] ParseWeights(string weight, string separator = ",") => weight.Split(separator);
 
+    // PROMT TEST
+    public static bool Match(this Graph graph, string promt, int depth = 1000)
+    {
+        var depthRemaining = depth;
+        var starts = graph.GetStartNodes();
+        if (starts.Count == 0) return false;
+        var ok = false;
+        for (var i = 0; i < starts.Count; i++)
+        {
+            var start = starts[i];
+            ok = ok || __Match__(ref graph, ref start, ref depthRemaining, promt);
+            if (ok) break;
+        }
+        return ok;
+    }
+    private static bool __Match__(ref Graph graph, ref Node start, ref int depthRemaining, string promt)
+    {
+        depthRemaining--;
+        if (depthRemaining <= 0) return false;
+        if (promt.Length == 0)
+        {
+            if (start.SubState == Enums.NodeSubState.End || start.SubState == Enums.NodeSubState.Universal) return true;
+            else return false;
+        }
+        var ok = false;
+        foreach (var edge in start.Edges)
+        {
+            if (edge.Weight.Split(",").Contains(promt.First().ToString()))
+            {
+                ok = ok || __Match__(ref graph, ref edge.Right, ref depthRemaining, promt[1..]);
+                if (ok) break;
+            }
+        }
+        return ok;
+    }
+
     // ToString extensions
     private static string ToLongString(this List<EpsilonClosure> closures)
     {
