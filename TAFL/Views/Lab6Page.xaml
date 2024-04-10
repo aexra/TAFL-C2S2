@@ -166,6 +166,7 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
             <Button x:Name="ClearCanvasButton" Content="Очистить канвас" Click="ClearCanvasButton_Click"/>
             <Button x:Name="SolveLabButton" Content="Решить задачу" Click="SolveLabButton_Click"/>
+            <Button x:Name="SolveFromDButton" Content="Решить из детерминированного" Click="SolveFromDButton_Click"/>
             <Button x:Name="CheckWordButton" Content="Проверить слово" Click="CheckWordButton_Click"/>
             <Button x:Name="LoadFromFileButton" Content="Загрузить граф" Click="LoadFromFileButton_Click"/>
             <Button x:Name="DownloadGraphFileButton" Content="Сохранить граф" Click="DownloadGraphFileButton_Click"/>

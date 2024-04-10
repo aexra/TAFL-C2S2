@@ -42,91 +42,171 @@ public class KIteration
         // Получим алфавит переходов графа
         var alphabet = Graph.GetWeightsAlphabet();
 
-        // Создадим новый список классов эквивалентности и заполним классами с одним состоянием в каждом
-        List<Eqlass> next = new();
         foreach (var sc in SCL)
         {
-            var c = new Eqlass();
-            c.Add(sc.Nodes.First());
-            next.Add(c);
-        }
-
-        //LogService.Log(new KIteration(next, Graph, -1));
-
-        // Пройдем по всем состониям исходной итерации и заполним (или добавим новые) классы эквивалентности в next в соответствии с теоремой
-        foreach (var sc in SCL)
-        {
-            // Мы должны разместить каждое состояние которое еще не разместили
-            foreach (var node in sc.Nodes)
+            foreach (var letter in alphabet)
             {
-                // Проверяем что этого состояния еще нет в новых классах
-                if (next.Exists(c => c.Nodes.Contains(node))) continue;
-
-                // Нужно понять, создаем ли мы для него новый класс
-                var splittable = false;
-
-                // Пройдем по всем буквам алфавита, и если этот класс делим, т.е. существует такая буква, что node и другая подходящая ведут в разные классы, то установим splittable -> true
-                foreach (var letter in alphabet)
+                if (sc.IsSplittable(SCL, letter, out var splitting))
                 {
-                    // А есть вообще что сравнивать?
-                    var comparable = sc.Nodes.Where(n => n.Edges.Exists(e => e.Weight.Contains(letter))).ToList();
-                    if (comparable.Count < 2 || !comparable.Contains(node)) continue; // Этим выполняется случай когда есть только одно ребро для сравнения или нет вообще или среди них нет node
-
-                    // Получим классы в которые можно попасть из этих состояний 
-                    List<Eqlass> dests = new();
-                    foreach (var c_node in comparable)
+                    List<Eqlass> next = new();
+                    foreach (var x in sc.Split(splitting))
                     {
-                        GetDestinations(c_node, letter).ForEach(d =>
-                        {
-                            if (!dests.Contains(d)) dests.Add(d);
-                        });
+                        next.Add(x);
                     }
-
-                    // Проверяем их количество (если > 1, то node нужно отделить)
-                    if (dests.Count > 1)
-                    {
-                        splittable = true;
-                    }
-                }
-
-                // Если класс делим, то засунем node в новый класс, иначе засунем node в существующий (в тот, в котором он был изначально)
-                if (splittable)
-                {
-                    // Добавим новый класс с этим состоянием
-                    next.Add(new Eqlass().Add(node));
-
-                    // Объявим, что эта итерация не финальная
-                    LastIter = false;
-                    
-                    LogService.Log($"Создал новый класс: {node.Name} -> {next.Last()}");
-                }
-                else
-                {
-                    // Найдем состояния из того класса, в котором был node
-                    var nodes = SCL.Find(sc => sc.Nodes.Contains(node)).Nodes.Where(n => n != node);
-
-                    // Найдем новый класс, в котором есть хотя бы одно из состояний nodes
-                    var clas = next.Find(cl => cl.Nodes.Exists(n => nodes.Contains(n)));
-
-                    // Добавим в него node
-                    clas.Add(node);
+                    SCL.Where(x => x != sc).ToList().ForEach(next.Add);
+                    return new(next, Graph, K+1);
                 }
             }
         }
 
-        // Если новые классы равны прошлым, вернем эту же итерацию, иначе создадим новую итерацию с номером + 1
-        KIteration it;
-        if (LastIter)
-        {
-            it = this;
-        }
-        else
-        {
-            it = new KIteration(next, Graph, K + 1);
-        }
 
-        LogService.Log($"{K}, {this}");
-        return it;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //// Создадим новый список классов эквивалентности и заполним классами с одним состоянием в каждом
+        //List<Eqlass> next = new();
+        //foreach (var sc in SCL)
+        //{
+        //    var c = new Eqlass();
+        //    c.Add(sc.Nodes.First());
+        //    next.Add(c);
+        //}
+
+        ////LogService.Log(new KIteration(next, Graph, -1));
+
+        //// Пройдем по всем состониям исходной итерации и заполним (или добавим новые) классы эквивалентности в next в соответствии с теоремой
+        //foreach (var sc in SCL)
+        //{
+        //    // Мы должны разместить каждое состояние которое еще не разместили
+        //    foreach (var node in sc.Nodes)
+        //    {
+        //        // Проверяем что этого состояния еще нет в новых классах
+        //        if (next.Exists(c => c.Nodes.Contains(node))) continue;
+
+        //        // Нужно понять, создаем ли мы для него новый класс
+        //        var splittable = false;
+
+        //        // Пройдем по всем буквам алфавита, и если этот класс делим, т.е. существует такая буква, что node и другая подходящая ведут в разные классы, то установим splittable -> true
+        //        foreach (var letter in alphabet)
+        //        {
+        //            // А есть вообще что сравнивать?
+        //            var comparable = sc.Nodes.Where(n => n.Edges.Exists(e => e.Weight.Contains(letter))).ToList();
+        //            if (comparable.Count < 2 || !comparable.Contains(node)) continue; // Этим выполняется случай когда есть только одно ребро для сравнения или нет вообще или среди них нет node
+
+        //            // Получим классы в которые можно попасть из этих состояний 
+        //            List<Eqlass> dests = new();
+        //            foreach (var c_node in comparable)
+        //            {
+        //                GetDestinations(c_node, letter).ForEach(d =>
+        //                {
+        //                    if (!dests.Contains(d)) dests.Add(d);
+        //                });
+        //            }
+
+        //            // Проверяем их количество (если > 1, то node нужно отделить)
+        //            if (dests.Count > 1)
+        //            {
+        //                splittable = true;
+        //            }
+        //        }
+
+        //        // Если класс делим, то засунем node в новый класс, иначе засунем node в существующий (в тот, в котором он был изначально)
+        //        if (splittable)
+        //        {
+        //            // Добавим новый класс с этим состоянием
+        //            next.Add(new Eqlass().Add(node));
+
+        //            // Объявим, что эта итерация не финальная
+        //            LastIter = false;
+
+        //            // Заполним все оставшиеся состояния как они были и выйдем из функции
+
+        //            // Найдем их
+        //            List<Node> unfilled = new();
+        //            foreach (var sc_ in SCL)
+        //            {
+        //                foreach (var n in sc_.Nodes)
+        //                {
+        //                    if (!next.Exists(eq => eq.Nodes.Contains(n)))
+        //                    {
+        //                        unfilled.Add(n);
+        //                    }
+        //                }
+        //            }
+
+        //            // Засунем каждый
+        //            foreach (var n in unfilled)
+        //            {
+        //                // Куда засунуть?
+        //                // Найдем Eqlass где он был до этого
+        //                var old_eq = SCL.Find(x => x.Nodes.Contains(n));
+
+        //                // Пройдем по всем его вершинам которые не отделенный node и поймем куда класть
+        //                var search_promts = old_eq.Nodes.Where(x => x != node && x != n);
+
+        //                var found = false;
+        //                foreach (var promt in search_promts)
+        //                {
+        //                    foreach (var next_eq in next)
+        //                    {
+        //                        if (next_eq.Nodes.Contains(promt))
+        //                        {
+        //                            next_eq.Add(n);
+        //                            found = true;
+        //                            break;
+        //                        }
+        //                    }
+        //                    if (found) break;
+        //                }
+        //            }
+
+        //            LogService.Log($"Создал новый класс: {node.Name} -> {next.Last()}");
+
+        //            return new(next, Graph, K + 1);
+        //        }
+        //        else
+        //        {
+        //            // Найдем состояния из того класса, в котором был node
+        //            var nodes = SCL.Find(sc => sc.Nodes.Contains(node)).Nodes.Where(n => n != node);
+
+        //            // Найдем новый класс, в котором есть хотя бы одно из состояний nodes
+        //            var clas = next.Find(cl => cl.Nodes.Exists(n => nodes.Contains(n)));
+
+        //            // Добавим в него node
+        //            clas.Add(node);
+        //        }
+        //    }
+        //}
+
+        return this;
     }
 
     // generate new graph from this iteration
@@ -148,8 +228,13 @@ public class KIteration
             Dictionary<string, Eqlass> links = new();
             foreach (var letter in Graph.GetWeightsAlphabet())
             {
-                var dests = GetDestinations(sc.Nodes.First(), letter);
-                links.Add(letter, dests.First());
+                foreach (var node in sc.Nodes)
+                {
+                    if (links.Keys.Contains(letter)) break;
+                    var dests = GetDestinations(node, letter);
+                    if (dests.Count < 1) continue;
+                    links.Add(letter, dests.First());
+                }
             }
 
             // Объединяю переходы в одно и то же состояние по разным буквам

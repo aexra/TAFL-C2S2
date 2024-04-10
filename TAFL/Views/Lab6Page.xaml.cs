@@ -48,6 +48,9 @@ public sealed partial class Lab6Page : Page
             }
         }
 
+        LogService.Log($"final: {f}");
+        LogService.Log($"not final: {nf}");
+
         return new(new List<Eqlass>() { nf, f }, graph);
     }
 
@@ -74,7 +77,7 @@ public sealed partial class Lab6Page : Page
         var it = GetInitialIteration(dgraph);
         while (true)
         {
-            //LogService.Log(it);
+            LogService.Log(it);
             var next = it.Next();
             if (next == it)
             {
@@ -88,8 +91,6 @@ public sealed partial class Lab6Page : Page
 
         Output.Clear();
         Output.FromRaw(it.ToGraph());
-
-        LogService.Log(it.ToGraph().ToLongString());
     }
     private async void CheckWordButton_Click(object sender, RoutedEventArgs e)
     {
@@ -160,5 +161,29 @@ public sealed partial class Lab6Page : Page
         await Windows.Storage.FileIO.WriteTextAsync(file, json);
 
         LogService.Log($"Граф успешно сохранен в файл: {file.Path}");
+    }
+
+    private async void SolveFromDButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (InterOutput.GetStartNode() == null || InterOutput.GetEndNode() == null)
+        {
+            await DialogHelper.ShowErrorDialogAsync("Определите начальную и конечную вершины", XamlRoot);
+            return;
+        }
+
+        var it = GetInitialIteration(InterOutput.ToRaw());
+        while (true)
+        {
+            LogService.Log($"{it.K}. {it}");
+            var next = it.Next();
+            if (next == it)
+            {
+                break;
+            }
+            it = next;
+        }
+
+        Output.Clear();
+        Output.FromRaw(it.ToGraph());
     }
 }
