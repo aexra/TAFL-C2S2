@@ -129,54 +129,21 @@ public class KIteration
             graph.AddNode(new(sc.GetName()));
         }
 
-        // Соединяем исходя из возможностей каждого класса по изначальному графу
-        //foreach (var node in Graph.Nodes)
-        //{
-        //    // Найдем класс, в котором содержится это состояние
-        //    var cl = SCL.Find(s => s.Nodes.Contains(node));
-
-        //    // Получим его имя
-        //    var cl_name = cl.GetName();
-
-        //    // Найдём вершину НОВОГО графа с этим именем
-        //    var m = graph.GetNode(cl_name);
-
-        //    // Найдем все классы, которые достижимы из cl
-        //    var dest = SCL.Where(s => );
-        //}
-        foreach (var cl in SCL)
+        // Их нужно соединить.........
+        foreach (var sc in SCL)
         {
-            // Получим его имя
-            var cl_name = cl.GetName();
+            var name = sc.GetName();
 
-            // Найдём вершину НОВОГО графа с этим именем
-            var m = graph.GetNode(cl_name);
-
-            // Найдем все классы, достижимые из этого
-            Dictionary<Eqlass, string> dests = new();
-            foreach (var node in cl.Nodes)
+            Dictionary<string, List<Eqlass>> links = new();
+            foreach (var letter in Graph.GetWeightsAlphabet())
             {
-                // Найдем класс, в котором содержится это состояние
-                var dest = SCL.Find(s => s.Nodes.Contains(node));
-                if (dests.Keys.Contains(dest)) continue;
-                dests.Add(dest, "");
+                links.Add(letter, GetDestinations(sc.Nodes.First(), letter));
             }
 
-            // Подсчитаем с какими весами можно добраться из m в каждый другой класс
-            foreach (var dest_cl in dests.Keys)
+            var slinks = links.Select(kv => new KeyValuePair<string, Eqlass>(kv.Key, kv.Value.First()));
+            foreach (var kv in slinks)
             {
-                foreach (var node in cl.Nodes)
-                {
-                    var edge = node.Edges.Find(e => dest_cl.Nodes.Contains(e.Right));
-                    if (edge == null) continue;
-                    dests[dest_cl] += $"{edge.Weight},";
-                }
-            }
-
-            // Выполним соединение, если его еще нет
-            foreach (var dest_cl in dests.Keys)
-            {
-                m.Connect(graph.GetNode(dest_cl.GetName()), dests[dest_cl], true);
+                if (!graph.IsConnectionExists(name, kv.Value.GetName())) graph.Connect(name, kv.Value.GetName(), kv.Key);
             }
         }
 
