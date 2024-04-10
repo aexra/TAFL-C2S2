@@ -76,7 +76,7 @@ public sealed partial class Lab5Page : Page
             return;
         }
 
-        var graph = Constructor.GetRawGraph();
+        var graph = Constructor.ToRaw();
 
         var dgraph = GraphDeterminizationService.GetDeterminizedGraph(graph, out var process, out var sgraph);
 
@@ -96,7 +96,7 @@ public sealed partial class Lab5Page : Page
             LogService.Warning("Не введено слово для проверки");
             return;
         }
-        var dgraph = GraphDeterminizationService.GetDeterminizedGraph(Constructor.GetRawGraph(), out var process, out var sgraph);
+        var dgraph = GraphDeterminizationService.GetDeterminizedGraph(Constructor.ToRaw(), out var process, out var sgraph);
         if (dgraph.Match(w)) LogService.Log($"{w} - подходит");
         else LogService.Log($"{w} - не подходит");
     }
