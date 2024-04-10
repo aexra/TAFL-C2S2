@@ -25,6 +25,17 @@ public class KIteration
         return SCL.Where(sc => sc.Nodes.Exists(n => dest_nodes.Contains(n))).ToList();
     }
 
+    // returns list of eqlasses that are final
+    public List<Eqlass> GetFinal()
+    {
+        return SCL.Where(sc => sc.Nodes.All(n => Graph.Nodes.Where(nn => nn.SubState == CanvasedGraph.Enums.NodeSubState.End).Contains(n))).ToList();        
+    }
+
+    public List<Eqlass> GetStart()
+    {
+        return SCL.Where(sc => sc.Nodes.Any(n => Graph.Nodes.Where(nn => nn.SubState == CanvasedGraph.Enums.NodeSubState.Start || nn.SubState == CanvasedGraph.Enums.NodeSubState.Universal).Contains(n))).ToList();
+    }
+
     // returns this if no NEW equivalence classes available
     public KIteration Next()
     {
@@ -162,6 +173,15 @@ public class KIteration
             {
                 if (!graph.IsConnectionExists(name, kv.Value.GetName())) graph.Connect(name, kv.Value.GetName(), kv.Key);
             }
+        }
+
+        foreach (var start in GetStart())
+        {
+            graph.GetNode(start.GetName()).SubState = CanvasedGraph.Enums.NodeSubState.Start;
+        }
+        foreach (var final in GetFinal())
+        {
+            graph.GetNode(final.GetName()).SubState = CanvasedGraph.Enums.NodeSubState.End;
         }
 
         return graph;
