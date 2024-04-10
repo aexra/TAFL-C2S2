@@ -5,21 +5,14 @@ public class KIteration
 {
     public int K;
     public List<Eqlass> SCL;
-    public List<Eqlass> FCL;
     public Graph Graph;
     private bool LastIter = true;
 
     public KIteration(List<Eqlass> start, Graph graph, int k = 0)
     {
         SCL = start;
-        FCL = new();
         Graph = graph;
         K = k;
-    }
-
-    public bool IsLast()
-    {
-        return true;
     }
 
     // returns this if no NEW equivalence classes available
@@ -89,5 +82,69 @@ public class KIteration
         }
 
         return it;
+    }
+
+    // generate new graph from this iteration
+    public Graph ToGraph()
+    {
+        Graph graph = new();
+
+        // Создаем вершины из классов эквиваленции
+        foreach (var sc in SCL)
+        {
+            graph.AddNode(new(sc.GetName()));
+        }
+
+        // Соединяем исходя из возможностей каждого класса по изначальному графу
+        //foreach (var node in Graph.Nodes)
+        //{
+        //    // Найдем класс, в котором содержится это состояние
+        //    var cl = SCL.Find(s => s.Nodes.Contains(node));
+
+        //    // Получим его имя
+        //    var cl_name = cl.GetName();
+
+        //    // Найдём вершину НОВОГО графа с этим именем
+        //    var m = graph.GetNode(cl_name);
+
+        //    // Найдем все классы, которые достижимы из cl
+        //    var dest = SCL.Where(s => );
+        //}
+        foreach (var cl in SCL)
+        {
+            // Получим его имя
+            var cl_name = cl.GetName();
+
+            // Найдём вершину НОВОГО графа с этим именем
+            var m = graph.GetNode(cl_name);
+
+            // Найдем все классы, достижимые из этого
+            Dictionary<Eqlass, string> dests = new();
+            foreach (var node in cl.Nodes)
+            {
+                // Найдем класс, в котором содержится это состояние
+                var dest = SCL.Find(s => s.Nodes.Contains(node));
+                dests.Add(dest, "");
+            }
+
+            // Подсчитаем с какими весами можно добраться из m в каждый другой класс
+            foreach (var dest_cl in dests.Keys)
+            {
+                foreach (var node in cl.Nodes)
+                {
+                    var edge = node.Edges.Find(e => dest_cl.Nodes.Contains(e.Right));
+                    if (edge == null) continue;
+                    dests[dest_cl] += $"{edge.Weight},";
+                }
+            }
+
+            // Выполним соединение, если его еще нет
+            foreach (var dest_cl in dests.Keys)
+            {
+                m.Connect(graph.GetNode(dest_cl.GetName()), dests[dest_cl], true);
+            }
+        }
+
+        return graph;
     }
 }

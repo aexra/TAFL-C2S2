@@ -21,4 +21,15 @@ public class Eqlass
         Nodes.Remove(node);
         return this;
     }
+
+    public string GetName()
+    {
+        var name = "";
+        foreach (var node in Nodes)
+        {
+            name += node.Name + "-";
+        }
+        name = name[..^1];
+        return name;
+    }
 }

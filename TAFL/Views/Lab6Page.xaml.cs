@@ -72,6 +72,17 @@ public sealed partial class Lab6Page : Page
         LogService.Log(process);
 
         var it = GetInitialIteration(dgraph);
+        while (true)
+        {
+            var next = it.Next();
+            if (next == it)
+            {
+                break;
+            }
+            it = next;
+        }
+
+
 
         InterOutput.Clear();
         InterOutput.FromRaw(dgraph);
