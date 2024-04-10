@@ -35,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CanvasedGraph\CanvasedGraph\CanvasedGraph.csproj" />
     <ProjectReference Include="..\TAFL.Core\TAFL.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
