@@ -5,7 +5,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using ABI.System.Collections.Generic;
-using TAFL.Classes.Graph;
+using CanvasedGraph.Raw;
 using TAFL.Services;
 
 namespace TAFL.Structures;

@@ -4,9 +4,172 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:services="using:TAFL.Services"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
-        
+    <Grid x:Name="ContentArea" Margin="0 0 0 20" RowSpacing="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" RowSpacing="10" ColumnSpacing="10">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="600"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" RowSpacing="10">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="300"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Margin="10" Grid.Row="0" Text="GRAPH" FontWeight="Bold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                        <Canvas Grid.Row="1" x:Name="ConstructorCanvas"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Pivot Title="LOG">
+                        <PivotItem Header="All">
+
+                            <ListView x:Name="AllLogsLV" SelectionMode="Single" Margin="-12 0 -12 0" ItemsSource="{x:Bind services:LogService.LogMessages, Mode=OneWay}">
+
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsStackPanel ItemsUpdatingScrollMode="KeepLastItemInView" VerticalAlignment="Bottom"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Margin" Value="-13 0 -13 -1"/>
+                                        <Setter Property="MinHeight" Value="20"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+
+                            </ListView>
+
+                        </PivotItem>
+                        <PivotItem Header="Info">
+
+                            <ListView x:Name="InfoLogsLV" SelectionMode="Single" Margin="-12 0 -12 0" ItemsSource="{x:Bind services:LogService.InfoMessages, Mode=OneWay}">
+
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsStackPanel ItemsUpdatingScrollMode="KeepLastItemInView" VerticalAlignment="Bottom"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Margin" Value="-13 0 -13 -1"/>
+                                        <Setter Property="MinHeight" Value="20"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+
+                            </ListView>
+
+                        </PivotItem>
+                        <PivotItem Header="Warnings">
+
+                            <ListView x:Name="WarningsLogsLV" SelectionMode="Single" Margin="-12 0 -12 0" ItemsSource="{x:Bind services:LogService.WarningMessages, Mode=OneWay}">
+
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsStackPanel ItemsUpdatingScrollMode="KeepLastItemInView" VerticalAlignment="Bottom"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Margin" Value="-13 0 -13 -1"/>
+                                        <Setter Property="MinHeight" Value="20"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+
+                            </ListView>
+
+                        </PivotItem>
+                        <PivotItem Header="Errors">
+
+                            <ListView x:Name="ErrorsLogsLV" SelectionMode="Single" Margin="-12 0 -12 0" ItemsSource="{x:Bind services:LogService.ErrorMessages, Mode=OneWay}">
+
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsStackPanel ItemsUpdatingScrollMode="KeepLastItemInView" VerticalAlignment="Bottom"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Margin" Value="-13 0 -13 -1"/>
+                                        <Setter Property="MinHeight" Value="20"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+
+                            </ListView>
+
+                        </PivotItem>
+                    </Pivot>
+                </Border>
+
+            </Grid>
+
+            <Grid Grid.Column="1" RowSpacing="10" ColumnSpacing="10">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Margin="10" Grid.Row="0" Text="Детерминированный граф" FontWeight="Bold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                        <Canvas Grid.Row="1" x:Name="InterOutputCanvas"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Margin="10" Grid.Row="0" Text="Минимизированный граф" FontWeight="Bold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                        <Canvas Grid.Row="1" x:Name="OutputCanvas"/>
+                    </Grid>
+                </Border>
+
+            </Grid>
+
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
+            <Button x:Name="ClearCanvasButton" Content="Очистить канвас" Click="ClearCanvasButton_Click"/>
+            <Button x:Name="SolveLabButton" Content="Решить задачу" Click="SolveLabButton_Click"/>
+            <Button x:Name="CheckWordButton" Content="Проверить слово" Click="CheckWordButton_Click"/>
+            <Button x:Name="LoadFromFileButton" Content="Загрузить граф" Click="LoadFromFileButton_Click"/>
+            <Button x:Name="DownloadGraphFileButton" Content="Сохранить граф" Click="DownloadGraphFileButton_Click"/>
+        </StackPanel>
+
     </Grid>
 </Page>

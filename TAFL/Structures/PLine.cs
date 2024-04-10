@@ -1,4 +1,4 @@
-﻿using TAFL.Enums;
+﻿using CanvasedGraph.Enums;
 using TAFL.Helpers;
 
 namespace TAFL.Structures;

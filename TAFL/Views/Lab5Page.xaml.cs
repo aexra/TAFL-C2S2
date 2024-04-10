@@ -1,24 +1,18 @@
-﻿using System.Collections.Immutable;
-using System.Runtime.InteropServices.JavaScript;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Shapes;
-using TAFL.Classes.Graph;
-using TAFL.Controls;
 using TAFL.Helpers;
-using TAFL.Interfaces;
 using TAFL.Services;
-using TAFL.Structures;
 using TAFL.ViewModels;
 using Windows.Storage.Pickers;
+using CanvasedGraph;
 
 namespace TAFL.Views;
 
 public sealed partial class Lab5Page : Page
 {
-    private readonly CanvasedGraph Constructor;
-    private readonly CanvasedGraph InterOutput;
-    private readonly CanvasedGraph Output;
+    private readonly Constructor Constructor;
+    private readonly Constructor InterOutput;
+    private readonly Constructor Output;
     public Lab5ViewModel ViewModel
     {
         get;
@@ -47,19 +41,19 @@ public sealed partial class Lab5Page : Page
     {
         LogService.Log($"Граф загружен из файла: {path}");
     }
-    private void Constructor_NodeCreated(Controls.GraphNodeControl node)
+    private void Constructor_NodeCreated(Vertex node)
     {
         LogService.Log($"Создана вершина {node.Title}");
     }
-    private void Constructor_NodeRemoved(Controls.GraphNodeControl node)
+    private void Constructor_NodeRemoved(Vertex node)
     {
         LogService.Log($"Удалена вершина {node.Title}");
     }
-    private void Constructor_EdgeCreated(CanvasedEdge edge)
+    private void Constructor_EdgeCreated(Edge edge)
     {
         LogService.Log(edge.Left != edge.Right ? $"Соединены вершины {edge.Left.Title} и {edge.Right.Title}" : $"Создана петля в {edge.Left.Title}");
     }
-    private void Constructor_EdgeRemoved(CanvasedEdge edge)
+    private void Constructor_EdgeRemoved(Edge edge)
     {
         LogService.Log(edge.Left != edge.Right? $"Удалено ребро между {edge.Left.Title} и {edge.Right.Title}" : $"Удалена петля в {edge.Left.Title}");
     }

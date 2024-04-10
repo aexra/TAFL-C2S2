@@ -1,5 +1,5 @@
-﻿using TAFL.Classes.Graph;
-using TAFL.Helpers;
+﻿using CanvasedGraph.Enums;
+using CanvasedGraph.Raw;
 using TAFL.Structures;
 
 namespace TAFL.Services;
@@ -103,9 +103,9 @@ public static class GraphDeterminizationService
         {
             var startable = starts_p.Contains(plines[i]);
             var endable = ends_p.Contains(plines[i]);
-            if (startable && endable) plines[i].SubState = Enums.NodeSubState.Universal;
-            else if (startable) plines[i].SubState = Enums.NodeSubState.Start;
-            else if (endable) plines[i].SubState = Enums.NodeSubState.End;
+            if (startable && endable) plines[i].SubState = NodeSubState.Universal;
+            else if (startable) plines[i].SubState = NodeSubState.Start;
+            else if (endable) plines[i].SubState = NodeSubState.End;
         }
 
         return plines;
@@ -251,9 +251,9 @@ public static class GraphDeterminizationService
                 }
             }
             var isEnd = GetEndSLines(graph, slines).Contains(slines[i]);
-            if (allF && isEnd) slines[i].SubState = Enums.NodeSubState.Universal;
-            else if (allF) slines[i].SubState = Enums.NodeSubState.Start;
-            else if (isEnd) slines[i].SubState = Enums.NodeSubState.End;
+            if (allF && isEnd) slines[i].SubState = NodeSubState.Universal;
+            else if (allF) slines[i].SubState = NodeSubState.Start;
+            else if (isEnd) slines[i].SubState = NodeSubState.End;
         }
 
         return slines;
@@ -275,7 +275,7 @@ public static class GraphDeterminizationService
         HashSet<SLine> starts = new();
         foreach (var sline in slines)
         {
-            if (sline.SubState == Enums.NodeSubState.Start || sline.SubState == Enums.NodeSubState.Universal) starts.Add(sline);
+            if (sline.SubState == NodeSubState.Start || sline.SubState == NodeSubState.Universal) starts.Add(sline);
         }
         return starts;
     }
@@ -386,7 +386,7 @@ public static class GraphDeterminizationService
         if (depthRemaining <= 0) return false;
         if (promt.Length == 0)
         {
-            if (start.SubState == Enums.NodeSubState.End || start.SubState == Enums.NodeSubState.Universal) return true;
+            if (start.SubState == NodeSubState.End || start.SubState == NodeSubState.Universal) return true;
             else return false;
         }
         var ok = false;

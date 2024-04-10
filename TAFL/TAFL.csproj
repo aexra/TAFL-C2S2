@@ -16,7 +16,6 @@
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Controls\GraphNodeControl.xaml" />
     <None Remove="Controls\LogMessageControl.xaml" />
     <None Remove="Controls\StringInputDialog.xaml" />
     <None Remove="Controls\StringInputDialog2.xaml" />
@@ -36,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\aexra\CanvasedGraph\CanvasedGraph\CanvasedGraph.csproj" />
     <ProjectReference Include="..\TAFL.Core\TAFL.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -48,9 +48,6 @@
     <Page Update="Controls\StringInputDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="Controls\GraphNodeControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Update="Views\DebugPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -61,6 +58,10 @@
 
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
   </ItemGroup>
   
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
