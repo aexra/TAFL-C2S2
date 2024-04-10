@@ -74,6 +74,7 @@ public sealed partial class Lab6Page : Page
         var it = GetInitialIteration(dgraph);
         while (true)
         {
+            //LogService.Log(it);
             var next = it.Next();
             if (next == it)
             {
@@ -87,6 +88,8 @@ public sealed partial class Lab6Page : Page
 
         Output.Clear();
         Output.FromRaw(it.ToGraph());
+
+        LogService.Log(it.ToGraph().ToLongString());
     }
     private async void CheckWordButton_Click(object sender, RoutedEventArgs e)
     {

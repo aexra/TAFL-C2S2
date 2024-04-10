@@ -15,13 +15,11 @@ public class Eqlass
         Nodes.Add(node);
         return this;
     }
-
     public Eqlass Remove(Node node)
     {
         Nodes.Remove(node);
         return this;
     }
-
     public string GetName()
     {
         var name = "";
@@ -31,5 +29,19 @@ public class Eqlass
         }
         name = name[..^1];
         return name;
+    }
+    public override string ToString()
+    {
+        var s = "{";
+
+        foreach (var node in Nodes)
+        {
+            s += node.Name + ", ";
+        }
+
+        s = s[..^2];
+        s += "}";
+
+        return s;
     }
 }

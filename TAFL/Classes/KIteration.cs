@@ -1,4 +1,6 @@
 ﻿using CanvasedGraph.Raw;
+using TAFL.Services;
+using Windows.ApplicationModel.Activation;
 
 namespace TAFL.Classes;
 public class KIteration
@@ -13,6 +15,14 @@ public class KIteration
         SCL = start;
         Graph = graph;
         K = k;
+    }
+
+    // return list of destinable eqlasses from state node by weight letter
+    public List<Eqlass> GetDestinations(Node node, string letter)
+    {
+        // Получим список всех состояний в которые можно попасть из node по letter
+        var dest_nodes = node.Edges.Where(e => e.Weight == letter).Select(e => e.Right);
+        return SCL.Where(sc => sc.Nodes.Exists(n => dest_nodes.Contains(n))).ToList();
     }
 
     // returns this if no NEW equivalence classes available
@@ -30,42 +40,65 @@ public class KIteration
             next.Add(c);
         }
 
+        //LogService.Log(new KIteration(next, Graph, -1));
+
         // Пройдем по всем состониям исходной итерации и заполним (или добавим новые) классы эквивалентности в next в соответствии с теоремой
         foreach (var sc in SCL)
         {
-            // Если найдется хотя бы один входной символ letter, такой, что состояния \delta(q_1,a) и \delta(q_2,a) окажутся в разных классах (к-1)-эквивалентности (рис. 7.24), то состояния q_1 и q_2 уже не будут k-эквивалентными
-            foreach (var letter in alphabet)
+            // Мы должны разместить каждое состояние которое еще не разместили
+            foreach (var node in sc.Nodes)
             {
-                // А есть вообще что сравнивать?
-                var comparable = sc.Nodes.Where(n => n.Edges.Exists(e => e.Weight.Contains(letter))).ToList();
-                if (comparable.Count < 2) continue;
+                // Проверяем что этого состояния еще нет в новых классах
+                if (next.Exists(c => c.Nodes.Contains(node))) continue;
 
-                // Идем по всем подходящим состояниям текущего sc
-                foreach (var node in comparable)
+                // Нужно понять, создаем ли мы для него новый класс
+                var splittable = false;
+
+                // Пройдем по всем буквам алфавита, и если этот класс делим, т.е. существует такая буква, что node и другая подходящая ведут в разные классы, то установим splittable -> true
+                foreach (var letter in alphabet)
                 {
-                    // Проверяем что этого состояния еще нет в новых классах
-                    if (next.Exists(c => c.Nodes.Contains(node))) continue;
+                    // А есть вообще что сравнивать?
+                    var comparable = sc.Nodes.Where(n => n.Edges.Exists(e => e.Weight.Contains(letter))).ToList();
+                    if (comparable.Count < 2 || !comparable.Contains(node)) continue; // Этим выполняется случай когда есть только одно ребро для сравнения или нет вообще или среди них нет node
 
-                    // Получим состояние, которое достижимо из данного через letter (ТЕОРЕТИЧЕСКИ ЭТО НЕ NULL)
-                    var destination = node.Edges.Find(e => e.Weight.Contains(letter)).Right;
-
-                    // Получим исходный класс, в котором есть node (ЭТО sc)
-                    //var node_class = SCL.Find(_sc => _sc.Nodes.Contains(node));
-
-                    // Получим класс, в котором есть destination
-                    var dest_class = SCL.Find(_sc => _sc.Nodes.Contains(destination));
-
-                    // Проверим, что в next есть такой класс, в котором есть состояние, которое содержится в dest_class
-                    var search = next.Find(c => c.Nodes.Exists(n => dest_class.Nodes.Contains(n)));
-                    if (search != null)
+                    // Получим классы в которые можно попасть из этих состояний 
+                    List<Eqlass> dests = new();
+                    foreach (var c_node in comparable)
                     {
-                        search.Add(node);
+                        GetDestinations(c_node, letter).ForEach(d =>
+                        {
+                            if (!dests.Contains(d)) dests.Add(d);
+                        });
                     }
-                    else
+
+                    // Проверяем их количество (если > 1, то node нужно отделить)
+                    if (dests.Count > 1)
                     {
-                        next.Add(new Eqlass().Add(node));
-                        LastIter = false;
+                        splittable = true;
                     }
+                }
+
+                // Если класс делим, то засунем node в новый класс, иначе засунем node в существующий (в тот, в котором он был изначально)
+                if (splittable)
+                {
+                    // Добавим новый класс с этим состоянием
+                    next.Add(new Eqlass().Add(node));
+
+                    // Объявим, что эта итерация не финальная
+                    LastIter = false;
+                    
+                    LogService.Log($"Создал новый класс: {node.Name} -> {next.Last()}");
+                }
+                else
+                {
+                    // Найдем состояния из того класса, в котором был node
+                    var nodes = SCL.Find(sc => sc.Nodes.Contains(node)).Nodes.Where(n => n != node);
+
+                    // Найдем новый класс, в котором есть хотя бы одно из состояний nodes
+                    var clas = next.Find(cl => cl.Nodes.Exists(n => nodes.Contains(n)));
+
+                    // Добавим в него node
+                    clas.Add(node);
                 }
             }
         }
@@ -81,6 +114,7 @@ public class KIteration
             it = new KIteration(next, Graph, K + 1);
         }
 
+        LogService.Log($"{K}, {this}");
         return it;
     }
 
@@ -124,6 +158,7 @@ public class KIteration
             {
                 // Найдем класс, в котором содержится это состояние
                 var dest = SCL.Find(s => s.Nodes.Contains(node));
+                if (dests.Keys.Contains(dest)) continue;
                 dests.Add(dest, "");
             }
 
@@ -146,5 +181,18 @@ public class KIteration
         }
 
         return graph;
+    }
+
+    // simple string equivalent
+    public override string ToString()
+    {
+        var output = "";
+
+        foreach (var cl in SCL)
+        {
+            output += $"{cl} ";
+        }
+
+        return output[..^1];
     }
 }
