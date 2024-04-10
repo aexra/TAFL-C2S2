@@ -82,13 +82,11 @@ public sealed partial class Lab6Page : Page
             it = next;
         }
 
-
-
         InterOutput.Clear();
         InterOutput.FromRaw(dgraph);
 
         Output.Clear();
-        //Output.FromRaw();
+        Output.FromRaw(it.ToGraph());
     }
     private async void CheckWordButton_Click(object sender, RoutedEventArgs e)
     {
