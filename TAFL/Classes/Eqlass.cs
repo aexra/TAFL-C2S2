@@ -10,13 +10,15 @@ public class Eqlass
         Nodes = new();
     }
 
-    public void Add(Node node)
+    public Eqlass Add(Node node)
     {
         Nodes.Add(node);
+        return this;
     }
 
-    public void Remove(Node node)
+    public Eqlass Remove(Node node)
     {
         Nodes.Remove(node);
+        return this;
     }
 }

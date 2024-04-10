@@ -1,6 +1,7 @@
 ﻿using CanvasedGraph;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using TAFL.Classes;
 using TAFL.Helpers;
 using TAFL.Services;
 using TAFL.ViewModels;
@@ -30,6 +31,26 @@ public sealed partial class Lab6Page : Page
         Output = new(OutputCanvas);
     }
 
+    private KIteration GetInitialIteration(CanvasedGraph.Raw.Graph graph)
+    {
+        Eqlass nf = new();
+        Eqlass f = new();
+
+        foreach (var node in graph.Nodes)
+        {
+            if (node.SubState == CanvasedGraph.Enums.NodeSubState.End)
+            {
+                f.Add(node);
+            }
+            else
+            {
+                nf.Add(node);
+            }
+        }
+
+        return new(new List<Eqlass>() { nf, f }, graph);
+    }
+
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         Constructor.Clear();
@@ -49,6 +70,8 @@ public sealed partial class Lab6Page : Page
         var dgraph = GraphDeterminizationService.GetDeterminizedGraph(graph, out var process, out var sgraph);
 
         LogService.Log(process);
+
+        var it = GetInitialIteration(dgraph);
 
         InterOutput.Clear();
         InterOutput.FromRaw(dgraph);
