@@ -64,8 +64,8 @@ public sealed partial class Lab6Page : Page
             LogService.Warning("Не введено слово для проверки");
             return;
         }
-        var dgraph = GraphDeterminizationService.GetDeterminizedGraph(Constructor.GetRawGraph(), out var process, out var sgraph);
-        if (dgraph.Match(w)) LogService.Log($"{w} - подходит");
+        var graph = Output.GetRawGraph();
+        if (graph.Match(w)) LogService.Log($"{w} - подходит");
         else LogService.Log($"{w} - не подходит");
     }
 
