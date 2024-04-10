@@ -14,4 +14,9 @@ public class Eqlass
     {
         Nodes.Add(node);
     }
+
+    public void Remove(Node node)
+    {
+        Nodes.Remove(node);
+    }
 }
