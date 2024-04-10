@@ -134,14 +134,31 @@ public class KIteration
         {
             var name = sc.GetName();
 
-            Dictionary<string, List<Eqlass>> links = new();
+            Dictionary<string, Eqlass> links = new();
             foreach (var letter in Graph.GetWeightsAlphabet())
             {
-                links.Add(letter, GetDestinations(sc.Nodes.First(), letter));
+                var dests = GetDestinations(sc.Nodes.First(), letter);
+                links.Add(letter, dests.First());
             }
 
-            var slinks = links.Select(kv => new KeyValuePair<string, Eqlass>(kv.Key, kv.Value.First()));
-            foreach (var kv in slinks)
+            // Объединяю переходы в одно и то же состояние по разным буквам
+            Dictionary<string, Eqlass> merged = new();
+            foreach (var link in links)
+            {
+                if (merged.Values.Contains(link.Value)) continue;
+                if (links.Values.Where(v => v == link.Value).Count() > 1)
+                {
+                    var to_merge = links.Where(kv => kv.Value == link.Value);
+                    var weight = string.Join(",", to_merge.Select(x => x.Key));
+                    merged.Add(weight, link.Value);
+                }
+                else
+                {
+                    merged.Add(link.Key, link.Value);
+                }
+            }
+
+            foreach (var kv in merged)
             {
                 if (!graph.IsConnectionExists(name, kv.Value.GetName())) graph.Connect(name, kv.Value.GetName(), kv.Key);
             }
