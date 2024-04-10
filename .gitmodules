@@ -1,0 +1,3 @@
+[submodule "CanvasedGraph"]
+	path = CanvasedGraph
+	url = https://github.com/aexra/CanvasedGraph
