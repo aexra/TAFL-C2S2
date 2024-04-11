@@ -68,7 +68,7 @@ public sealed partial class Lab6Page : Page
 
         var graph = Constructor.ToRaw();
 
-        var removed_unreachable = graph.RemoveUnreachableNodes();
+        var removed_unreachable = graph.RemoveUnreachableNodesByTransitions();
 
         LogService.Log($"Удалено вершин: {removed_unreachable.Count} - {{{string.Join(", ", removed_unreachable.Select(node => node.Name))}}}");
         return;
