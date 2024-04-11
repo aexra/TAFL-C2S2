@@ -12,7 +12,6 @@ namespace TAFL.Views;
 public sealed partial class Lab6Page : Page
 {
     private readonly Constructor Constructor;
-    private readonly Constructor InterOutput;
     private readonly Constructor Output;
 
 
@@ -27,7 +26,6 @@ public sealed partial class Lab6Page : Page
         InitializeComponent();
 
         Constructor = new(ConstructorCanvas);
-        InterOutput = new(InterOutputCanvas);
         Output = new(OutputCanvas);
     }
 
@@ -57,7 +55,6 @@ public sealed partial class Lab6Page : Page
     private void ClearCanvasButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         Constructor.Clear();
-        InterOutput.Clear();
         Output.Clear();
     }
     private async void SolveLabButton_Click(object sender, RoutedEventArgs e)
@@ -70,11 +67,7 @@ public sealed partial class Lab6Page : Page
 
         var graph = Constructor.ToRaw();
 
-        var dgraph = GraphDeterminizationService.GetDeterminizedGraph(graph, out var process, out var sgraph);
-
-        LogService.Log(process);
-
-        var it = GetInitialIteration(dgraph);
+        var it = GetInitialIteration(graph);
         while (true)
         {
             LogService.Log(it);
@@ -85,9 +78,6 @@ public sealed partial class Lab6Page : Page
             }
             it = next;
         }
-
-        InterOutput.Clear();
-        InterOutput.FromRaw(dgraph);
 
         Output.Clear();
         Output.FromRaw(it.ToGraph());
@@ -161,29 +151,5 @@ public sealed partial class Lab6Page : Page
         await Windows.Storage.FileIO.WriteTextAsync(file, json);
 
         LogService.Log($"Граф успешно сохранен в файл: {file.Path}");
-    }
-
-    private async void SolveFromDButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (InterOutput.GetStartNode() == null || InterOutput.GetEndNode() == null)
-        {
-            await DialogHelper.ShowErrorDialogAsync("Определите начальную и конечную вершины", XamlRoot);
-            return;
-        }
-
-        var it = GetInitialIteration(InterOutput.ToRaw());
-        while (true)
-        {
-            LogService.Log($"{it.K}. {it}");
-            var next = it.Next();
-            if (next == it)
-            {
-                break;
-            }
-            it = next;
-        }
-
-        Output.Clear();
-        Output.FromRaw(it.ToGraph());
     }
 }
