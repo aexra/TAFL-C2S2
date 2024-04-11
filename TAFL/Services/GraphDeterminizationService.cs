@@ -282,11 +282,11 @@ public static class GraphDeterminizationService
     private static HashSet<SLine> GetEndSLines(Graph graph, List<SLine> slines)
     {
         HashSet<SLine> ends = new();
-        var end = graph.GetEndNode();
-        if (end == null) return ends;
+        var end_nodes = graph.Nodes.Where(n => n.SubState == NodeSubState.End);
+        if (end_nodes.Count() < 1) return ends;
         foreach (var sline in slines)
         {
-            if (sline.Closure.GetAllNodes().Exists(x => x.Name == end.Name))
+            if (sline.Closure.GetAllNodes().Exists(x => end_nodes.Select(n => n.Name).Contains(x.Name)))
             {
                 ends.Add(sline);
             }

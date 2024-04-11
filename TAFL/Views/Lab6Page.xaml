@@ -134,21 +134,9 @@
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="60"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Margin="10" Grid.Row="0" Text="Детерминированный граф" FontWeight="Bold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
-                        <Canvas Grid.Row="1" x:Name="InterOutputCanvas"/>
-                    </Grid>
-                </Border>
-
-                <Border Grid.Row="1" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>

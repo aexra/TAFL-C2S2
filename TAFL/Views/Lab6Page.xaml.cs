@@ -66,6 +66,8 @@ public sealed partial class Lab6Page : Page
             return;
         }
 
+        Output.Clear();
+
         var graph = Constructor.ToRaw();
 
         var removed_unreachable = graph.RemoveUnreachableNodesByTransitions();
@@ -84,7 +86,6 @@ public sealed partial class Lab6Page : Page
             it = next;
         }
 
-        Output.Clear();
         Output.FromRaw(it.ToGraph());
     }
     private async void CheckWordButton_Click(object sender, RoutedEventArgs e)
