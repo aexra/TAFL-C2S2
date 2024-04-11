@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using TAFL.Classes;
+using TAFL.Extensions;
 using TAFL.Helpers;
 using TAFL.Services;
 using TAFL.ViewModels;
@@ -66,6 +67,11 @@ public sealed partial class Lab6Page : Page
         }
 
         var graph = Constructor.ToRaw();
+
+        var removed_unreachable = graph.RemoveUnreachableNodes();
+
+        LogService.Log($"Удалено вершин: {removed_unreachable.Count} - {{{string.Join(", ", removed_unreachable.Select(node => node.Name))}}}");
+        return;
 
         var it = GetInitialIteration(graph);
         while (true)
