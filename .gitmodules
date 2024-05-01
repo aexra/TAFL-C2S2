@@ -1,3 +1,6 @@
 [submodule "CanvasedGraph"]
 	path = CanvasedGraph
 	url = https://github.com/aexra/CanvasedGraph
+[submodule "AexraUI"]
+	path = AexraUI
+	url = https://www.github.com/aexra/AexraUI
