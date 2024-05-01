@@ -74,16 +74,16 @@ public sealed partial class Lab7Page : Page
         switch (type)
         {
             case GrammarType.Type1:
-                Logger.Log("Грамматика фразовой структуры (грамматика без ограничений)");
-                break;
-            case GrammarType.Type2:
                 Logger.Log("Контекстно-зависимая грамматика");
                 break;
-            case GrammarType.Type3:
+            case GrammarType.Type2:
                 Logger.Log("Контекстно-свободная грамматика");
                 break;
-            default:
+            case GrammarType.Type3:
                 Logger.Log("Регулярная грамматика");
+                break;
+            default:
+                Logger.Log("Грамматика фразовой структуры (грамматика без ограничений)");
                 break;
         }
     }
