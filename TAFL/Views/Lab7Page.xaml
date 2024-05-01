@@ -21,13 +21,14 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Margin="10" Grid.Row="0" Text="INPUT" FontWeight="Bold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
-                <Grid RowSpacing="10" Grid.Row="1" Padding="10 0 10 0">
+                <Grid RowSpacing="10" Grid.Row="1" Padding="10 0 10 10">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="34"/>
                         <RowDefinition Height="34"/>
                         <RowDefinition Height="34"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="34"/>
                     </Grid.RowDefinitions>
 
                     <TextBox x:Name="BasedSymbolsBox" Grid.Row="0" PlaceholderText="Не терминальные символы" TextChanging="BasedSymbolsBox_TextChanging"/>
@@ -51,6 +52,8 @@
                             <ListView x:Name="RulesetContainer" Grid.Row="1" ItemsSource="{x:Bind Ruleset}"/>
                         </Grid>
                     </Border>
+
+                    <Button x:Name="SolveBtn" Grid.Row="4" Content="Решить задачу" Click="SolveBtn_Click"/>
 
                 </Grid>
             </Grid>

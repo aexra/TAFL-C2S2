@@ -3,6 +3,8 @@ using Microsoft.UI.Xaml.Controls;
 using TAFL.Misc;
 using TAFL.ViewModels;
 using AexraUI.Controls;
+using TAFL.Enums;
+using TAFL.Extensions;
 
 namespace TAFL.Views;
 
@@ -18,6 +20,15 @@ public sealed partial class Lab7Page : Page
     {
         ViewModel = App.GetService<Lab7ViewModel>();
         InitializeComponent();
+    }
+
+    private GrammarType AnalyzeGrammar()
+    {
+        var type = GrammarType.Type0;
+
+
+
+        return type;
     }
 
     private void BasedSymbolsBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
@@ -55,5 +66,25 @@ public sealed partial class Lab7Page : Page
         var rule = new DynamicOption() { KeyPlaceholder = "Это", ValuePlaceholder = "Вот в это" };
         rule.RemoveRequested += (s) => { Ruleset.Remove(s); };
         Ruleset.Add(rule);
+    }
+    private void SolveBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var type = AnalyzeGrammar();
+
+        switch (type)
+        {
+            case GrammarType.Type1:
+                Logger.Log("Грамматика фразовой структуры (грамматика без ограничений)");
+                break;
+            case GrammarType.Type2:
+                Logger.Log("Контекстно-зависимая грамматика");
+                break;
+            case GrammarType.Type3:
+                Logger.Log("Контекстно-свободная грамматика");
+                break;
+            default:
+                Logger.Log("Регулярная грамматика");
+                break;
+        }
     }
 }
