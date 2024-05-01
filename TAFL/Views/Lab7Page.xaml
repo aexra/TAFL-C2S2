@@ -6,7 +6,49 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
+    <Grid ColumnSpacing="10">
         
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="500"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Margin="10" Grid.Row="0" Text="INPUT" FontWeight="Bold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                <Grid RowSpacing="10">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBox x:Name="BasedSymbolsBox" Grid.Row="0" PlaceholderText="Не терминальные символы" TextChanging="BasedSymbolsBox_TextChanging"/>
+                    <TextBox x:Name="StartSymbolsBox" Grid.Row="1" PlaceholderText="Начальные символы" TextChanging="StartSymbolsBox_TextChanging"/>
+                    <TextBox x:Name="EndSymbolsBox" Grid.Row="2" PlaceholderText="Терминальные символы" TextChanging="EndSymbolsBox_TextChanging"/>
+
+                    <Border Grid.Row="3" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Margin="10" Grid.Row="0" Text="Правила вывода" FontWeight="Bold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                            <ListView>
+                                
+                            </ListView>
+                        </Grid>
+                    </Border>
+
+                </Grid>
+            </Grid>
+        </Border>
+
     </Grid>
 </Page>
