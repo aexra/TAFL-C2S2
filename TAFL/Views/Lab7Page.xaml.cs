@@ -1,16 +1,19 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using System.Collections.ObjectModel;
+using Microsoft.UI.Xaml.Controls;
 using TAFL.Misc;
 using TAFL.ViewModels;
+using AexraUI.Controls;
 
 namespace TAFL.Views;
 
 public sealed partial class Lab7Page : Page
 {
+    public ObservableCollection<DynamicOption> Ruleset { get; set; } = new();
+
     public Lab7ViewModel ViewModel
     {
         get;
     }
-
     public Lab7Page()
     {
         ViewModel = App.GetService<Lab7ViewModel>();
@@ -27,7 +30,6 @@ public sealed partial class Lab7Page : Page
             sender.SelectionStart = pointer;
         }
     }
-
     private void StartSymbolsBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
     {
         var distinct = StringUtils.StringToDistinctString(sender.Text);
@@ -38,7 +40,6 @@ public sealed partial class Lab7Page : Page
             sender.SelectionStart = pointer;
         }
     }
-
     private void EndSymbolsBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
     {
         var distinct = StringUtils.StringToDistinctString(sender.Text);
@@ -48,5 +49,11 @@ public sealed partial class Lab7Page : Page
             sender.Text = distinct;
             sender.SelectionStart = pointer;
         }
+    }
+    private void AddRuleBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var rule = new DynamicOption() { KeyPlaceholder = "Это", ValuePlaceholder = "Вот в это" };
+        rule.RemoveRequested += (s) => { Ruleset.Remove(s); };
+        Ruleset.Add(rule);
     }
 }
