@@ -4,13 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:AexraUI.Controls"
     mc:Ignorable="d">
 
     <Grid ColumnSpacing="10">
         
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="500"/>
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" CornerRadius="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -20,7 +21,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Margin="10" Grid.Row="0" Text="INPUT" FontWeight="Bold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
-                <Grid RowSpacing="10">
+                <Grid RowSpacing="10" Grid.Row="1" Padding="10 0 10 0">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
@@ -40,8 +41,8 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <TextBlock Margin="10" Grid.Row="0" Text="Правила вывода" FontWeight="Bold" Style="{StaticResource BodyStrongTextBlockStyle}"/>
-                            <ListView>
-                                
+                            <ListView Grid.Row="1">
+                                <controls:DynamicOption/>
                             </ListView>
                         </Grid>
                     </Border>
