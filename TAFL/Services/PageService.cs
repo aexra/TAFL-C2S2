@@ -19,8 +19,6 @@ public class PageService : IPageService
         Configure<Lab5ViewModel, Lab5Page>();
         Configure<Lab6ViewModel, Lab6Page>();
         Configure<Lab7ViewModel, Lab7Page>();
-        Configure<Lab8ViewModel, Lab8Page>();
-        Configure<Lab9ViewModel, Lab9Page>();
         Configure<DebugViewModel, DebugPage>();
         Configure<SettingsViewModel, SettingsPage>();
     }
