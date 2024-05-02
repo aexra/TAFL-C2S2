@@ -142,6 +142,13 @@ public sealed partial class Lab7Page : Page
     {
         var rule = new DynamicOption() { KeyPlaceholder = "Это", ValuePlaceholder = "Вот в это" };
         rule.RemoveRequested += (s) => { Ruleset.Remove(s); };
+        rule.ValueChanging += (s, e) => {
+            if (s.Text == "eps")
+            {
+                s.Text = "ε";
+                s.SelectionStart = 1;
+            }
+        };
         Ruleset.Add(rule);
     }
     private void SolveBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
