@@ -5,6 +5,7 @@ using TAFL.ViewModels;
 using AexraUI.Controls;
 using TAFL.Enums;
 using TAFL.Extensions;
+using System.Text.RegularExpressions;
 
 namespace TAFL.Views;
 
@@ -24,11 +25,87 @@ public sealed partial class Lab7Page : Page
 
     private GrammarType AnalyzeGrammar()
     {
-        var type = GrammarType.Type0;
+        var based = BasedSymbolsBox.Text.ToArray();
+        var start = StartSymbolsBox.Text.ToArray();
+        var terminal = EndSymbolsBox.Text.ToArray();
 
+        Logger.Log(
+            $"Не терминальные символы: {{{string.Join(",", based)}}}" + '\n' +   
+            $"Начальные символы: {{{string.Join(",", start)}}}" + '\n' +
+            $"Терминальные символы: {{{string.Join(",", terminal)}}}"
+        );
 
+        // ε
 
-        return type;
+        // Проверим что это тип 3
+        var flag = true;
+        foreach (var rule in Ruleset)
+        {
+            if (rule.Key.Length != 1 || terminal.Contains(rule.Key[0]) || !Regex.Match(rule.Value, "(^[A-Z][a-z]+$)|(^[a-z]+[A-Z]$)|(^[ε]{1}$)").Success)
+            {
+                flag = false;
+                break;
+            }
+        }
+
+        if ( flag )
+        {
+            return GrammarType.Type3;
+        }
+
+        // Проверим что это тип 2
+        flag = true;
+        foreach (var rule in Ruleset)
+        {
+            if (rule.Key.Length != 1 || terminal.Contains(rule.Key[0]) || rule.Value.ToList().Exists(symbol => based.Contains(symbol)))
+            {
+                flag = false;
+                break;
+            }
+        }
+
+        if (flag)
+        {
+            return GrammarType.Type2;
+        }
+
+        // Проверим что это тип 1
+        flag = true;
+        foreach (var rule in Ruleset)
+        {
+            // Проверим условие длины
+            if (!(rule.Key.Length <= rule.Value.ToList().Where(symbol => symbol != 'ε').Count()))
+            {
+                flag = false;
+                break;
+            }
+
+            // Если длина ключа 2
+            if (rule.Key.Length == 2)
+            {
+                if (!(rule.Key[0] == rule.Value[0] || rule.Key[^1] == rule.Value[^1]))
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            // Если длина ключа любая другая
+            else if (rule.Key.Length > 2)
+            {
+                if (!(rule.Key[0] == rule.Value[0] && rule.Key[^1] == rule.Value[^1]))
+                {
+                    flag = false;
+                    break;
+                }
+            }
+        }
+
+        if (flag)
+        {
+            return GrammarType.Type1;
+        }
+
+        return GrammarType.Type0;
     }
 
     private void BasedSymbolsBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
@@ -74,16 +151,16 @@ public sealed partial class Lab7Page : Page
         switch (type)
         {
             case GrammarType.Type1:
-                Logger.Log("Контекстно-зависимая грамматика");
+                Logger.Log("Тип 1 - Контекстно-зависимая грамматика");
                 break;
             case GrammarType.Type2:
-                Logger.Log("Контекстно-свободная грамматика");
+                Logger.Log("Тип 2 - Контекстно-свободная грамматика");
                 break;
             case GrammarType.Type3:
-                Logger.Log("Регулярная грамматика");
+                Logger.Log("Тип 3 - Регулярная грамматика");
                 break;
             default:
-                Logger.Log("Грамматика фразовой структуры (грамматика без ограничений)");
+                Logger.Log("Тип 0 - Грамматика фразовой структуры (грамматика без ограничений)");
                 break;
         }
     }
